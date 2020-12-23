@@ -38,15 +38,11 @@ include('../include/config.php');
       }
     </style>
     <!-- Custom styles for this template -->
-<<<<<<< HEAD
     <!-- <link href="floating-labels.css" rel="stylesheet"> -->
-=======
-    <link href="floating-labels.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+    <!-- <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
->>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script> -->
   </head>
   <body>
 <?php
@@ -78,11 +74,16 @@ $(document).ready(function () {
   <div class="form-group">
     <label for="exampleFormControlSelect1">คำนำหน้าชื่อ</label>
     <select class="form-control" id="prename_id">
-      <option value="1">นาย</option>
-      <option value="2">นาง</option>
-      <option value="3">นางสาว</option>
-      <option value="4">ด.ช.</option>
-      <option value="5">ด.ญ.</option>
+    <option value="">--เลือก--</option>
+<?php
+$sql="select * from `prename` ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["prename_id"]."'>".$rows[$i]["prename_name"]."</option>";
+}
+?>
     </select>
     </div>
 
@@ -110,7 +111,6 @@ $(document).ready(function () {
     <div class="form-group">
     <label for="exampleFormControlSelect1">จังหวัด</label>
     <select class="form-control" id="changwat_out_code">
-<<<<<<< HEAD
       <option value="">--เลือก--</option>
 <?php
 $sql="select * from `cchangwat` ";
@@ -121,12 +121,6 @@ for ($i=0;$i<count($rows);$i++) {
   echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
 }
 ?>
-=======
-      <option>สกลนคร</option>
-      <option>กาฬสินธุ์</option>
-      <option>นครพนม</option>
-      <option>บึงกาฬ</option>
->>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
@@ -139,16 +133,8 @@ for ($i=0;$i<count($rows);$i++) {
 
     <div class="form-group">
     <label for="exampleFormControlSelect1">ตำบล</label>
-<<<<<<< HEAD
     <select class="form-control" id="tambon_out_code">
       <option value="">--เลือก--</option>
-=======
-    <select class="form-control" id="district_out_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
->>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
@@ -185,14 +171,14 @@ for ($i=0;$i<count($rows);$i++) {
     <div class="form-group">
       <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย</label>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="exampleRadios" id="touch_history" value="1" >
+      <input class="form-check-input" type="radio" name="touch_history" value="1" >
       <label for="exampleRadios1">
         เคยสัมผัส
       </label>
     </div>
 
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="exampleRadios" id="touch_history" value="2" >
+      <input class="form-check-input" type="radio" name="touch_history" value="2" >
       <labe for="exampleRadios1">
         ไม่เคยสัมผัส
       </label>
@@ -202,7 +188,6 @@ for ($i=0;$i<count($rows);$i++) {
     <div>เข้าพำนักในพื้นที่จังหวัดสกลนคร</div>
 
     <div class="form-group">
-<<<<<<< HEAD
     <label for="exampleFormControlSelect1">อำเภอ</label>
     <select class="form-control" id="ampur_in_code">
       <option value="">--เลือก--</option>
@@ -222,18 +207,10 @@ for ($i=0;$i<count($rows);$i++) {
     <label for="exampleFormControlSelect1">ตำบล</label>
     <select class="form-control" id="tambon_in_code">
       <option value="">--เลือก--</option>
-=======
-    <label for="exampleFormControlSelect1">เข้าพำนักที่อำเภอ</label>
-    <select class="form-control" id="amphur_in_code">
-      <option>เมืองสกลนคร</option>
-      <option>กุสุมาลย์</option>
-      <option>กุดบาก</option>
->>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
     <div class="form-group">
-<<<<<<< HEAD
       <label for="exampleFormControlInput1">เลขที่</label>
       <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
     </div>
@@ -242,15 +219,6 @@ for ($i=0;$i<count($rows);$i++) {
     <div class="form-group d-flex justify-content-between">
       <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
       <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
-=======
-    <label for="exampleFormControlSelect1">เข้าพำนักที่ตำบล</label>
-    <select class="form-control" id="district_in_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
-    </select>
->>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </div>
 
 
@@ -263,7 +231,6 @@ for ($i=0;$i<count($rows);$i++) {
 
 <script>
 $("#btnSave").click(function() {
-  console.log('sss');
   var data= {
     prename_id : $("#prename_id").val(),
     fname : $("#fname").val(),
@@ -276,12 +243,23 @@ $("#btnSave").click(function() {
     changwat_out_code : $("#changwat_out_code").val(),
     occupation_id : $("#occupation_id").val(),
     date_to_sakonnakhon : $("#date_to_sakonnakhon").val(),
-    touch_history : $("#touch_history").val(),
+    touch_history : typeof $('input[name="touch_history"]:checked').val()!='undefined'?$('input[name="touch_history"]:checked').val():"",
     house_in_no : $("#house_in_no").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
-    changwat_in_code : $("#changwat_in_code").val(),
+    changwat_in_code : '47',
   }
+  console.log(data);
+  $.ajax({method: "POST", url: "ajaxSaveRegister.php",
+    data: data
+  })
+  .done(function(x) {
+    console.log(x);
+    // var data=jQuery.parseJSON(x).data;
+    // for (var i=0;i<data.length;i=i+1) {
+    //   $("#ampur_out_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["ampur_name"]+"</option>");
+    // }
+  });
 });
 
 $("#changwat_out_code").change(function() {
@@ -331,7 +309,7 @@ $("#ampur_in_code").change(function() {
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "ctambon", 
-      query_where: "ampur_code='"+$("#changwat_in_code").val()+$("#ampur_in_code").val()+"'" , 
+      query_where: "ampur_code='47"+$("#ampur_in_code").val()+"'" , 
       query_order: "tambon_name asc"
     }
   })
