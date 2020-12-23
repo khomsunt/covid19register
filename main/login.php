@@ -11,7 +11,40 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/">
 
     <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script>
+        function loginCheck(){
+            $.ajax({
+                method: "POST",
+                url: "./loginCheck.php",
+                data: { user_login: $("#user_login").val(), user_password: $("#user_password").val() }
+            })
+            .done(function( msg ) {
+                let userData = JSON.parse(msg);
+                if (userData.length>0) {
+                    localStorage.setItem("user_id", userData[0]['user_id']);
+                    localStorage.setItem("user_login", userData[0]['user_login']);
+                    localStorage.setItem("fname", userData[0]['fname']);
+                    localStorage.setItem("lname", userData[0]['lname']);
+                    localStorage.setItem("office_id", userData[0]['office_id']);
+                    localStorage.setItem("office_code", userData[0]['office_code']);
+                    localStorage.setItem("office_name", userData[0]['office_name']);
+                    localStorage.setItem("node_id", userData[0]['node_id']);
+                    window.location.replace("./index.php");
+
+                }else{
+                    alert("ป้อนชื่อหรือรหัสผ่านผิด");
+                }
+            });
+        }
+        $(function(){
+            $("#submit").click(function(){
+                loginCheck();
+            })
+
+        })
+    </script>
 
     <style>
       .bd-placeholder-img {
@@ -55,7 +88,7 @@
       <input type="checkbox" value="remember-me"> จำไว้ใช้ครั้งต่อไป
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+  <button id="submit" class="btn btn-lg btn-primary btn-block" type="button">เข้าสู่โปรแกรม</button>
   <p class="mt-5 mb-3 text-muted text-center">covid-19 register @2020</p>
 </form>
 </body>
