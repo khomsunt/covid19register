@@ -62,30 +62,38 @@ $.ajax({
   console.log(xdata);
 });
 </script>
-    <form class="form-signin">
-  <div class="text-center mb-4">
-    <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Floating labels</h1>
-    <p>Build form controls with floating labels via the <code>:placeholder-shown</code> pseudo-element. <a href="https://caniuse.com/#feat=css-placeholder-shown">Works in latest Chrome, Safari, Firefox, and IE 10/11 (prefixed).</a></p>
+<div class="container">
+<form>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Email address</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
   </div>
-
-  <div class="form-label-group">
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-    <label for="inputEmail">Email address</label>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
   </div>
-
-  <div class="form-label-group">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <label for="inputPassword">Password</label>
+  <div class="form-group">
+    <label for="exampleFormControlSelect2">Example multiple select</label>
+    <select multiple class="form-control" id="exampleFormControlSelect2">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
   </div>
-
-  <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Example textarea</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2020</p>
 </form>
+</div>
+
 </body>
 </html>
