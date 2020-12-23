@@ -45,16 +45,6 @@ include('../include/config.php');
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script> -->
   </head>
   <body>
-<?php
-$sql="select * from `user` ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// echo json_encode($row_oapp, JSON_UNESCAPED_UNICODE);
-for ($i=0;$i<count($rows);$i++) {
-  //echo "<br>- ".$rows[$i]["user_login"]."|".$rows[$i]["user_password"];
-}
-?>
 
 <script>
 $(document).ready(function () {
@@ -68,9 +58,16 @@ $(document).ready(function () {
 </script>
 
 
-<div class="container">
-<h2 style="text-align:center">ลงทะเบียนรายงานตัวล่วงหน้า</h2>
-<form>
+<div class="container" style="background-color: #b9ddff;background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
+
+  <div style="height: 100;"><br></div>
+  <div style="display: flex; align-items: flex-start;">
+    <img src="../image/logo_skn.png" width="70" style="margin-right: 10px;">
+    <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
+  </div>
+
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ลงทะเบียน<br>รายงานตัวล่วงหน้า</h2>
+
   <div class="form-group">
     <label for="exampleFormControlSelect1">คำนำหน้าชื่อ</label>
     <select class="form-control" id="prename_id">
@@ -107,44 +104,6 @@ for ($i=0;$i<count($rows);$i++) {
       <input type="email" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์">
     </div>
 
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">จังหวัด</label>
-    <select class="form-control" id="changwat_out_code">
-      <option value="">--เลือก--</option>
-<?php
-$sql="select * from `cchangwat` ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
-}
-?>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">อำเภอ</label>
-    <select class="form-control" id="ampur_out_code">
-      <option value="">--เลือก--</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="tambon_out_code">
-      <option value="">--เลือก--</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleFormControlInput1">เลขที่</label>
-      <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
-    </div>
-
-
-
     <div class="form-group">
     <label for="exampleFormControlSelect1">อาชีพ</label>
     <select class="form-control" id="occupation_id">
@@ -161,6 +120,50 @@ for ($i=0;$i<count($rows);$i++) {
     </select>
     </div>
 
+
+    <div class="card">
+      <div class="card-header">ที่อยู่ปัจจุบัน</div>
+      <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">จังหวัด</label>
+          <select class="form-control" id="changwat_out_code">
+            <option value="">--เลือก--</option>
+  <?php
+  $sql="select * from `changwat` ";
+  $obj=$connect->prepare($sql);
+  $obj->execute();
+  $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+  for ($i=0;$i<count($rows);$i++) {
+    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
+  }
+  ?>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">อำเภอ</label>
+          <select class="form-control" id="ampur_out_code">
+            <option value="">--เลือก--</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">ตำบล</label>
+          <select class="form-control" id="tambon_out_code">
+            <option value="">--เลือก--</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่</label>
+          <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
+        </div>
+        
+      </div>
+    </div>
+
+
     <div class="form-group">
     <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล</label>
       <div class="col-md-10">
@@ -168,61 +171,71 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
     </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย</label>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="touch_history" value="1" >
-      <label for="exampleRadios1">
-        เคยสัมผัส
-      </label>
+    <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย</label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="touch_history" value="1" >
+        <label for="exampleRadios1">
+          เคยสัมผัส
+        </label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="touch_history" value="2" >
+        <labe for="exampleRadios1">
+          ไม่เคยสัมผัส
+        </label>
+      </div>
+
     </div>
 
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="touch_history" value="2" >
-      <labe for="exampleRadios1">
-        ไม่เคยสัมผัส
-      </label>
-    </div>
+
+    <div class="card">
+      <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
+      <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
+
+
+        <div class="form-group">
+        <label for="exampleFormControlSelect1">อำเภอ</label>
+        <select class="form-control" id="ampur_in_code">
+          <option value="">--เลือก--</option>
+          <?php
+    $sql="select * from `ampur` where changwat_code='47' ";
+    $obj=$connect->prepare($sql);
+    $obj->execute();
+    $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+    for ($i=0;$i<count($rows);$i++) {
+      echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
+    }
+    ?>
+        </select>
+        </div>
+
+        <div class="form-group">
+        <label for="exampleFormControlSelect1">ตำบล</label>
+        <select class="form-control" id="tambon_in_code">
+          <option value="">--เลือก--</option>
+        </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่</label>
+          <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
+        </div>
+
+      </div>
     </div>
 
-    <div>เข้าพำนักในพื้นที่จังหวัดสกลนคร</div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">อำเภอ</label>
-    <select class="form-control" id="ampur_in_code">
-      <option value="">--เลือก--</option>
-      <?php
-$sql="select * from `campur` where changwat_code='47' ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
-}
-?>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="tambon_in_code">
-      <option value="">--เลือก--</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleFormControlInput1">เลขที่</label>
-      <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
-    </div>
-
+    <div style="height: 200"><br></div>
 
     <div class="form-group d-flex justify-content-between">
       <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
       <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
     </div>
 
+    <div style="height: 200"><br></div>
 
-</form>
 </div>
 </div>
 
@@ -270,7 +283,7 @@ $("#changwat_out_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "campur", 
+      query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
       query_order: "if(left(ampur_name,5)='เมือง',1,2) asc , ampur_name asc"
     }
@@ -289,8 +302,8 @@ $("#ampur_out_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "ctambon", 
-      query_where: "ampur_code='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
+      query_table: "tambon", 
+      query_where: "ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
       query_order: "tambon_name asc"
     }
   })
@@ -308,8 +321,8 @@ $("#ampur_in_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "ctambon", 
-      query_where: "ampur_code='47"+$("#ampur_in_code").val()+"'" , 
+      query_table: "tambon", 
+      query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
       query_order: "tambon_name asc"
     }
   })

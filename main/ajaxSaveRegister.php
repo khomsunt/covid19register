@@ -29,10 +29,9 @@ $sql=" insert into covid_register ( ".
 $obj=$connect->prepare($sql);
 $obj->execute();
 $registerLastInsertId=$connect->lastInsertId();
-// $registerLastInsertId=123;
-$s=$sql;
-// $s="";
-// $s=$_POST;
+
+// $s=$sql;
+$s="";
 $x=array("sql"=>$s,"data"=>array("registerLastInsertId"=>$registerLastInsertId));
 echo json_encode($x, JSON_UNESCAPED_UNICODE);
 ?>
