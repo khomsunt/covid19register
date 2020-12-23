@@ -62,7 +62,7 @@ include("./header.php");
 <main role="main">
 
 
-
+<br>
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -77,10 +77,37 @@ include("./header.php");
   </thead>
   <tbody>
       <?php
+
+      $sql="select * from risk_level order by risk_level_id";
+      $obj=$connect->prepare($sql);
+      $obj->execute();
+      $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
+      
       foreach ($rows as $key => $value) {
         ?>
         <tr>
-            <td><?php echo $value['fname']." ".$value['lname']; ?></td>
+            <td>
+            <?php echo $value['fname']." ".$value['lname']; ?>
+            <span class="float-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        screen
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                        <?php
+                        foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
+                            ?>
+                            <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
+                                <?php echo $value_risk_level['risk_level_long_name']; ?>
+                            </button>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            </span>
+            
+            </td>
             <td><?php echo $value['register_datetime']; ?></td>
             <td><?php echo $value['occupation_name']; ?></td>
             <td>
@@ -121,4 +148,11 @@ include("./header.php");
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
       <script src="../js/tableToCards.js"></script>
+      <script>
+        $(function(){
+            $(".btn-change-risk-level").click(function(){
+                console.log($(this).attr("covid_register_id"))
+            })
+        })
+      </script>
 </html>
