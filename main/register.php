@@ -39,6 +39,10 @@ include('../include/config.php');
     </style>
     <!-- Custom styles for this template -->
     <link href="floating-labels.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
   </head>
   <body>
 <?php
@@ -73,6 +77,8 @@ $.ajax({
       }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
   });
 </script>
+
+
 <div class="container">
 <h2 style="text-align:center">ลงทะเบียนรายงานตัวล่วงหน้า</h2>
 <form>
@@ -113,12 +119,12 @@ $.ajax({
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="district_out_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
+    <label for="exampleFormControlSelect1">จังหวัด</label>
+    <select class="form-control" id="changwat_out_code">
+      <option>สกลนคร</option>
+      <option>กาฬสินธุ์</option>
+      <option>นครพนม</option>
+      <option>บึงกาฬ</option>
     </select>
     </div>
 
@@ -132,12 +138,12 @@ $.ajax({
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">จังหวัด</label>
-    <select class="form-control" id="changwat_out_code">
-      <option>สกลนคร</option>
-      <option>กาฬสินธุ์</option>
-      <option>นครพนม</option>
-      <option>บึงกาฬ</option>
+    <label for="exampleFormControlSelect1">ตำบล</label>
+    <select class="form-control" id="district_out_code">
+      <option>ธาตุเชิงชุม</option>
+      <option>ธาตุนาเวง</option>
+      <option>เชียงเครือ</option>
+      <option>ธาตุดุม</option>
     </select>
     </div>
 
@@ -151,9 +157,10 @@ $.ajax({
     </div>
 
     <div class="form-group">
-      <label for="inputdatepicker" class="col-md-2 control-label">datepicker</label>
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล</label>
       <div class="col-md-10">
-        <input id="inputdatepicker" class="datepicker" data-date-format="mm/dd/yyyy">
+        <input name="datepicker" class="datepicker" id="date_to_sakonnakhon"/>
+    </div>
     </div>
 
     <div class="form-group">
@@ -179,16 +186,6 @@ $.ajax({
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">เข้าพำนักที่ตำบล</label>
-    <select class="form-control" id="district_in_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
-    </select>
-    </div>
-
-    <div class="form-group">
     <label for="exampleFormControlSelect1">เข้าพำนักที่อำเภอ</label>
     <select class="form-control" id="amphur_in_code">
       <option>เมืองสกลนคร</option>
@@ -198,12 +195,12 @@ $.ajax({
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">เข้าพำนักที่จังหวัด</label>
-    <select class="form-control" id="changwat_in_code">
-      <option>สกลนคร</option>
-      <option>กาฬสินธุ์</option>
-      <option>นครพนม</option>
-      <option>บึงกาฬ</option>
+    <label for="exampleFormControlSelect1">เข้าพำนักที่ตำบล</label>
+    <select class="form-control" id="district_in_code">
+      <option>ธาตุเชิงชุม</option>
+      <option>ธาตุนาเวง</option>
+      <option>เชียงเครือ</option>
+      <option>ธาตุดุม</option>
     </select>
     </div>
  
