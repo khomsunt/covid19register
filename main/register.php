@@ -38,7 +38,15 @@ include('../include/config.php');
       }
     </style>
     <!-- Custom styles for this template -->
+<<<<<<< HEAD
     <!-- <link href="floating-labels.css" rel="stylesheet"> -->
+=======
+    <link href="floating-labels.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+>>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
   </head>
   <body>
 <?php
@@ -62,6 +70,8 @@ $(document).ready(function () {
     // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
 });
 </script>
+
+
 <div class="container">
 <h2 style="text-align:center">ลงทะเบียนรายงานตัวล่วงหน้า</h2>
 <form>
@@ -100,6 +110,7 @@ $(document).ready(function () {
     <div class="form-group">
     <label for="exampleFormControlSelect1">จังหวัด</label>
     <select class="form-control" id="changwat_out_code">
+<<<<<<< HEAD
       <option value="">--เลือก--</option>
 <?php
 $sql="select * from `cchangwat` ";
@@ -110,6 +121,12 @@ for ($i=0;$i<count($rows);$i++) {
   echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
 }
 ?>
+=======
+      <option>สกลนคร</option>
+      <option>กาฬสินธุ์</option>
+      <option>นครพนม</option>
+      <option>บึงกาฬ</option>
+>>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
@@ -122,8 +139,16 @@ for ($i=0;$i<count($rows);$i++) {
 
     <div class="form-group">
     <label for="exampleFormControlSelect1">ตำบล</label>
+<<<<<<< HEAD
     <select class="form-control" id="tambon_out_code">
       <option value="">--เลือก--</option>
+=======
+    <select class="form-control" id="district_out_code">
+      <option>ธาตุเชิงชุม</option>
+      <option>ธาตุนาเวง</option>
+      <option>เชียงเครือ</option>
+      <option>ธาตุดุม</option>
+>>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
@@ -151,9 +176,10 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <div class="form-group">
-      <label for="inputdatepicker" class="col-md-2 control-label">datepicker</label>
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล</label>
       <div class="col-md-10">
-        <input id="inputdatepicker" class="datepicker" data-date-format="mm/dd/yyyy">
+        <input name="datepicker" class="datepicker" id="date_to_sakonnakhon"/>
+    </div>
     </div>
 
     <div class="form-group">
@@ -176,6 +202,7 @@ for ($i=0;$i<count($rows);$i++) {
     <div>เข้าพำนักในพื้นที่จังหวัดสกลนคร</div>
 
     <div class="form-group">
+<<<<<<< HEAD
     <label for="exampleFormControlSelect1">อำเภอ</label>
     <select class="form-control" id="ampur_in_code">
       <option value="">--เลือก--</option>
@@ -195,10 +222,18 @@ for ($i=0;$i<count($rows);$i++) {
     <label for="exampleFormControlSelect1">ตำบล</label>
     <select class="form-control" id="tambon_in_code">
       <option value="">--เลือก--</option>
+=======
+    <label for="exampleFormControlSelect1">เข้าพำนักที่อำเภอ</label>
+    <select class="form-control" id="amphur_in_code">
+      <option>เมืองสกลนคร</option>
+      <option>กุสุมาลย์</option>
+      <option>กุดบาก</option>
+>>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </select>
     </div>
 
     <div class="form-group">
+<<<<<<< HEAD
       <label for="exampleFormControlInput1">เลขที่</label>
       <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
     </div>
@@ -207,6 +242,15 @@ for ($i=0;$i<count($rows);$i++) {
     <div class="form-group d-flex justify-content-between">
       <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
       <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
+=======
+    <label for="exampleFormControlSelect1">เข้าพำนักที่ตำบล</label>
+    <select class="form-control" id="district_in_code">
+      <option>ธาตุเชิงชุม</option>
+      <option>ธาตุนาเวง</option>
+      <option>เชียงเครือ</option>
+      <option>ธาตุดุม</option>
+    </select>
+>>>>>>> e97f7af7fbd250879fa00e3f88558a232f68cafe
     </div>
 
 
