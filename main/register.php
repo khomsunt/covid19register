@@ -1,7 +1,7 @@
 <?php 
-$configs = include('../include/config.php');
-echo "<br>config=";
-print_r($configs);
+include('../include/config.php');
+// echo "<br>config=";
+// print_r($configs);
 ?>
 
 <!doctype html>
@@ -13,6 +13,8 @@ print_r($configs);
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
     <title>Floating labels example · Bootstrap</title>
+
+    <script src="../js/jquery-3.5.1.min.js"></script>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/">
 
@@ -39,6 +41,27 @@ print_r($configs);
     <link href="floating-labels.css" rel="stylesheet">
   </head>
   <body>
+<?php
+$sql="select * from `user` ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// echo json_encode($row_oapp, JSON_UNESCAPED_UNICODE);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<br>- ".$rows[$i]["user_login"]."|".$rows[$i]["user_password"];
+}
+?>
+<script>
+$.ajax({
+  method: "POST",
+  url: "ajaxTest.php",
+  data:""
+}).done(function(x){
+  console.log(x);
+  var xdata=jQuery.parseJSON(x);
+  console.log(xdata);
+});
+</script>
     <form class="form-signin">
   <div class="text-center mb-4">
     <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
