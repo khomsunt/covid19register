@@ -13,39 +13,27 @@
                 data: { query_table: "campur", query_where: "changwatcode='"+amphur_code+"'" }
             })
             .done(function( msg ) {
-                console.log(msg)
-                return msg
+                console.log('msg=');
+                console.log(msg);
+                $.ajax({
+                    method: "POST",
+                    url: "ajaxTest.php",
+                    data: { query_table: "user", query_where: "" }
+                })
+                .done(function( msg2 ) {
+                    console.log(msg2)
+                });
+
             });
         }
 
-    $(function(){
-        var ampur=getAmphur('47');
-        console.log(ampur);
+        getAmphur('47');
 
-    })
 
     
     </script>
 </head>
 <body>
     
-
-
-<script>
-    $(function(){
-        function getAmphur(amphur_code){
-            $.ajax({
-                method: "POST",
-                url: "ajaxTest.php",
-                data: { query_table: "campur", query_where: "changwatcode='"+amphur_code+"'" }
-            })
-            .done(function( msg ) {
-                return msg
-            });
-        }
-    });
-
-</script>
-
 </body>
 </html>
