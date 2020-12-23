@@ -16,10 +16,10 @@ include('../include/config.php');
 
     <script src="../js/jquery-3.5.1.min.js"></script>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/">
+    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/"> -->
 
     <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -38,7 +38,7 @@ include('../include/config.php');
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="floating-labels.css" rel="stylesheet">
+    <!-- <link href="floating-labels.css" rel="stylesheet"> -->
   </head>
   <body>
 <?php
@@ -51,39 +51,28 @@ for ($i=0;$i<count($rows);$i++) {
   //echo "<br>- ".$rows[$i]["user_login"]."|".$rows[$i]["user_password"];
 }
 ?>
-<script>
-$.ajax({
-  method: "POST",
-  url: "ajaxTest.php",
-  data:""
-}).done(function(x){
-  console.log(x);
-  var xdata=jQuery.parseJSON(x);
-  console.log(xdata);
-});
-</script>
 
 <script>
-  $(document).ready(function () {
-      $('.datepicker').datepicker({
-          format: 'dd/mm/yyyy',
-          todayBtn: true,
-          language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
-          thaiyear: true //Set เป็นปี พ.ศ.
-      }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
-  });
+$(document).ready(function () {
+    // $('.datepicker').datepicker({
+    //     format: 'dd/mm/yyyy',
+    //     todayBtn: true,
+    //     language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
+    //     thaiyear: true //Set เป็นปี พ.ศ.
+    // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+});
 </script>
 <div class="container">
 <h2 style="text-align:center">ลงทะเบียนรายงานตัวล่วงหน้า</h2>
 <form>
   <div class="form-group">
     <label for="exampleFormControlSelect1">คำนำหน้าชื่อ</label>
-    <select class="form-control" id="pname">
-      <option>นาย</option>
-      <option>นาง</option>
-      <option>นางสาว</option>
-      <option>ด.ช.</option>
-      <option>ด.ญ.</option>
+    <select class="form-control" id="prename_id">
+      <option value="1">นาย</option>
+      <option value="2">นาง</option>
+      <option value="3">นางสาว</option>
+      <option value="4">ด.ช.</option>
+      <option value="5">ด.ญ.</option>
     </select>
     </div>
 
@@ -107,46 +96,57 @@ $.ajax({
       <input type="email" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์">
     </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">ที่อยู่ปัจจุบัน</label>
-      <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
-    </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="district_out_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
+    <label for="exampleFormControlSelect1">จังหวัด</label>
+    <select class="form-control" id="changwat_out_code">
+      <option value="">--เลือก--</option>
+<?php
+$sql="select * from `cchangwat` ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
+}
+?>
     </select>
     </div>
 
     <div class="form-group">
     <label for="exampleFormControlSelect1">อำเภอ</label>
-    <select class="form-control" id="amphur_out_code">
-      <option>เมืองสกลนคร</option>
-      <option>กุสุมาลย์</option>
-      <option>กุดบาก</option>
+    <select class="form-control" id="ampur_out_code">
+      <option value="">--เลือก--</option>
     </select>
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">จังหวัด</label>
-    <select class="form-control" id="changwat_out_code">
-      <option>สกลนคร</option>
-      <option>กาฬสินธุ์</option>
-      <option>นครพนม</option>
-      <option>บึงกาฬ</option>
+    <label for="exampleFormControlSelect1">ตำบล</label>
+    <select class="form-control" id="tambon_out_code">
+      <option value="">--เลือก--</option>
     </select>
     </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlInput1">เลขที่</label>
+      <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
+    </div>
+
+
 
     <div class="form-group">
     <label for="exampleFormControlSelect1">อาชีพ</label>
     <select class="form-control" id="occupation_id">
-      <option>ขายอาหารทะเล</option>
-      <option>คนขับรถ</option>
-      <option>ร่ำรวย</option>
+      <option value="">--เลือก--</option>
+      <?php
+$sql="select * from `coccupation` ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["occupation_id"]."'>".$rows[$i]["occupation_name"]."</option>";
+}
+?>
     </select>
     </div>
 
@@ -173,44 +173,130 @@ $.ajax({
     </div>
     </div>
 
-<div class="form-group">
-      <label for="exampleFormControlInput1">เข้าพำนักที่บ้านเลขที่</label>
+    <div>เข้าพำนักในพื้นที่จังหวัดสกลนคร</div>
+
+    <div class="form-group">
+    <label for="exampleFormControlSelect1">อำเภอ</label>
+    <select class="form-control" id="ampur_in_code">
+      <option value="">--เลือก--</option>
+      <?php
+$sql="select * from `campur` where changwat_code='47' ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
+}
+?>
+    </select>
+    </div>
+
+    <div class="form-group">
+    <label for="exampleFormControlSelect1">ตำบล</label>
+    <select class="form-control" id="tambon_in_code">
+      <option value="">--เลือก--</option>
+    </select>
+    </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlInput1">เลขที่</label>
       <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
     </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">เข้าพำนักที่ตำบล</label>
-    <select class="form-control" id="district_in_code">
-      <option>ธาตุเชิงชุม</option>
-      <option>ธาตุนาเวง</option>
-      <option>เชียงเครือ</option>
-      <option>ธาตุดุม</option>
-    </select>
+
+    <div class="form-group d-flex justify-content-between">
+      <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
+      <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
     </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">เข้าพำนักที่อำเภอ</label>
-    <select class="form-control" id="amphur_in_code">
-      <option>เมืองสกลนคร</option>
-      <option>กุสุมาลย์</option>
-      <option>กุดบาก</option>
-    </select>
-    </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">เข้าพำนักที่จังหวัด</label>
-    <select class="form-control" id="changwat_in_code">
-      <option>สกลนคร</option>
-      <option>กาฬสินธุ์</option>
-      <option>นครพนม</option>
-      <option>บึงกาฬ</option>
-    </select>
-    </div>
- 
-    
 </form>
 </div>
 </div>
 
 </body>
 </html>
+
+<script>
+$("#btnSave").click(function() {
+  console.log('sss');
+  var data= {
+    prename_id : $("#prename_id").val(),
+    fname : $("#fname").val(),
+    lname : $("#lname").val(),
+    cid : $("#cid").val(),
+    tel : $("#tel").val(),
+    moo_out : $("#moo_out").val(),
+    tambon_out_code : $("#tambon_out_code").val(),
+    ampur_out_code : $("#ampur_out_code").val(),
+    changwat_out_code : $("#changwat_out_code").val(),
+    occupation_id : $("#occupation_id").val(),
+    date_to_sakonnakhon : $("#date_to_sakonnakhon").val(),
+    touch_history : $("#touch_history").val(),
+    house_in_no : $("#house_in_no").val(),
+    tambon_in_code : $("#tambon_in_code").val(),
+    ampur_in_code : $("#ampur_in_code").val(),
+    changwat_in_code : $("#changwat_in_code").val(),
+  }
+});
+
+$("#changwat_out_code").change(function() {
+  $("#ampur_out_code").find("option").remove();
+  $("#ampur_out_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_out_code").find("option").remove();
+  $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
+
+  $.ajax({method: "POST", url: "ajaxTest.php",
+    data: { 
+      query_table: "campur", 
+      query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
+      query_order: "if(left(ampur_name,5)='เมือง',1,2) asc , ampur_name asc"
+    }
+  })
+  .done(function(x) {
+    var data=jQuery.parseJSON(x).data;
+    for (var i=0;i<data.length;i=i+1) {
+      $("#ampur_out_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["ampur_name"]+"</option>");
+    }
+  });
+});
+
+$("#ampur_out_code").change(function() {
+  $("#tambon_out_code").find("option").remove();
+  $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
+
+  $.ajax({method: "POST", url: "ajaxTest.php",
+    data: { 
+      query_table: "ctambon", 
+      query_where: "ampur_code='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
+      query_order: "tambon_name asc"
+    }
+  })
+  .done(function(x) {
+    var data=jQuery.parseJSON(x).data;
+    for (var i=0;i<data.length;i=i+1) {
+      $("#tambon_out_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+    }
+  });
+});
+
+$("#ampur_in_code").change(function() {
+  $("#tambon_in_code").find("option").remove();
+  $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
+
+  $.ajax({method: "POST", url: "ajaxTest.php",
+    data: { 
+      query_table: "ctambon", 
+      query_where: "ampur_code='"+$("#changwat_in_code").val()+$("#ampur_in_code").val()+"'" , 
+      query_order: "tambon_name asc"
+    }
+  })
+  .done(function(x) {
+    var data=jQuery.parseJSON(x).data;
+    for (var i=0;i<data.length;i=i+1) {
+      $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+    }
+  });
+});
+
+</script>
