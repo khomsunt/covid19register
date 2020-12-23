@@ -1,3 +1,9 @@
+<?php 
+$configs = include('../include/config.php');
+echo "<br>config=";
+print_r($configs);
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
