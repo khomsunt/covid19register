@@ -65,6 +65,7 @@ try {
   <main role="main" style="margin-top:60px;">
 
     <h5>แสดงข้อมูลผู้ใช้งาน</h5>
+    <button class="btn btn-primary btn-add-user">+</button>
     <table class="table" id="myTable">
       <thead>
         <tr>
@@ -115,5 +116,12 @@ try {
   <script src="../js/jquery-3.2.1.min.js" ></script>
   <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/tableToCards.js"></script>
+  <script>
+    $(function(){
+      $(".btn-add-user").click(function(){
+        window.location = './user.php';
+      })
+    })
+  </script>
 </body>
 </html>

@@ -69,6 +69,9 @@ $(document).ready(function () {
 });
 </script>
 
+<?php
+  include("./header.php");
+  ?>
 
 <div class="container" style="background-color: #b9ddff;background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
 
@@ -183,6 +186,9 @@ $(document).ready(function () {
   </div>
 </div>
 
+<?php
+  include("./footer.php");
+  ?>
 
 </body>
 </html>
@@ -242,7 +248,7 @@ function formatDate(d) {
 }
 
 var goPageSuggestion = function() {
-  window.location="suggestion.php";
+  window.location="./listUser.php";
 };
 
 </script>
