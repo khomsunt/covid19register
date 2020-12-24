@@ -111,7 +111,7 @@ include("./header.php");
         $(function(){
             $(".tag-link").click(function(){
                 console.log($(this).attr("changwat_code"));
-                var form = $('<form action="./add_risk.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input><input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input>' + '</form>');
+                var form = $('<form action="./risk_area_detail.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input><input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input>' + '</form>');
                 $('body').append(form);
                 $(form).submit(); 
             })
