@@ -1,3 +1,8 @@
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="./index.php">Covid-19 register</a>
@@ -16,10 +21,20 @@
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      <form class="form-inline mt-2 mt-md-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <?php
+          if ($_SESSION['user_id']==""){
+            ?>
+            <a class="nav-link" href="./login.php">Login</a>
+            <?php
+          }else{
+            ?>
+            <a class="nav-link" href="./logout.php">Logout</a>
+            <?php
+          } ?>
+        </li>
+      </ul>
     </div>
   </nav>
 </header>
