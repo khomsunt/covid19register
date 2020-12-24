@@ -63,8 +63,10 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
-<h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['cut_datetime']; ?></h5>
-<button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+<div class="container">
+    <h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['cut_datetime']; ?></h5>
+    <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+</div>
 <table class="table" id="myTable">
   <thead>
     <tr>

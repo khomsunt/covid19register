@@ -2,25 +2,63 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-print_r($_SESSION);
+if ($_SESSION['group_id']<=0){
+  header("Location: ./login.php");
+}
+// print_r($_SESSION);
 include('../include/config.php');
+$sql_common="select 
+    c.risk_level_id,
+    r.risk_level_long_name,
+    r.risk_level_name,
+    count(c.covid_register_id) as count_risk_level 
+    from 
+    covid_register c 
+    left join risk_level r on c.risk_level_id=r.risk_level_id 
+    left join ampur47 a on c.ampur_in_code=a.ampur_code ";
 switch ($_SESSION['group_id']) {
-  case '0':
-  case '2':
-  case '4':
-  case '5':
-    $sql="select c.risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level from covid_register c left join risk_level r on c.risk_level_id=r.risk_level_id left join ampur47 a on c.ampur_in_code=a.ampur_code where cut_status_id=0 group by c.risk_level_id";
+  case 0:
+  case 1:
+  case 2:
+  case 4:
+  case 5:
+    $sql=$sql_common."
+      where 
+      cut_status_id=0 
+      group by 
+      c.risk_level_id";
+    $sql_all=$sql_common."
+      group by
+      c.risk_level_id";
     break;
-  case '3':
-    $sql="select c.risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level from covid_register c left join risk_level r on c.risk_level_id=r.risk_level_id left join ampur47 a on c.ampur_in_code=a.ampur_code where a.node_id=:user_node_id group by c.risk_level_id";
+  case 3:
+    $sql=$sql_common."
+      where 
+      cut_status_id=0 
+      and a.node_id=:user_node_id 
+      group by 
+      c.risk_level_id";
+    $sql_all=$sql_common."
+      where 
+      and a.node_id=:user_node_id 
+      group by
+      c.risk_level_id";
     break;
   default:
     # code...
     break;
 }
+// echo "<br>sql=".$sql;
 $obj=$connect->prepare($sql);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
 $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
+// print_r($rows_risk_level);
+// echo "<br>sql_all=".$sql_all;
+$obj=$connect->prepare($sql_all);
+$obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
+$rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+// print_r($rows_risk_level_all);
 ?>
 
 <!doctype html>
@@ -61,9 +99,9 @@ $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main">
+<main role="main" style="margin-top:60px;">
 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
       <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -109,7 +147,7 @@ include("./header.php");
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-  </div>
+  </div> -->
 
 
   <!-- Marketing messaging and featurettes
@@ -121,6 +159,7 @@ include("./header.php");
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <div class="col-lg-4">
+        <h4>ข้อมูลใหม่</h4>
         <?php
         $sql="select * from risk_level order by risk_level_id";
         $obj=$connect->prepare($sql);
@@ -141,26 +180,52 @@ include("./header.php");
             </button>
             <?php
         } ?>
+      </div><!-- /.col-lg-4 -->
+
+      <div class="col-lg-4">
+        <h4>ข้อมูลสะสม</h4>
+        <?php
+        $sql="select * from risk_level order by risk_level_id";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($rows_risk_level_all as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['risk_level_id']){
+                    $this_value=$value['count_risk_level'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
 
       </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
+
+
+      <!-- <div class="col-lg-4">
         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
         <h2>Heading</h2>
         <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
         <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
       </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
+      <!-- <div class="col-lg-4">
         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
         <h2>Heading</h2>
         <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
         <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
+      </div>/.col-lg-4 -->
     </div><!-- /.row -->
 
 
     <!-- START THE FEATURETTES -->
 
-    <hr class="featurette-divider">
+    <!-- <hr class="featurette-divider">
 
     <div class="row featurette">
       <div class="col-md-7">
@@ -196,7 +261,7 @@ include("./header.php");
       </div>
     </div>
 
-    <hr class="featurette-divider">
+    <hr class="featurette-divider"> -->
 
     <!-- /END THE FEATURETTES -->
 
@@ -215,7 +280,11 @@ include("./header.php");
         $(function(){
             $(".btn-risk-level").click(function(){
                 console.log($(this).attr("risk_level_id"));
-                window.location = './MyCovid19register.php?risk_level_id=' + $(this).attr("risk_level_id");
+                window.location = './MyCovid19register.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
+            })
+            $(".btn-risk-level-all").click(function(){
+                console.log($(this).attr("risk_level_id"));
+                window.location = './MyCovid19register.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
             })
         })
       </script>

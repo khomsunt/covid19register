@@ -21,6 +21,7 @@
                 data: { user_login: $("#user_login").val(), user_password: $("#user_password").val() }
             })
             .done(function( msg ) {
+              // console.log(msg);
                 let userData = JSON.parse(msg);
                 if (userData.length>0) {
                     localStorage.setItem("user_id", userData[0]['user_id']);
