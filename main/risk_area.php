@@ -90,7 +90,7 @@ include("./header.php");
       <?php
       foreach ($rows_current_cut as $key => $value) {
           ?>
-        <tr class="tag-link" changwat_code = "<?php echo $value['changwat_code']; ?>" >
+        <tr class="tag-link" changwat_code = "<?php echo $value['changwat_code']; ?>" changwat_name = "<?php echo $value['changwat_name']; ?>">
             <td><?php echo $value['changwat_name']; ?></td>
             <td><?php echo $value['total']; ?></td>
         </tr>
@@ -111,7 +111,9 @@ include("./header.php");
         $(function(){
             $(".tag-link").click(function(){
                 console.log($(this).attr("changwat_code"));
-                
+                var form = $('<form action="./add_risk.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input><input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input>' + '</form>');
+                $('body').append(form);
+                $(form).submit(); 
             })
         })
       </script>
