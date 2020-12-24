@@ -99,7 +99,7 @@ $changwat = $rows_area[0]['changwat_code'];
     <label for="changwat_name">จังหวัด</label>
         <input type="changwat_name" class="form-control" id="changwat_name" readonly="readonly" value="<?php echo $rows_area[0]['changwat_name']; ?>">
     
-    <label for="area_name">ชื่อสถานที่ <span class="required"></span></label>
+    <label for="area_name">ชื่อสถานที่<span class="required"></span></label>
         <input type="area_name" class="form-control" id="area_name">
 
     <label for="risk_start_datetime">วันที่เริ่มละบาด</label>
@@ -109,7 +109,7 @@ $changwat = $rows_area[0]['changwat_code'];
         <input name="risk_last_datetime" class="form-control datepicker" id="risk_last_datetime"/>
     
     
-    <label for="status_id">สถานะ</label>
+    <label for="status_id">สถานะ<span class="required"></span></label>
     <select class="form-control" id="status_id">
     <option value="">--เลือก--</option>
     <?php
@@ -172,7 +172,7 @@ $changwat = $rows_area[0]['changwat_code'];
     //alert('11111');
   }
   else {
-    console.log('-------------');
+    //console.log('-------------');
     $.ajax({method: "POST", url: "ajaxAddArea.php",
       data: data
     })
