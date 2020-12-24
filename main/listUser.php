@@ -21,10 +21,11 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="th">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>แสดงข้อมูลผู้ใช้งาน</title>
     <script src="../js/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/content/tables/">
