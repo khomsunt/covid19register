@@ -4,30 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 
-// $sql_cut_data="SELECT
-// c.cut_datetime,
-// count(*) AS cut_all,
-// sum(
-// IF
-// ( c.risk_level_id = 1, 1, 0 )) AS risk_level_1,
-// sum(
-// IF
-// ( c.risk_level_id = 2, 1, 0 )) AS risk_level_2,
-// sum(
-// IF
-// ( c.risk_level_id = 3, 1, 0 )) AS risk_level_3,
-// sum(
-// IF
-// ( c.risk_level_id = 4, 1, 0 )) AS risk_level_4 
-// FROM
-// covid_register_cut c 
-// GROUP BY
-// c.cut_datetime";
-// $obj=$connect->prepare($sql_cut_data);
-// $obj->execute();
-// $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
-// print_r($rows_cut_data);
-
 $sql_current_cut="select r.*, s.* from risk_area r
 left JOIN `status` s on r.status_id = s.status_id
 where r.changwat_code = :changwat_code;
@@ -79,8 +55,8 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
 <br>
-<h5>จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
-<h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['changwat_code']; ?></h5>
+<h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
+<h5 style="text-align:center;">รหัสจังหวัด <?php echo $_POST['changwat_code']; ?></h5>
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -130,7 +106,13 @@ include("./header.php");
     }?>
   </tbody>
 </table>
-<button type="button" class="btn btn-success">Success</button>
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-success btn-add-area" changwat_code = "<?php echo $_POST['changwat_code']; ?>">เพิ่มสถานที่</button>
+        </div>
+      </div>
+    </div>
       
 </main>
   <!-- FOOTER -->
@@ -142,7 +124,7 @@ include("./header.php");
       <script src="../js/tableToCards.js"></script>
       <script>
         $(function(){
-            $(".btn-change-area").click(function(){
+            $(".btn-change-area").click(function(){ //เปลี่ยนสถานะ
                 console.log($(this).attr("risk_area_id"));
                 $.ajax({
                     method: "POST",
@@ -152,9 +134,13 @@ include("./header.php");
                 .done(function( msg ) {
                   console.log(msg)
                   location.reload();
-
-                  // $(this).parent().parent().children().first().html($(this).html())
-                })
+               })
+            })
+            $(".btn-add-area").click(function(){ //เพิ่มสถานที่
+                console.log($(this).attr("changwat_code"));
+                var form = $('<form action="./add_area.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input>' + '</form>');
+                $('body').append(form);
+                $(form).submit(); 
             })
         })
       </script>
