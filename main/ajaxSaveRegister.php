@@ -27,12 +27,18 @@ $sql=" insert into covid_register ( ".
 " ) ";
 
 $obj=$connect->prepare($sql);
-$obj->execute();
+$execute_status=$obj->execute();
 $registerLastInsertId=$connect->lastInsertId();
-// $registerLastInsertId=123;
-$s=$sql;
-// $s="";
-// $s=$_POST;
-$x=array("sql"=>$s,"data"=>array("registerLastInsertId"=>$registerLastInsertId));
+
+if ($execute_status==true) {
+    $status="success";
+}
+else {
+    $status="fail";
+}
+
+// $s=$sql;
+$s="";
+$x=array("sql"=>$s,"data"=>array("status"=>$status,"registerLastInsertId"=>$registerLastInsertId));
 echo json_encode($x, JSON_UNESCAPED_UNICODE);
 ?>

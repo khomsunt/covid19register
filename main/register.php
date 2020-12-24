@@ -15,6 +15,7 @@ include('../include/config.php');
     <title>register</title>
 
     <script src="../js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
 
     <!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/"> -->
 
@@ -38,41 +39,49 @@ include('../include/config.php');
       }
     </style>
     <!-- Custom styles for this template -->
-    <!-- <link href="floating-labels.css" rel="stylesheet"> -->
-    <!-- <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <!-- <link href="../css/floating-labels.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
   </head>
   <body>
-<?php
-$sql="select * from `user` ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// echo json_encode($row_oapp, JSON_UNESCAPED_UNICODE);
-for ($i=0;$i<count($rows);$i++) {
-  //echo "<br>- ".$rows[$i]["user_login"]."|".$rows[$i]["user_password"];
-}
-?>
 
 <script>
+var input_required=['fname','lname','cid'];
 $(document).ready(function () {
-    // $('.datepicker').datepicker({
-    //     format: 'dd/mm/yyyy',
-    //     todayBtn: true,
-    //     language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
-    //     thaiyear: true //Set เป็นปี พ.ศ.
-    // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+  $('.datepicker').datepicker({
+      format: 'dd/mm/yyyy',
+      todayBtn: true,
+      language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
+      thaiyear: true, //Set เป็นปี พ.ศ.
+      autoclose: true
+  }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+
+  $(".required").css({
+    'color':'red',
+    'visibility':'hidden'
+  });
+
+  input_required.forEach(element => {
+    $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
+  });
 });
 </script>
 
 
-<div class="container">
-<h2 style="text-align:center">ลงทะเบียนรายงานตัวล่วงหน้า</h2>
-<form>
+<div class="container" style="background-color: #b9ddff;background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
+
+  <div style="height: 100;"><br></div>
+  <div style="display: flex; align-items: flex-start;">
+    <img src="../image/logo_skn.png" width="70" style="margin-right: 10px;">
+    <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
+  </div>
+
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ลงทะเบียน<br>รายงานตัวล่วงหน้า</h2>
+
   <div class="form-group">
-    <label for="exampleFormControlSelect1">คำนำหน้าชื่อ</label>
+    <label for="exampleFormControlSelect1">คำนำหน้าชื่อ <span class="required"></span></label>
     <select class="form-control" id="prename_id">
     <option value="">--เลือก--</option>
 <?php
@@ -88,65 +97,27 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">ชื่อ</label>
+      <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
       <input type="email" class="form-control" id="fname" placeholder="ชื่อ">
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">นามสกุล</label>
+      <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
       <input type="email" class="form-control" id="lname" placeholder="นามสกุล">
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน</label>
+      <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
       <input type="email" class="form-control" id="cid" placeholder="เลขบัตรประจำตัวประชาชน">
     </div>
   
     <div class="form-group">
-      <label for="exampleFormControlInput1">เบอร์โทรศัพท์</label>
+      <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
       <input type="email" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์">
     </div>
 
-
     <div class="form-group">
-    <label for="exampleFormControlSelect1">จังหวัด</label>
-    <select class="form-control" id="changwat_out_code">
-      <option value="">--เลือก--</option>
-<?php
-$sql="select * from `cchangwat` ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
-}
-?>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">อำเภอ</label>
-    <select class="form-control" id="ampur_out_code">
-      <option value="">--เลือก--</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="tambon_out_code">
-      <option value="">--เลือก--</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleFormControlInput1">เลขที่</label>
-      <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
-    </div>
-
-
-
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">อาชีพ</label>
+    <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
     <select class="form-control" id="occupation_id">
       <option value="">--เลือก--</option>
       <?php
@@ -161,70 +132,143 @@ for ($i=0;$i<count($rows);$i++) {
     </select>
     </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล</label>
-      <div class="col-md-10">
-        <input name="datepicker" class="datepicker" id="date_to_sakonnakhon"/>
-    </div>
+
+    <div class="card">
+      <div class="card-header">ที่อยู่ปัจจุบัน</div>
+      <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
+          <select class="form-control" id="changwat_out_code">
+            <option value="">--เลือก--</option>
+  <?php
+  $sql="select * from `changwat` ";
+  $obj=$connect->prepare($sql);
+  $obj->execute();
+  $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+  for ($i=0;$i<count($rows);$i++) {
+    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
+  }
+  ?>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">อำเภอ <span class="required"></span></label>
+          <select class="form-control" id="ampur_out_code">
+            <option value="">--เลือก--</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">ตำบล <span class="required"></span></label>
+          <select class="form-control" id="tambon_out_code">
+            <option value="">--เลือก--</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่ <span class="required"></span></label>
+          <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
+        </div>
+        
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย</label>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="touch_history" value="1" >
-      <label for="exampleRadios1">
-        เคยสัมผัส
-      </label>
+
+    <div class="form-group" style="margin-top: 20px;">
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล <span class="required"></span></label>
+      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
     </div>
 
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="touch_history" value="2" >
-      <labe for="exampleRadios1">
-        ไม่เคยสัมผัส
-      </label>
-    </div>
-    </div>
+    <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
 
-    <div>เข้าพำนักในพื้นที่จังหวัดสกลนคร</div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="touch_history" value="1" >
+        <label for="exampleRadios1">
+          เคยสัมผัส
+        </label>
+      </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">อำเภอ</label>
-    <select class="form-control" id="ampur_in_code">
-      <option value="">--เลือก--</option>
-      <?php
-$sql="select * from `campur` where changwat_code='47' ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
-}
-?>
-    </select>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="touch_history" value="2" >
+        <labe for="exampleRadios1">
+          ไม่เคยสัมผัส
+        </label>
+      </div>
+
     </div>
 
-    <div class="form-group">
-    <label for="exampleFormControlSelect1">ตำบล</label>
-    <select class="form-control" id="tambon_in_code">
-      <option value="">--เลือก--</option>
-    </select>
+
+    <div class="card">
+      <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
+      <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
+
+
+        <div class="form-group">
+        <label for="exampleFormControlSelect1">อำเภอ <span class="required"></span></label>
+        <select class="form-control" id="ampur_in_code">
+          <option value="">--เลือก--</option>
+          <?php
+    $sql="select * from `ampur` where changwat_code='47' ";
+    $obj=$connect->prepare($sql);
+    $obj->execute();
+    $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+    for ($i=0;$i<count($rows);$i++) {
+      echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
+    }
+    ?>
+        </select>
+        </div>
+
+        <div class="form-group">
+        <label for="exampleFormControlSelect1">ตำบล <span class="required"></span></label>
+        <select class="form-control" id="tambon_in_code">
+          <option value="">--เลือก--</option>
+        </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่ <span class="required"></span></label>
+          <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
+        </div>
+
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">เลขที่</label>
-      <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
-    </div>
-
+    <div style="height: 200"><br></div>
 
     <div class="form-group d-flex justify-content-between">
       <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
       <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
     </div>
 
+    <div style="height: 200"><br></div>
 
-</form>
 </div>
 </div>
+
+
+<div class="modal fade" id="modal01">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
@@ -249,18 +293,37 @@ $("#btnSave").click(function() {
     ampur_in_code : $("#ampur_in_code").val(),
     changwat_in_code : '47',
   }
-  console.log(data);
-  $.ajax({method: "POST", url: "ajaxSaveRegister.php",
-    data: data
-  })
-  .done(function(x) {
-    console.log(x);
-    // var data=jQuery.parseJSON(x).data;
-    // for (var i=0;i<data.length;i=i+1) {
-    //   $("#ampur_out_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["ampur_name"]+"</option>");
-    // }
+
+  var not_complete=0;
+  input_required.forEach(element => {
+    if (data[element]=="") {
+      not_complete=not_complete+1;
+    }
   });
+
+  if (not_complete>0) {
+    $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red">จำเป็น</font>ให้ครบ');
+    $("#modal01").modal('show');
+  }
+  else {
+    $.ajax({method: "POST", url: "ajaxSaveRegister.php",
+      data: data
+    })
+    .done(function(x) {
+      var r=jQuery.parseJSON(x).data;
+      if (r.status=="success") {
+        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบแล้ว');
+        $("#modal01").modal('show');
+        $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+      }
+    });
+  }
 });
+
+var goPageSuggestion = function() {
+  // console.log('goPageSuggestion-----');
+  window.location="suggestion.php";
+};
 
 $("#changwat_out_code").change(function() {
   $("#ampur_out_code").find("option").remove();
@@ -270,7 +333,7 @@ $("#changwat_out_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "campur", 
+      query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
       query_order: "if(left(ampur_name,5)='เมือง',1,2) asc , ampur_name asc"
     }
@@ -289,8 +352,8 @@ $("#ampur_out_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "ctambon", 
-      query_where: "ampur_code='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
+      query_table: "tambon", 
+      query_where: "ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
       query_order: "tambon_name asc"
     }
   })
@@ -308,8 +371,8 @@ $("#ampur_in_code").change(function() {
 
   $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
-      query_table: "ctambon", 
-      query_where: "ampur_code='47"+$("#ampur_in_code").val()+"'" , 
+      query_table: "tambon", 
+      query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
       query_order: "tambon_name asc"
     }
   })
