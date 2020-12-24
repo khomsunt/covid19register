@@ -48,7 +48,7 @@ include('../include/config.php');
   <body>
 
 <script>
-var input_required=['fname','lname','cid'];
+var input_required=['fname','lname','cid','ampur_in_code'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -133,11 +133,6 @@ for ($i=0;$i<count($rows);$i++) {
       <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="margin-top: 2px;display:none">
     </div>
 
-    <!-- <div class="form-group" style="padding-top: 0px">
-      <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
-      <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="display:none">
-    </div> -->
-
     <div class="card">
       <div class="card-header">ที่อยู่ปัจจุบัน</div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
@@ -187,29 +182,9 @@ for ($i=0;$i<count($rows);$i++) {
 
 
     <div class="form-group" style="margin-top: 20px;">
-    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกล <span class="required"></span></label>
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
       <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
     </div>
-
-    <label for="exampleFormControlInput1">ประวัติการเคยสัมผัสผู้ป่วย <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
-
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="touch_history" value="1" >
-        <label for="exampleRadios1">
-          เคยสัมผัส
-        </label>
-      </div>
-
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="touch_history" value="2" >
-        <labe for="exampleRadios1">
-          ไม่เคยสัมผัส
-        </label>
-      </div>
-
-    </div>
-
 
     <div class="card">
       <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
@@ -252,7 +227,129 @@ for ($i=0;$i<count($rows);$i++) {
       </div>
     </div>
 
-    <div style="height: 200"><br></div>
+    <div style="margin-top: 40px; border-bottom: solid 1px black;">
+      <h4>ท่านมีประวัติเสี่ยงต่อการติดเชื้อดังต่อไปนี้ หรือไม่?</h4>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 1. ท่านได้เดินทางมาจากหรืออาศัยอยู่ในพื้นที่(ภายในประเทศไทย)ที่มีการรายงานการติดเชื้อหรือไม่ ภายใน 1 เดือนที่ผ่านมา <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q1_enter_risk_area" id="q1_enter_risk_area0" value="0" checked>
+        <label class="form-check-label" for="q1_enter_risk_area0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q1_enter_risk_area" id="q1_enter_risk_area1" value="1" >
+        <label class="form-check-label" for="q1_enter_risk_area1">ใช่</label>
+      </div>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 2 : ท่านทำงานใน สถานกักกันโรค ( State quanratine หรือ local quanrantine ) <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q2_quarantine_work_place" id="q2_quarantine_work_place0" value="0" checked>
+        <label class="form-check-label" for="q2_quarantine_work_place0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q2_quarantine_work_place" id="q2_quarantine_work_place1" value="1" >
+        <label class="form-check-label" for="q2_quarantine_work_place1">ใช่</label>
+      </div>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 3 : มีประวัติสัมผัสกับผู้ป่วยยืนยันโรคติดเชื้อไวรัส COVID-19 <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q3_touch_patient" id="q3_touch_patient0" value="0" checked>
+        <label class="form-check-label" for="q3_touch_patient0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q3_touch_patient" id="q3_touch_patient1" value="1" >
+        <label class="form-check-label" for="q3_touch_patient1">ใช่</label>
+      </div>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 4 : เป็นบุคลากรทางการแพทย์หรือสาธารณสุข ทั้งสถานพยาบาล, คลินิค , ทีมสอบสวนโรค หรือ ร้านขายยา <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q4_health_officer" id="q4_health_officer0" value="0" checked>
+        <label class="form-check-label" for="q4_health_officer0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q4_health_officer" id="q4_health_officer1" value="1" >
+        <label class="form-check-label" for="q4_health_officer1">ใช่</label>
+      </div>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 5 : มีประวัติไปในสถานที่ประชาชนหนาแน่น ชุมนุมชน หรือที่มีการรวมกลุ่มคน เช่น ตลาดนัด ห้างสรรพสินค้า สถานพยาบาล หรือขนส่งสาธารณะ ที่พบผู้สงสัยหรือยืนยัน COVID-19 ในช่วง 1 เดือนที่ผ่านมา <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q5_enter_patient_area" id="q5_enter_patient_area0" value="0" checked>
+        <label class="form-check-label" for="q5_enter_patient_area0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q5_enter_patient_area" id="q5_enter_patient_area1" value="1" >
+        <label class="form-check-label" for="q5_enter_patient_area1">ใช่</label>
+      </div>
+    </div>
+
+    <label for="exampleFormControlInput1">ข้อที่ 6 : ในสถานที่ท่านที่ไปประจำ คนที่สนิทใกล้ชิดกับท่าน มีอาการ ไข้ ไอ น้ำมูก เสมหะ มากกว่า 5 คน พร้อมๆกัน ในช่วงเวลาภายในสัปดาห์หรือไม่่ <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q6_sick_closer" id="q6_sick_closer0" value="0" checked>
+        <label class="form-check-label" for="q6_sick_closer0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q6_sick_closer" id="q6_sick_closer1" value="1" >
+        <label class="form-check-label" for="q6_sick_closer1">ใช่</label>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; border-bottom: solid 1px black;">
+      <h4>ท่านมีอาการดังต่อไปนี้หรือไม่ ในช่วง 14 วันที่ผ่านมา</h4>
+    </div>
+
+    <div class="form-group" style="margin-top: 10px; padding: 10px; background-color: #FFFFFF; border: solid 1px #e5e5e5; border-radius: 5px;">
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_fever">
+        <label class="form-check-label" for="symptom_fever">มีไข้</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_cough">
+        <label class="form-check-label" for="symptom_cough">ไอ</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_nasal_mucus">
+        <label class="form-check-label" for="symptom_nasal_mucus">มีน้ำมูก</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_sore_throat">
+        <label class="form-check-label" for="symptom_sore_throat">เจ็บคอ</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_dyspnea">
+        <label class="form-check-label" for="symptom_dyspnea">หายใจลำบาก หอบเหนื่อย</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_not_smell">
+        <label class="form-check-label" for="symptom_not_smell">ไม่ได้กลิ่น</label>
+      </div>
+
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="symptom_not_taste">
+        <label class="form-check-label" for="symptom_not_taste">ไม่รู้รส</label>
+      </div>
+
+    </div>
+
+    <div class="form-group" style="margin-top: 20px;">
+    <label for="exampleFormControlInput1">วันที่เริ่มมีอาการ <span class="required"></span></label>
+      <input name="datepicker" class="form-control datepicker" id="symptom_date"/>
+    </div>
 
     <div class="form-group d-flex justify-content-between">
       <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
@@ -268,12 +365,6 @@ for ($i=0;$i<count($rows);$i++) {
 <div class="modal fade" id="modal01">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> -->
       <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
         ...
       </div>
@@ -304,14 +395,27 @@ $("#btnSave").click(function() {
     occupation_id : $("#occupation_id").val(),
     occupation_other : $("#occupation_other").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
-    touch_history : typeof $('input[name="touch_history"]:checked').val()!='undefined'?$('input[name="touch_history"]:checked').val():"",
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
     changwat_in_code : '47',
+    q1_enter_risk_area : typeof $('input[name="q1_enter_risk_area"]:checked').val()!='undefined'?$('input[name="q1_enter_risk_area"]:checked').val():"",
+    q2_quarantine_work_place : typeof $('input[name="q2_quarantine_work_place"]:checked').val()!='undefined'?$('input[name="q2_quarantine_work_place"]:checked').val():"",
+    q3_touch_patient : typeof $('input[name="q3_touch_patient"]:checked').val()!='undefined'?$('input[name="q3_touch_patient"]:checked').val():"",
+    q4_health_officer : typeof $('input[name="q4_health_officer"]:checked').val()!='undefined'?$('input[name="q4_health_officer"]:checked').val():"",
+    q5_enter_patient_area : typeof $('input[name="q5_enter_patient_area"]:checked').val()!='undefined'?$('input[name="q5_enter_patient_area"]:checked').val():"",
+    q6_sick_closer : typeof $('input[name="q6_sick_closer"]:checked').val()!='undefined'?$('input[name="q6_sick_closer"]:checked').val():"",
+    symptom_fever : $("#symptom_fever").prop('checked')?"1":"0",
+    symptom_cough : $("#symptom_cough").prop('checked')?"1":"0",
+    symptom_nasal_mucus : $("#symptom_nasal_mucus").prop('checked')?"1":"0",
+    symptom_sore_throat : $("#symptom_sore_throat").prop('checked')?"1":"0",
+    symptom_dyspnea : $("#symptom_dyspnea").prop('checked')?"1":"0",
+    symptom_not_smell : $("#symptom_not_smell").prop('checked')?"1":"0",
+    symptom_not_taste : $("#symptom_not_taste").prop('checked')?"1":"0",
+    symptom_date : formatDate($("#symptom_date").val()),
   }
-  // console.log(data);
+  console.log(data);
 
   var not_complete=0;
   input_required.forEach(element => {
