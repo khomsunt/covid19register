@@ -9,7 +9,8 @@ a.ampur_name as ampur_name_out,
 t.tambon_name as tambon_name_out,
 a47.ampur_name as ampur_name_in,
 t47.tambon_name as tambon_name_in,
-o.occupation_name 
+o.occupation_name,
+r.risk_level_long_name
 from covid_register c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
@@ -17,10 +18,12 @@ left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t
 left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
 left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
 left join coccupation o on c.occupation_id=o.occupation_id
+left join risk_level r on c.risk_level_id=r.risk_level_id
 where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
 $obj=$connect->prepare($sql);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// print_r($rows);
 ?>
 
 <!doctype html>
@@ -37,6 +40,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Bootstrap core CSS -->
 <link href="../css/bootstrap.min.css" rel="stylesheet">
+
 
     <style>
       .bd-placeholder-img {
@@ -91,7 +95,7 @@ include("./header.php");
             <span class="float-right">
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        screen
+                        <?php echo $value['risk_level_long_name']; ?>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php
@@ -145,13 +149,24 @@ include("./header.php");
   include("./footer.php");
   ?>
 </main>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="../js/jquery-3.2.1.min.js" ></script>
       <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
       <script src="../js/tableToCards.js"></script>
       <script>
         $(function(){
             $(".btn-change-risk-level").click(function(){
-                console.log($(this).attr("covid_register_id"))
+                console.log($(this).attr("covid_register_id"));
+                $.ajax({
+                    method: "POST",
+                    url: "./changeRiskLevel.php",
+                    data: { covid_register_id: $(this).attr("covid_register_id"), risk_level_id: $(this).attr("risk_level_id") }
+                })
+                .done(function( msg ) {
+                  console.log(msg)
+                  location.reload();
+
+                  // $(this).parent().parent().children().first().html($(this).html())
+                })
             })
         })
       </script>
