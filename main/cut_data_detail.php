@@ -64,6 +64,7 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
 <h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['cut_datetime']; ?></h5>
+<button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -123,6 +124,8 @@ include("./header.php");
 
 
 </main>
+<button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+
   <!-- FOOTER -->
   <?php
   include("./footer.php");

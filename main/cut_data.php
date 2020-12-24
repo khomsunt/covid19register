@@ -27,21 +27,6 @@ $obj=$connect->prepare($sql_cut_data);
 $obj->execute();
 $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
 print_r($rows_cut_data);
-
-$sql_current_cut="select 
-c.risk_level_id,
-r.risk_level_long_name,
-count(c.covid_register_id) as count_risk_level 
-from covid_register c 
-left join risk_level r on c.risk_level_id=r.risk_level_id 
-where 
-c.cut_status_id=0 and c.risk_level_id>0 
-group by 
-c.risk_level_id";
-$obj=$connect->prepare($sql_current_cut);
-$obj->execute();
-$rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
-print_r($rows_current_cut);
 ?>
 
 <!doctype html>
@@ -109,7 +94,7 @@ include("./header.php");
             <td><?php echo $value['risk_level_4']; ?></td>
             <td><?php echo $value['cut_all']; ?></td>
             <td>
-                <button type="button" class="btn btn-primary">ส่งออก</button>
+                <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
                 <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
             </td>
         </tr>

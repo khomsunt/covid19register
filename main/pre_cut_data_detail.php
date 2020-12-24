@@ -19,11 +19,27 @@ left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
 left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
 left join coccupation o on c.occupation_id=o.occupation_id
 left join risk_level r on c.risk_level_id=r.risk_level_id
-where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
+where c.cut_status_id=0 and c.risk_level_id>0";
 $obj=$connect->prepare($sql);
-$obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
+$obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
+
+$sql_current_cut="select 
+c.risk_level_id,
+r.risk_level_long_name,
+count(c.covid_register_id) as count_risk_level
+from covid_register c 
+left join risk_level r on c.risk_level_id=r.risk_level_id 
+where 
+c.cut_status_id=0 and c.risk_level_id>0 
+group by 
+c.risk_level_id";
+$obj=$connect->prepare($sql_current_cut);
+$obj->execute();
+$rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
+// print_r($rows_current_cut);
+
 ?>
 
 <!doctype html>
@@ -63,15 +79,36 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main">
+<main role="main" style="margin-top:60px;">
+<div class="container">
+<h5>สรุปข้อมูลที่ยังไม่ตัด</h5>
+<?php
+foreach ($rows_current_cut as $key => $value) {
+    ?>
+    <b>เสี่ยงสูง : </b>
+    <span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_1']; ?></span>
+    <?php
+}
+?>
+<b>เสี่ยงสูง : </b>
+<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_1']; ?></span>
+<br><b>เสี่ยงปานกลาง : </b>
+<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_2']; ?></span>
+<br><b>เสี่ยงต่ำ : </b>
+<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_3']; ?></span>
+<br><b>ไม่เสี่ยง : </b>
+<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_4']; ?></span>
+</div>
 
-
-<br>
+<br><br>
+<h5>รายชื่อที่ยังไม่ตัดข้อมูล</h5>
+<button type="button" class="btn btn-primary btn_cut">ตัดข้อมูล</button>
 <table class="table" id="myTable">
   <thead>
     <tr>
       <th data-card-title>ชื่อ นามสกุล</th>
-      <th data-card-action-links>วันที่บันทึก</th>
+      <th>ความเสี่ยง</th>
+      <th>วันที่บันทึก</th>
       <th>อาชีพ</th>
       <th>มาจาก</th>
       <th>มาที่</th>
@@ -92,31 +129,12 @@ include("./header.php");
         <tr>
             <td>
             <?php echo $value['fname']." ".$value['lname']; ?>
-            <span class="float-right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_level_long_name']; ?>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                        <?php
-                        foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
-                            ?>
-                            <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
-                                <?php echo $value_risk_level['risk_level_long_name']; ?>
-                            </button>
-                            <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-            </span>
-            
             </td>
+            <td><?php echo $value['risk_level_long_name']; ?></td>
             <td><?php echo $value['register_datetime']; ?></td>
             <td><?php echo $value['occupation_name']; ?></td>
             <td>
-                ที่อยู่ <?php echo $value['house_out_no']; ?>
-                ม. <?php echo $value['moo_out_code']; ?>
+                ม. <?php echo $value['moo_out']; ?>
                 ต. <?php echo $value['tambon_name_out']; ?>
                 อ. <?php echo $value['ampur_name_out']; ?>
                 จ. <?php echo $value['changwat_name_out']; ?>
@@ -145,11 +163,13 @@ include("./header.php");
 
 
 
+</main>
+<button type="button" class="btn btn-primary btn_cut">ตัดข้อมูล</button>
+
   <!-- FOOTER -->
   <?php
   include("./footer.php");
   ?>
-</main>
 <script src="../js/jquery-3.2.1.min.js" ></script>
       <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
       <script src="../js/tableToCards.js"></script>
