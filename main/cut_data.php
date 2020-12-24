@@ -93,6 +93,7 @@ include("./header.php");
       <th>เสี่ยงปานกลาง</th>
       <th>เสี่ยงต่ำ</th>
       <th>ไม่เสี่ยง</th>      
+      <th>รวม</th>      
       <th data-card-footer>รวม</th>
     </tr>
   </thead>
@@ -107,6 +108,10 @@ include("./header.php");
             <td><?php echo $value['risk_level_3']; ?></td>
             <td><?php echo $value['risk_level_4']; ?></td>
             <td><?php echo $value['cut_all']; ?></td>
+            <td>
+                <button type="button" class="btn btn-primary">ส่งออก</button>
+                <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
+            </td>
         </tr>
         <?php
       }?>
@@ -122,19 +127,11 @@ include("./header.php");
       <script src="../js/tableToCards.js"></script>
       <script>
         $(function(){
-            $(".btn-change-risk-level").click(function(){
-                console.log($(this).attr("covid_register_id"));
-                $.ajax({
-                    method: "POST",
-                    url: "./changeRiskLevel.php",
-                    data: { covid_register_id: $(this).attr("covid_register_id"), risk_level_id: $(this).attr("risk_level_id") }
-                })
-                .done(function( msg ) {
-                  console.log(msg)
-                  location.reload();
-
-                  // $(this).parent().parent().children().first().html($(this).html())
-                })
+            $(".btn_cut_data_detail").click(function(){
+                console.log($(this).attr("cut_datetime"));
+                var form = $('<form action="./cut_data_detail.php" method="post"><input type="hidden" name="cut_datetime" value="' + $(this).attr("cut_datetime") + '"></input>' + '</form>');
+                $('body').append(form);
+                $(form).submit();                
             })
         })
       </script>
