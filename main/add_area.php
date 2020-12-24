@@ -12,7 +12,7 @@ include('../include/config.php');
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>User</title>
+    <title>area</title>
 
     <script src="../js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -48,7 +48,7 @@ include('../include/config.php');
   <body>
 
 <script>
-var input_required=['fname','lname','cid'];
+var input_required=['area_name'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -68,10 +68,22 @@ $(document).ready(function () {
   });
 });
 </script>
-
 <?php
-  include("./header.php");
-  ?>
+$sql="select r.risk_area_id, r.changwat_code, r.area_name,
+r.risk_start_datetime, r.risk_last_datetime, r.status_id,
+s.status_name, c.changwat_name from risk_area r
+left JOIN `status` s on r.status_id = s.status_id
+left JOIN changwat c on r.changwat_code = c.changwat_code
+where r.changwat_code = :changwat_code;
+";
+$obj=$connect->prepare($sql);
+$obj->execute(["changwat_code"=>$_POST['changwat_code']]);
+$rows_area=$obj->fetchAll(PDO::FETCH_ASSOC);
+//print_r($rows_area);
+$changwat = $rows_area[0]['changwat_code'];
+//echo $changwat;
+?>
+
 
 <div class="container" style="background-color: #b9ddff;background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
 
@@ -81,65 +93,23 @@ $(document).ready(function () {
     <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
   </div>
 
-  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ลงทะเบียนสำหรับเจ้าหน้าที่</h2>
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">เพิ่มสถานที่เสี่ยง</h2>
 
   <div class="form-group">
-  <label for="user_login">Username <span class="required"></span></label>
-    <input type="user_login" class="form-control" id="user_login">
-    <label for="user_password">Password <span class="required"></span></label>
-    <input type="Password" class="form-control" id="user_password">
-
-    <label for="prename_id">คำนำหน้าชื่อ <span class="required"></span></label>
-    <select class="form-control" id="prename_id">
-    <option value="">--เลือก--</option>
-      <?php
-        $sql="select * from `prename` ";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["prename_id"]."'>".$rows[$i]["prename_name"]."</option>";
-        }
-      ?>
-    </select>
-
-    <label for="fname">ชื่อ <span class="required"></span></label>
-    <input type="fname" class="form-control" id="fname">
-    <label for="lname">สกุล <span class="required"></span></label>
-    <input type="lname" class="form-control" id="lname">
-    <label for="phone">เบอร์โทร <span class="required"></span></label>
-    <input type="phone" class="form-control" id="phone">
+    <label for="changwat_name">จังหวัด</label>
+        <input type="changwat_name" class="form-control" id="changwat_name" readonly="readonly" value="<?php echo $rows_area[0]['changwat_name']; ?>">
     
-    <label for="office_id">หน่วยงาน <span class="required"></span></label>
-    <select class="form-control" id="office_id">
-    <option value="">--เลือก--</option>
-    <?php
-        $sql="select * from `office` ";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["office_id"]."'>".$rows[$i]["office_name"]."</option>";
-        }
-      ?>
-    </select>
+    <label for="area_name">ชื่อสถานที่<span class="required"></span></label>
+        <input type="area_name" class="form-control" id="area_name">
 
-    <label for="group_id">สิทธิ์การใช้งาน</label>
-    <select class="form-control" id="group_id">
-    <option value="">--เลือก--</option>
-    <?php
-        $sql="select * from `group` ";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["group_id"]."'>".$rows[$i]["group_name"]."</option>";
-        }
-      ?>
-    </select>
+    <label for="risk_start_datetime">วันที่เริ่มละบาด</label>
+        <input name="risk_start_datetime" class="form-control datepicker" id="risk_start_datetime"/>
 
-
-    <label for="status_id">สถานะ</label>
+    <label for="risk_last_datetime">วันที่ระบาดล่าสุด</label>
+        <input name="risk_last_datetime" class="form-control datepicker" id="risk_last_datetime"/>
+    
+    
+    <label for="status_id">สถานะ<span class="required"></span></label>
     <select class="form-control" id="status_id">
     <option value="">--เลือก--</option>
     <?php
@@ -152,30 +122,19 @@ $(document).ready(function () {
         }
       ?>
     </select>
-    <label for="date_register">วันที่ลงทะเบียน</label>
-    <!-- <input type="date_register" class="form-control" id="date_register"> -->
-    <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
-    
   </div>
     <div style="height: 200"><br></div>
 
     <div class="form-group d-flex justify-content-between">
-      <button type="button" class="btn btn-primary" style="width: 48%" id="btnSave">บันทึก</button>
-      <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button>
+      <button type="button" class="btn btn-primary" changwat_code = "<?php echo $_POST['changwat_code']; ?>" style="width: 48%" id="btnSave">บันทึก</button>
+      <button type="button" class="btn btn-secondary btn-GoTo" changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $rows_area[0]['changwat_name']; ?>" style="width: 48%" id="btnClose">ปิด</button>
     </div>
 
     <div style="height: 200"><br></div>
 </div>
-
 <div class="modal fade" id="modal01">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> -->
       <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
         ...
       </div>
@@ -185,28 +144,18 @@ $(document).ready(function () {
     </div>
   </div>
 </div>
-
-<?php
-  include("./footer.php");
-  ?>
-
 </body>
 </html>
 
 <script>
   $("#btnSave").click(function() {
   var data= {
-    user_id : $("#user_id").val(),
-    user_login : $("#user_login").val(),
-    user_password : $("#user_password").val(),
-    prename_id : $("#prename_id").val(),
-    fname : $("#fname").val(),
-    lname : $("#lname").val(),
-    phone : $("#phone").val(),
-    office_id : $("#office_id").val(),
-    group_id : $("#group_id").val(),
-    status_id : $("#status_id").val(),
-    date_register : $("#date_register").val()
+    risk_area_id : $("#risk_area_id").val(),
+    changwat_code : "<?php echo $_POST['changwat_code']; ?>",
+    area_name : $("#area_name").val(),
+    risk_start_datetime : formatDate($("#risk_start_datetime").val()),
+    risk_last_datetime : formatDate($("#risk_last_datetime").val()),
+    status_id : $("#status_id").val()
   }
   console.log(data);
 
@@ -216,25 +165,35 @@ $(document).ready(function () {
       not_complete=not_complete+1;
     }
   });
-
+  console.log(not_complete);
   if (not_complete>0) {
     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red">จำเป็น</font>ให้ครบ');
     $("#modal01").modal('show');
+    //alert('11111');
   }
   else {
-    $.ajax({method: "POST", url: "ajaxSaveUser.php",
+    //console.log('-------------');
+    $.ajax({method: "POST", url: "ajaxAddArea.php",
       data: data
     })
     .done(function(x) {
+    console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
         $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้ว');
         $("#modal01").modal('show');
-        $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+        //$( "#btnInsideModal" ).bind( "click", btn-GoTo );
+        $( "#btnInsideModal" ).bind( "click", GoGo );
       }
     });
   }
 });
+    $(".btn-GoTo").click(function(){
+            console.log($(this).attr("changwat_code"));
+            var form = $('<form action="./risk_area_detail.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input><input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input>' + '</form>');
+            $('body').append(form);
+            $(form).submit(); 
+        })
 
 function formatDate(d) {
   var r="";
@@ -246,9 +205,8 @@ function formatDate(d) {
   }
   return r;
 }
-
-var goPageSuggestion = function() {
-  window.location="./listUser.php";
+var GoGo = function() {
+  window.location="risk_area.php";
 };
 
 </script>

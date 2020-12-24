@@ -14,12 +14,17 @@ if (session_status() == PHP_SESSION_NONE) {
         <li class="nav-item active">
           <a class="nav-link" href="./index.php">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
+        <?php
+        if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
+          ?>
+          <li class="nav-item">
+            <a class="nav-link" href="./pre_cut_data_detail.php">ตัดข้อมูล</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
+          </li>
+          <?php
+        } ?>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">

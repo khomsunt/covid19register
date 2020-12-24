@@ -11,7 +11,7 @@ a47.ampur_name as ampur_name_in,
 t47.tambon_name as tambon_name_in,
 o.occupation_name,
 r.risk_level_long_name
-from covid_register c 
+from covid_register_cut c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
 left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
@@ -19,11 +19,10 @@ left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
 left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
 left join coccupation o on c.occupation_id=o.occupation_id
 left join risk_level r on c.risk_level_id=r.risk_level_id
-where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
+where c.cut_datetime=:cut_datetime";
 $obj=$connect->prepare($sql);
-$obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
+$obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// print_r($rows);
 ?>
 
 <!doctype html>
@@ -63,10 +62,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main">
-
-
-<br>
+<main role="main" style="margin-top:60px;">
+<h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['cut_datetime']; ?></h5>
+<button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -92,31 +90,11 @@ include("./header.php");
         <tr>
             <td>
             <?php echo $value['fname']." ".$value['lname']; ?>
-            <span class="float-right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_level_long_name']; ?>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                        <?php
-                        foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
-                            ?>
-                            <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
-                                <?php echo $value_risk_level['risk_level_long_name']; ?>
-                            </button>
-                            <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-            </span>
-            
             </td>
             <td><?php echo $value['register_datetime']; ?></td>
             <td><?php echo $value['occupation_name']; ?></td>
             <td>
-                ที่อยู่ <?php echo $value['house_out_no']; ?>
-                ม. <?php echo $value['moo_out_code']; ?>
+                ม. <?php echo $value['moo_out']; ?>
                 ต. <?php echo $value['tambon_name_out']; ?>
                 อ. <?php echo $value['ampur_name_out']; ?>
                 จ. <?php echo $value['changwat_name_out']; ?>
@@ -145,11 +123,13 @@ include("./header.php");
 
 
 
+</main>
+<button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+
   <!-- FOOTER -->
   <?php
   include("./footer.php");
   ?>
-</main>
 <script src="../js/jquery-3.2.1.min.js" ></script>
       <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
       <script src="../js/tableToCards.js"></script>

@@ -2,8 +2,22 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+print_r($_SESSION);
 include('../include/config.php');
-$sql="select c.risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level from covid_register c left join risk_level r on c.risk_level_id=r.risk_level_id left join ampur47 a on c.ampur_in_code=a.ampur_code where a.node_id=:user_node_id group by c.risk_level_id";
+switch ($_SESSION['group_id']) {
+  case '0':
+  case '2':
+  case '4':
+  case '5':
+    $sql="select c.risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level from covid_register c left join risk_level r on c.risk_level_id=r.risk_level_id left join ampur47 a on c.ampur_in_code=a.ampur_code where cut_status_id=0 group by c.risk_level_id";
+    break;
+  case '3':
+    $sql="select c.risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level from covid_register c left join risk_level r on c.risk_level_id=r.risk_level_id left join ampur47 a on c.ampur_in_code=a.ampur_code where a.node_id=:user_node_id group by c.risk_level_id";
+    break;
+  default:
+    # code...
+    break;
+}
 $obj=$connect->prepare($sql);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
 $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
