@@ -98,6 +98,7 @@ include("./header.php");
         
     }?>
   </tbody>
+    
 </table>
 </main>
   <!-- FOOTER -->
