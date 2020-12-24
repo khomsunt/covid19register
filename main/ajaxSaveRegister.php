@@ -3,9 +3,9 @@ include('../include/config.php');
 
 $sql=" insert into covid_register ( ". 
 " prename_id,fname,lname,cid,tel ".
-" ,moo_out,tambon_out_code,ampur_out_code,changwat_out_code ". 
-" ,occupation_id,date_to_sakonnakhon,touch_history ". 
-" ,house_in_no,tambon_in_code,ampur_in_code,changwat_in_code ". 
+" ,house_out_no,moo_out_code,tambon_out_code,ampur_out_code,changwat_out_code ". 
+" ,occupation_id,occupation_other,date_to_sakonnakhon,touch_history ". 
+" ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code,changwat_in_code ". 
 " ) ".
 " value ( ".
 "'".$_POST['prename_id']."' ".
@@ -13,14 +13,17 @@ $sql=" insert into covid_register ( ".
 ",'".$_POST['lname']."' ".
 ",'".$_POST['cid']."' ".
 ",'".$_POST['tel']."' ".
-",'".$_POST['moo_out']."' ".
+",'".$_POST['house_out_no']."' ".
+",'".$_POST['moo_out_code']."' ".
 ",'".$_POST['tambon_out_code']."' ".
 ",'".$_POST['ampur_out_code']."' ".
 ",'".$_POST['changwat_out_code']."' ".
 ",'".$_POST['occupation_id']."' ".
+",'".$_POST['occupation_other']."' ".
 ",'".$_POST['date_to_sakonnakhon']."' ".
 ",'".$_POST['touch_history']."' ".
 ",'".$_POST['house_in_no']."' ".
+",'".$_POST['moo_in_code']."' ".
 ",'".$_POST['tambon_in_code']."' ".
 ",'".$_POST['ampur_in_code']."' ".
 ",'".$_POST['changwat_in_code']."' ".

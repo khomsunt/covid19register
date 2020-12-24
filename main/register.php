@@ -98,29 +98,29 @@ for ($i=0;$i<count($rows);$i++) {
 
     <div class="form-group">
       <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
-      <input type="email" class="form-control" id="fname" placeholder="ชื่อ">
+      <input type="text" class="form-control" id="fname" placeholder="ชื่อ">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
-      <input type="email" class="form-control" id="lname" placeholder="นามสกุล">
+      <input type="text" class="form-control" id="lname" placeholder="นามสกุล">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
-      <input type="email" class="form-control" id="cid" placeholder="เลขบัตรประจำตัวประชาชน">
+      <input type="text" class="form-control" id="cid" placeholder="เลขบัตรประจำตัวประชาชน">
     </div>
   
     <div class="form-group">
       <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
-      <input type="email" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์">
+      <input type="text" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์">
     </div>
 
     <div class="form-group">
-    <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
-    <select class="form-control" id="occupation_id">
-      <option value="">--เลือก--</option>
-      <?php
+      <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
+      <select class="form-control" id="occupation_id">
+        <option value="">--เลือก--</option>
+<?php
 $sql="select * from `coccupation` ";
 $obj=$connect->prepare($sql);
 $obj->execute();
@@ -129,9 +129,14 @@ for ($i=0;$i<count($rows);$i++) {
   echo "<option value='".$rows[$i]["occupation_id"]."'>".$rows[$i]["occupation_name"]."</option>";
 }
 ?>
-    </select>
+      </select>
+      <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="margin-top: 2px;display:none">
     </div>
 
+    <!-- <div class="form-group" style="padding-top: 0px">
+      <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
+      <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="display:none">
+    </div> -->
 
     <div class="card">
       <div class="card-header">ที่อยู่ปัจจุบัน</div>
@@ -142,7 +147,7 @@ for ($i=0;$i<count($rows);$i++) {
           <select class="form-control" id="changwat_out_code">
             <option value="">--เลือก--</option>
   <?php
-  $sql="select * from `changwat` ";
+  $sql="select * from `changwat` order by changwat_name asc ";
   $obj=$connect->prepare($sql);
   $obj->execute();
   $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -168,8 +173,13 @@ for ($i=0;$i<count($rows);$i++) {
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">เลขที่ <span class="required"></span></label>
-          <input type="email" class="form-control" id="moo_out" placeholder="ที่อยู่ปัจจุบัน">
+          <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
+          <input type="text" class="form-control" id="moo_out_code">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
+          <input type="text" class="form-control" id="house_out_no">
         </div>
         
       </div>
@@ -230,8 +240,13 @@ for ($i=0;$i<count($rows);$i++) {
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">เลขที่ <span class="required"></span></label>
-          <input type="email" class="form-control" id="house_in_no" placeholder="เข้าพำนักที่บ้านเลขที่">
+          <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
+          <input type="text" class="form-control" id="moo_in_code">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
+          <input type="text" class="form-control" id="house_in_no">
         </div>
 
       </div>
@@ -281,18 +296,22 @@ $("#btnSave").click(function() {
     lname : $("#lname").val(),
     cid : $("#cid").val(),
     tel : $("#tel").val(),
-    moo_out : $("#moo_out").val(),
+    house_out_no : $("#house_out_no").val(),
+    moo_out_code : $("#moo_out_code").val(),
     tambon_out_code : $("#tambon_out_code").val(),
     ampur_out_code : $("#ampur_out_code").val(),
     changwat_out_code : $("#changwat_out_code").val(),
     occupation_id : $("#occupation_id").val(),
-    date_to_sakonnakhon : $("#date_to_sakonnakhon").val(),
+    occupation_other : $("#occupation_other").val(),
+    date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
     touch_history : typeof $('input[name="touch_history"]:checked').val()!='undefined'?$('input[name="touch_history"]:checked').val():"",
     house_in_no : $("#house_in_no").val(),
+    moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
     changwat_in_code : '47',
   }
+  // console.log(data);
 
   var not_complete=0;
   input_required.forEach(element => {
@@ -312,7 +331,7 @@ $("#btnSave").click(function() {
     .done(function(x) {
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบแล้ว');
+        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้ว');
         $("#modal01").modal('show');
         $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
       }
@@ -320,8 +339,18 @@ $("#btnSave").click(function() {
   }
 });
 
+function formatDate(d) {
+  var r="";
+  if (typeof d !='indefined') {
+    if (d.length>0) {
+      var x=d.split("/");
+      r=x[2]+"-"+x[1]+"-"+x[0];
+    }
+  }
+  return r;
+}
+
 var goPageSuggestion = function() {
-  // console.log('goPageSuggestion-----');
   window.location="suggestion.php";
 };
 
@@ -382,6 +411,16 @@ $("#ampur_in_code").change(function() {
       $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
     }
   });
+});
+
+$("#occupation_id").change(function() {
+  if ($("#occupation_id").val()=="99") {
+    $("#occupation_other").css({'display':'block'});
+  }
+  else {
+    $("#occupation_other").val('');
+    $("#occupation_other").css({'display':'none'});
+  }
 });
 
 </script>
