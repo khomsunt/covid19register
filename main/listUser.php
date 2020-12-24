@@ -120,7 +120,9 @@
 
         <tbody class="content">
           <?php
-            while($rows = $q -> fetch()): ?>
+            while($rows = $q -> fetch()):
+            print_r($rows)
+            ?>
               <tr>
                 <th scope="row"><?php echo htmlspecialchars($rows['user_id']) ?></th>
                 <td><?php echo htmlspecialchars($rows['username']) ?></td>
