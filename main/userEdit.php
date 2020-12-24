@@ -4,6 +4,15 @@ include('../include/config.php');
 // print_r($configs);
 ?>
 
+<?php
+// $_GET["user_id"]
+    $sql="select * from `user` WHERE user_id=".$_GET['user_id'];
+    $obj=$connect->prepare($sql);
+    $obj->execute();
+    $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+    // print_r($rows);
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -78,35 +87,39 @@ $(document).ready(function () {
     <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
   </div>
 
-  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ลงทะเบียนสำหรับเจ้าหน้าที่</h2>
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">แก้ไขข้อมูล</h2>
 
   <div class="form-group">
   <label for="user_login">Username <span class="required"></span></label>
-    <input type="user_login" class="form-control" id="user_login">
+    <input type="user_login" class="form-control" id="user_login" value="<?php echo $rows[0]['user_login']; ?>">
     <label for="user_password">Password <span class="required"></span></label>
-    <input type="Password" class="form-control" id="user_password">
+    <input type="Password" class="form-control" id="user_password" value="<?php echo $rows[0]['user_password']; ?>">
 
     <label for="prename_id">คำนำหน้าชื่อ <span class="required"></span></label>
-    <select class="form-control" id="prename_id">
+    <select class="form-control" id="prename_id" >
     <option value="">--เลือก--</option>
       <?php
         $sql="select * from `prename` ";
         $obj=$connect->prepare($sql);
         $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["prename_id"]."'>".$rows[$i]["prename_name"]."</option>";
+        $rowsPrename=$obj->fetchAll(PDO::FETCH_ASSOC);
+        for ($i=0;$i<count($rowsPrename);$i++) {
+            if($rows[0]['prename_id'] == $rowsPrename[$i]["prename_id"]) {
+                echo "<option selected value='".$rowsPrename[$i]["prename_id"]."'>".$rowsPrename[$i]["prename_name"]."</option>";
+            } else {
+                echo "<option value='".$rowsPrename[$i]["prename_id"]."'>".$rowsPrename[$i]["prename_name"]."</option>";
+            }
         }
       ?>
     </select>
-
-    <label for="fname">ชื่อ <span class="required"></span></label>
-    <input type="fname" class="form-control" id="fname">
-    <label for="lname">สกุล <span class="required"></span></label>
-    <input type="lname" class="form-control" id="lname">
-    <label for="phone">เบอร์โทร <span class="required"></span></label>
-    <input type="phone" class="form-control" id="phone">
     
+    <label for="fname">ชื่อ <span class="required"></span></label>
+    <input type="fname" class="form-control" id="fname" value="<?php echo $rows[0]['fname']; ?>">
+    <label for="lname">สกุล <span class="required"></span></label>
+    <input type="lname" class="form-control" id="lname" value="<?php echo $rows[0]['lname']; ?>">
+    <label for="phone">เบอร์โทร <span class="required"></span></label>
+    <input type="phone" class="form-control" id="phone" value="<?php echo $rows[0]['phone']; ?>">
+
     <label for="office_id">หน่วยงาน <span class="required"></span></label>
     <select class="form-control" id="office_id">
     <option value="">--เลือก--</option>
@@ -114,9 +127,14 @@ $(document).ready(function () {
         $sql="select * from `office` ";
         $obj=$connect->prepare($sql);
         $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["office_id"]."'>".$rows[$i]["office_name"]."</option>";
+        $rowsOffice=$obj->fetchAll(PDO::FETCH_ASSOC);
+        for ($i=0;$i<count($rowsOffice);$i++) {
+            if($rows[0]['office_id'] == $rowsOffice[$i]["office_id"]) {
+                
+          echo "<option selected value='".$rowsOffice[$i]["office_id"]."'>".$rowsOffice[$i]["office_name"]."</option>";
+            } else {
+                echo "<option value='".$rowsOffice[$i]["office_id"]."'>".$rowsOffice[$i]["office_name"]."</option>";
+            }
         }
       ?>
     </select>
@@ -128,9 +146,13 @@ $(document).ready(function () {
         $sql="select * from `group` ";
         $obj=$connect->prepare($sql);
         $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["group_id"]."'>".$rows[$i]["group_name"]."</option>";
+        $rowsGroup=$obj->fetchAll(PDO::FETCH_ASSOC);
+        for ($i=0;$i<count($rowsGroup);$i++) {
+            if($rows[0]['office_id'] == $rowsGroup[$i]["group_id"]) {
+                echo "<option selected value='".$rowsGroup[$i]["group_id"]."'>".$rowsGroup[$i]["group_name"]."</option>";
+            } else {
+                echo "<option value='".$rowsGroup[$i]["group_id"]."'>".$rowsGroup[$i]["group_name"]."</option>";
+            }
         }
       ?>
     </select>
@@ -143,9 +165,16 @@ $(document).ready(function () {
         $sql="select * from `status` ";
         $obj=$connect->prepare($sql);
         $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        for ($i=0;$i<count($rows);$i++) {
-          echo "<option value='".$rows[$i]["status_id"]."'>".$rows[$i]["status_name"]."</option>";
+        $rowsStatus=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // for ($i=0;$i<count($rowsStatus);$i++) {
+        //   echo "<option value='".$rowsStatus[$i]["status_id"]."'>".$rowsStatus[$i]["status_name"]."</option>";
+        // }
+        for ($i=0;$i<count($rowsStatus);$i++) {
+            if($rows[0]['status_id'] == $rowsStatus[$i]["status_id"]) {
+                echo "<option selected value='".$rowsStatus[$i]["group_id"]."'>".$rowsStatus[$i]["status_name"]."</option>";
+            } else {
+                echo "<option value='".$rowsStatus[$i]["status_id"]."'>".$rowsStatus[$i]["status_name"]."</option>";
+            }
         }
       ?>
     </select>
@@ -182,15 +211,13 @@ $(document).ready(function () {
     </div>
   </div>
 </div>
-
-
 </body>
 </html>
 
 <script>
   $("#btnSave").click(function() {
   var data= {
-    user_id : $("#user_id").val(),
+    user_id : "<?php echo $_GET['user_id']; ?>",
     user_login : $("#user_login").val(),
     user_password : $("#user_password").val(),
     prename_id : $("#prename_id").val(),
@@ -202,7 +229,7 @@ $(document).ready(function () {
     status_id : $("#status_id").val(),
     date_register : $("#date_register").val()
   }
-  console.log(data);
+//   console.log(data);
 
   var not_complete=0;
   input_required.forEach(element => {
@@ -216,13 +243,14 @@ $(document).ready(function () {
     $("#modal01").modal('show');
   }
   else {
-    $.ajax({method: "POST", url: "ajaxSaveUser.php",
+    $.ajax({method: "POST", url: "ajaxSaveUserEdit.php",
       data: data
     })
     .done(function(x) {
       var r=jQuery.parseJSON(x).data;
+      console.log(jQuery.parseJSON(x));
       if (r.status=="success") {
-        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้ว');
+        $("#modal01_body").html('แก้ไขข้อมูลเรียบร้อยแล้ว');
         $("#modal01").modal('show');
         $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
       }
