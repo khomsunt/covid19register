@@ -108,7 +108,7 @@ $(document).ready(function () {
     <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
   </div>
 
-  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ลงทะเบียน<br>รายงานตัวล่วงหน้า</h2>
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">ระบบรายงานตัวและคัดกรองความเสี่ยง COVID-19 จังหวัดสกลนคร</h2>
 
   <div class="form-group">
     <label for="exampleFormControlSelect1">คำนำหน้าชื่อ <span class="required"></span></label>
@@ -162,7 +162,7 @@ for ($i=0;$i<count($rows);$i++) {
       </select>
       <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="margin-top: 2px;display:none">
     </div>
-    
+
 
     <label for="exampleFormControlInput1">เป็นแรงงานต่างด้าว ใช่หรือไม่? <span class="required"></span></label>
     <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
@@ -253,7 +253,7 @@ for ($i=0;$i<count($rows);$i++) {
 
 
         <div class="form-group">
-        <label for="exampleFormControlSelect1">อำเภอ <span class="required"></span></label>
+        <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
         <select class="form-control" id="ampur_in_code">
           <option value="">--เลือก--</option>
 <?php
@@ -269,7 +269,7 @@ for ($i=0;$i<count($rows);$i++) {
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlSelect1">ตำบล <span class="required"></span></label>
+        <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
         <select class="form-control" id="tambon_in_code">
           <option value="">--เลือก--</option>
         </select>
