@@ -96,7 +96,7 @@ include("./header.php");
             <td><?php echo $value['register_datetime']; ?></td>
             <td><?php echo $value['occupation_name']; ?></td>
             <td>
-                ม. <?php echo $value['moo_out']; ?>
+                ม. <?php echo $value['moo_out_code']; ?>
                 ต. <?php echo $value['tambon_name_out']; ?>
                 อ. <?php echo $value['ampur_name_out']; ?>
                 จ. <?php echo $value['changwat_name_out']; ?>
