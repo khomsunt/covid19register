@@ -100,8 +100,8 @@ try {
               <td><?php echo htmlspecialchars($row['status_name']) ?></td>
               <td><?php echo htmlspecialchars($row['date_register']) ?></td>
               <td>
-                <button class="btn btn-primary">แก้ไข</button>
-                <button class="btn btn-danger">ลบ</button>
+                <a href="../main/userEdit.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">แก้ไข</a>
+                <a href="../main/userDelete.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-danger btn-delete-user">ลบ</a>
               </td>
             </tr>
           <?php 
