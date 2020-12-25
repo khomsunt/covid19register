@@ -74,9 +74,7 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main">
-
-
+<main role="main" style="margin-top:60px;">
 <br>
 <table class="table" id="myTable">
   <thead>
@@ -84,16 +82,20 @@ include("./header.php");
       <th data-card-title>จังหวัดที่เสี่ยง</th>  
       <!-- <th>รวม</th> -->
       <th>รวม</th>
+      <th data-card-footer>รายละเอียด</th>
     </tr>
   </thead>
   <tbody>
       <?php
       foreach ($rows_current_cut as $key => $value) {
           ?>
-        <tr class="tag-link" changwat_code = "<?php echo $value['changwat_code']; ?>" changwat_name = "<?php echo $value['changwat_name']; ?>">
+        <tr>
             <td><?php echo $value['changwat_name']; ?></td>
             <td><?php echo $value['total']; ?></td>
-        </tr>
+            <td>
+              <button changwat_code = "<?php echo $value['changwat_code']; ?>" changwat_name = "<?php echo $value['changwat_name']; ?>"  type="button" class="btn btn-info tag-link">รายละเอียด</button>
+            </td>
+          </tr>
         <?php
         
     }?>
