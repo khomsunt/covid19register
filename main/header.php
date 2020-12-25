@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
           <a class="nav-link" href="./index.php">หน้าแรก<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="./register.php">แจ้งเข้าพื้นที่<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="./register_skn.php">แจ้งเข้าพื้นที่<span class="sr-only">(current)</span></a>
         </li>
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
