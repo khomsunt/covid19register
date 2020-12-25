@@ -162,23 +162,27 @@ for ($i=0;$i<count($rows);$i++) {
       </select>
       <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="margin-top: 2px;display:none">
     </div>
+    
 
-    <label for="exampleFormControlSelect1">เป็นแรงงานต่างด้าวใช่หรือไม่ <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding: 5px; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
-      <div class="form-check" style="margin-bottom:5px">
-        <input type="checkbox" class="form-check-input" id="foreign_worker">
-        <label class="form-check-label" for="foreign_worker">
-          เป็นแรงงานต่างด้าว
-        </label>
+    <label for="exampleFormControlInput1">เป็นแรงงานต่างด้าว ใช่หรือไม่? <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="foreign_worker" id="foreign_worker0" value="0" checked>
+        <label class="form-check-label" for="foreign_worker0">ไม่ใช่</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="foreign_worker" id="foreign_worker1" value="1" >
+        <label class="form-check-label" for="foreign_worker1">ใช่</label>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlSelect1">สัญชาติ <span class="required"></span></label>
-      <select class="form-control" id="nation_id">
+
+    <div class="form-group" style="display: none;" id="foreign_worker_nation_box">
+      <label for="exampleFormControlSelect1">สัญชาติของแรงงานต่างด้าว <span class="required"></span></label>
+      <select class="form-control" id="foreign_worker_nation_id">
         <option value="">--เลือก--</option>
 <?php
-$sql="select * from nation ";
+$sql="select * from foreign_worker_nation ";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -191,7 +195,7 @@ for ($i=0;$i<count($rows);$i++) {
 
 
     <div class="card">
-      <div class="card-header">ที่อยู่ปัจจุบัน</div>
+      <div class="card-header">ที่อยู่ก่อนเดินทางเข้าสกลนคร</div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
         <div class="form-group">
@@ -512,8 +516,8 @@ $("#btnSave").click(function() {
     changwat_out_code : $("#changwat_out_code").val(),
     occupation_id : $("#occupation_id").val(),
     occupation_other : $("#occupation_other").val(),
-    foreign_worker : $("#foreign_worker").prop('checked')?"1":"0",
-    nation_id : $("#nation_id").val(),
+    foreign_worker : typeof $('input[name="foreign_worker"]:checked').val()!='undefined'?$('input[name="foreign_worker"]:checked').val():"",
+    foreign_worker_nation_id : $("#foreign_worker_nation_id").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
@@ -708,6 +712,16 @@ $('input[name="q1_enter_risk_area"]').click(function() {
     $(".risk_changwat_input").prop('checked',false);
     $(".area_list").css({'display':'none'});
     $("#risk_area_box").css({'display':'none'});
+  }
+});
+
+$('input[name="foreign_worker"]').click(function() {
+  if ($('input[name="foreign_worker"]:checked').val()==1) {
+    $("#foreign_worker_nation_box").css({'display':'block'});
+  }
+  else {
+    $("#foreign_worker_nation_id").val('');
+    $("#foreign_worker_nation_box").css({'display':'none'});
   }
 });
 
