@@ -183,7 +183,7 @@ $changwat = $rows_area[0]['changwat_code'];
         $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้ว');
         $("#modal01").modal('show');
         //$( "#btnInsideModal" ).bind( "click", btn-GoTo );
-        $( "#btnInsideModal" ).bind( "click", GoGo );
+        $( "#btnInsideModal" ).bind("click",GoGo);
       }
     });
   }
@@ -206,7 +206,8 @@ function formatDate(d) {
   return r;
 }
 var GoGo = function() {
-  window.location="risk_area.php";
+  //window.location="risk_area.php";
+  $(".btn-GoTo").click();
 };
 
 </script>
