@@ -58,6 +58,10 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         -ms-user-select: none;
         user-select: none;
       }
+      .data{
+        color: blue;
+        display: inline;
+      }
 
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
@@ -84,7 +88,6 @@ include("./header.php");
         <th>มาจาก</th>
         <th>มาที่</th>
         <th>วันที่มาถึงสกลนคร</th>  
-        <th>ประเมินตนเอง</th>
         <th>ไปพื้นที่เสี่ยง</th>
         <th>มาจากพื้นที่เสี่ยง</th>
         <th>ทำงานในสถานกักกัน</th>
@@ -97,7 +100,8 @@ include("./header.php");
         <?php
           if ($_GET['type']=='new'){
         ?>    
-        <th></th>
+        <th>ผลการประเมินตนเอง</th>
+        <th>ผลการประเมิน (จนท)</th>
         <?php } ?>
         <th data-card-footer>มาจาก</th>
       </tr>
@@ -117,29 +121,28 @@ include("./header.php");
               <td>
               <span class="badge badge-info"><?php echo $key+1; ?></span>
               <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
-              </td>
+              </div></td>
 
-              <td><?php echo $value['cid']; ?></td>
-              <td><?php echo $value['register_datetime']; ?></td>
-              <td><?php echo $value['occupation_name']; ?></td>
-              <td>
+              <td><div class="data"><?php echo $value['cid']; ?></div></div></td>
+              <td><div class="data"><?php echo $value['register_datetime']; ?></div></td>
+              <td><div class="data"><?php echo $value['occupation_name']; ?></div></td>
+              <td><div class="data">
                   ที่อยู่ <?php echo $value['house_out_no']; ?>
                   ม. <?php echo $value['moo_out_code']; ?>
                   ต. <?php echo $value['tambon_name_out']; ?>
                   อ. <?php echo $value['ampur_name_out']; ?>
                   จ. <?php echo $value['changwat_name_out']; ?>
-              </td>
-              <td>
+              </div></td>
+              <td><div class="data">
                   ที่อยู่ <?php echo $value['house_in_no']; ?>
                   ม. <?php echo $value['moo_in_code']; ?>
                   ต. <?php echo $value['tambon_name_in']; ?>
                   อ. <?php echo $value['ampur_name_in']; ?>
-              </td>
-              <td>
+              </div></td>
+              <td><div class="data">
                   <?php echo $value['date_to_sakonnakhon']; ?>
-              </td>
-              <td><?php echo $value['evaluate_level_name']; ?></td>
-              <td>
+              </div></td>
+              <td><div class="data">
               <?php
               $sql_risk_area = "select * from covid_register_risk_area c left join risk_area r on c.risk_area_id=r.risk_area_id where c.covid_register_id=:covid_register_id";
               
@@ -152,14 +155,14 @@ include("./header.php");
               } 
               echo implode(",",$a_area); 
               ?>            
-              </td>
-              <td><?php echo ($value['q1_enter_risk_area']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td><?php echo ($value['q2_quarantine_work_place']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td><?php echo ($value['q3_touch_patient']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td><?php echo ($value['q4_health_officer']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td><?php echo ($value['q5_enter_patient_area']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td><?php echo ($value['q6_sick_closer']=="1")?"ใช่":"ไม่ใช่"; ?></td>
-              <td>
+              </div></td>
+              <td><div class="data"><?php echo ($value['q1_enter_risk_area']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data"><?php echo ($value['q2_quarantine_work_place']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data"><?php echo ($value['q3_touch_patient']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data"><?php echo ($value['q4_health_officer']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data"><?php echo ($value['q5_enter_patient_area']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data"><?php echo ($value['q6_sick_closer']=="1")?"ใช่":"ไม่ใช่"; ?></div></td>
+              <td><div class="data">
                 <?php echo ($value['symptom_fever']=='1')?'มีไข้ ':""; ?>
                 <?php echo ($value['symptom_cough']=='1')?"ไอ ":""; ?>
                 <?php echo ($value['symptom_nasal_mucus']=="1")?"มีน้ำมูก ":""; ?>
@@ -168,8 +171,9 @@ include("./header.php");
                 <?php echo ($value['symptom_not_smell']=="1")?"ไม่ได้กลิ่น ":""; ?>
                 <?php echo ($value['symptom_not_taste']=="1")?"ไม่รู้รส ":""; ?>
                 <?php echo ($value['symptom_fever']+$value['symptom_cough']+$value['symptom_nasal_mucus']+$value['symptom_sore_throat']+$value['symptom_dyspnea']+$value['symptom_not_smell']+$value['symptom_not_taste']==0)?"ไม่มีอาการ":""; ?>
-              </td>
-              <td><?php echo $value['symptom_date']; ?></td>
+              </div></td>
+              <td><div class="data"><?php echo $value['symptom_date']; ?></div></td>
+              <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
 
               <?php
                 if ($_GET['type']=='new'){
