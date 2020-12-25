@@ -187,7 +187,7 @@ $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["nation_id"]."'>".$rows[$i]["nation_name"]."</option>";
+  echo "<option value='".$rows[$i]["foreign_worker_nation_id"]."'>".$rows[$i]["foreign_worker_nation_name"]."</option>";
 }
 ?>
       </select>
