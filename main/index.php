@@ -164,7 +164,7 @@ include("./header.php");
       <div class="col-lg-4">
         <h4>ข้อมูลใหม่</h4>
         <?php
-        $sql="select * from risk_level order by risk_level_id";
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -189,7 +189,7 @@ include("./header.php");
       <div class="col-lg-4">
         <h4>ข้อมูลสะสม</h4>
         <?php
-        $sql="select * from risk_level order by risk_level_id";
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
