@@ -77,7 +77,7 @@ function thaiMonthShort($x) {
 <body style="background-color: #b9ddff;">
 
 <script>
-var input_required=['fname','lname','cid','tel','ampur_in_code'];
+var input_required=['fname','lname','cid','tel','ampur_in_code','tambon_in_code','moo_in_code'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -85,7 +85,8 @@ $(document).ready(function () {
       language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
       thaiyear: true, //Set เป็นปี พ.ศ.
       autoclose: true
-  }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+  });
+  // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
 
   $(".required").css({
     'color':'red',
@@ -161,6 +162,33 @@ for ($i=0;$i<count($rows);$i++) {
       </select>
       <input type="text" class="form-control" id="occupation_other" placeholder="ระบุ อาชีพ" style="margin-top: 2px;display:none">
     </div>
+
+    <label for="exampleFormControlSelect1">เป็นแรงงานต่างด้าวใช่หรือไม่ <span class="required"></span></label>
+    <div class="form-group" style="background-color: #FFFFFF; padding: 5px; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+      <div class="form-check" style="margin-bottom:5px">
+        <input type="checkbox" class="form-check-input" id="foreign_worker">
+        <label class="form-check-label" for="foreign_worker">
+          เป็นแรงงานต่างด้าว
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">สัญชาติ <span class="required"></span></label>
+      <select class="form-control" id="nation_id">
+        <option value="">--เลือก--</option>
+<?php
+$sql="select * from nation ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["nation_id"]."'>".$rows[$i]["nation_name"]."</option>";
+}
+?>
+      </select>
+    </div>
+
 
     <div class="card">
       <div class="card-header">ที่อยู่ปัจจุบัน</div>
@@ -484,6 +512,8 @@ $("#btnSave").click(function() {
     changwat_out_code : $("#changwat_out_code").val(),
     occupation_id : $("#occupation_id").val(),
     occupation_other : $("#occupation_other").val(),
+    foreign_worker : $("#foreign_worker").prop('checked')?"1":"0",
+    nation_id : $("#nation_id").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
@@ -532,18 +562,20 @@ $("#btnSave").click(function() {
   if (evaluate_occupation_red=="Y" | evaluate_q6=="1" | (evaluate_risk_area!="" & evaluate_changwat_red=="N")) {
     evaluate_level=2;
   }
-  if (evaluate_q3=="1" | evaluate_changwat_red=="Y") {
+  if (evaluate_q3=="1" | evaluate_changwat_red=="Y" | data['foreign_worker']=="1") {
     evaluate_level=3;
   }
+
   if (evaluate_symptom=="Y") {
     evaluate_level=evaluate_level+1;
   }
+
   if (evaluate_level>3) {
     evaluate_level=3;
   }
 
   data['evaluate_level']=evaluate_level;
-  // console.log(data);
+  console.log(data);
 
   var not_complete=0;
   input_required.forEach(element => {
