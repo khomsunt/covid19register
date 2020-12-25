@@ -19,7 +19,7 @@ left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
 left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
 left join coccupation o on c.occupation_id=o.occupation_id
 left join risk_level r on c.risk_level_id=r.risk_level_id
-where c.cut_status_id=0 and c.risk_level_id>0";
+where c.cut_status_id=0 and c.risk_level_id<99";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ count(c.covid_register_id) as count_risk_level
 from covid_register c 
 left join risk_level r on c.risk_level_id=r.risk_level_id 
 where 
-c.cut_status_id=0 and c.risk_level_id>0 
+c.cut_status_id=0 and c.risk_level_id<99 
 group by 
 c.risk_level_id";
 $obj=$connect->prepare($sql_current_cut);
