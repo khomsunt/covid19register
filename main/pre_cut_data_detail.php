@@ -81,28 +81,21 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
 <div class="container">
-<h5>สรุปข้อมูลที่ยังไม่ตัด</h5>
-<?php
-foreach ($rows_current_cut as $key => $value) {
-    ?>
-    <b>เสี่ยงสูง : </b>
-    <span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_1']; ?></span>
+    <h5>จำนวนข้อมูลที่ยังไม่ตัด</h5>
     <?php
-}
-?>
-<b>เสี่ยงสูง : </b>
-<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_1']; ?></span>
-<br><b>เสี่ยงปานกลาง : </b>
-<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_2']; ?></span>
-<br><b>เสี่ยงต่ำ : </b>
-<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_3']; ?></span>
-<br><b>ไม่เสี่ยง : </b>
-<span class="badge badge-pill badge-primary float-right"><?php echo $rows_current_cut[0]['risk_level_4']; ?></span>
+    foreach ($rows_current_cut as $key => $value) {
+        ?>
+        <br><b><?php echo $value['risk_level_long_name']; ?> </b>
+        <span class="badge badge-pill badge-primary"><?php echo $value['count_risk_level']; ?></span>
+        <?php
+    }
+    ?>
+    <button type="button" class="btn btn-primary btn_cut float-right">ตัดข้อมูล</button>
 </div>
-
-<br><br>
-<h5>รายชื่อที่ยังไม่ตัดข้อมูล</h5>
-<button type="button" class="btn btn-primary btn_cut">ตัดข้อมูล</button>
+<div class="container">
+    <br><br>
+    <h5>รายชื่อที่ยังไม่ตัดข้อมูล</h5>
+</div>
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -175,19 +168,9 @@ foreach ($rows_current_cut as $key => $value) {
       <script src="../js/tableToCards.js"></script>
       <script>
         $(function(){
-            $(".btn-change-risk-level").click(function(){
-                console.log($(this).attr("covid_register_id"));
-                $.ajax({
-                    method: "POST",
-                    url: "./changeRiskLevel.php",
-                    data: { covid_register_id: $(this).attr("covid_register_id"), risk_level_id: $(this).attr("risk_level_id") }
-                })
-                .done(function( msg ) {
-                  console.log(msg)
-                  location.reload();
-
-                  // $(this).parent().parent().children().first().html($(this).html())
-                })
+            $(".btn_cut").click(function(){
+                alert('cut data');
+                window.location="./cut_data_execute.php";
             })
         })
       </script>

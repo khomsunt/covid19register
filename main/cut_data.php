@@ -18,15 +18,18 @@ IF
 ( c.risk_level_id = 3, 1, 0 )) AS risk_level_3,
 sum(
 IF
-( c.risk_level_id = 4, 1, 0 )) AS risk_level_4 
+( c.risk_level_id = 4, 1, 0 )) AS risk_level_4,
+u.fname,
+u.lname
 FROM
 covid_register_cut c 
+left join user u on c.cut_user_id=u.user_id
 GROUP BY
 c.cut_datetime";
 $obj=$connect->prepare($sql_cut_data);
 $obj->execute();
 $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
-print_r($rows_cut_data);
+// print_r($rows_cut_data);
 ?>
 
 <!doctype html>
@@ -66,47 +69,49 @@ print_r($rows_cut_data);
 <?php
 include("./header.php");
 ?>
-<main role="main">
-
-
-<br>
-<table class="table" id="myTable">
-  <thead>
-    <tr>
-      <th data-card-title>วันที่ตัดข้อมูล</th>
-      <th>เสี่ยงสูง</th>
-      <th>เสี่ยงปานกลาง</th>
-      <th>เสี่ยงต่ำ</th>
-      <th>ไม่เสี่ยง</th>      
-      <th>รวม</th>      
-      <th data-card-footer>รวม</th>
-    </tr>
-  </thead>
-  <tbody>
-      <?php
-      foreach ($rows_cut_data as $key => $value) {
-          ?>
+<main role="main" style="margin-top:60px;">
+    <div class="container">
+        <h5>ประวัติการตัดข้อมูล</h5>
+    </div>
+    <table class="table" id="myTable">
+    <thead>
         <tr>
-            <td><?php echo $value['cut_datetime']; ?></td>
-            <td><?php echo $value['risk_level_1']; ?></td>
-            <td><?php echo $value['risk_level_2']; ?></td>
-            <td><?php echo $value['risk_level_3']; ?></td>
-            <td><?php echo $value['risk_level_4']; ?></td>
-            <td><?php echo $value['cut_all']; ?></td>
-            <td>
-                <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
-                <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
-            </td>
+        <th data-card-title>วันที่ตัดข้อมูล</th>
+        <th>เสี่ยงสูง</th>
+        <th>เสี่ยงปานกลาง</th>
+        <th>เสี่ยงต่ำ</th>
+        <th>ไม่เสี่ยง</th>      
+        <th>รวม</th>  
+        <th>ผู้ตัดข้อมูล</th>    
+        <th data-card-footer></th>
         </tr>
+    </thead>
+    <tbody>
         <?php
-      }?>
-  </tbody>
-</table>
+        foreach ($rows_cut_data as $key => $value) {
+            ?>
+            <tr>
+                <td><?php echo $value['cut_datetime']; ?></td>
+                <td><?php echo $value['risk_level_1']; ?></td>
+                <td><?php echo $value['risk_level_2']; ?></td>
+                <td><?php echo $value['risk_level_3']; ?></td>
+                <td><?php echo $value['risk_level_4']; ?></td>
+                <td><?php echo $value['cut_all']; ?></td>
+                <td><?php echo $value['fname']." ".$value['lname']; ?></td>
+                <td>
+                    <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+                    <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
+                </td>
+            </tr>
+            <?php
+        }?>
+    </tbody>
+    </table>
 </main>
-  <!-- FOOTER -->
-  <?php
-  include("./footer.php");
-  ?>
+<!-- FOOTER -->
+<?php
+include("./footer.php");
+?>
 <script src="../js/jquery-3.2.1.min.js" ></script>
       <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
       <script src="../js/tableToCards.js"></script>
