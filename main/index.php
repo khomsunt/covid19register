@@ -77,6 +77,9 @@ $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+      .btn-orange, .btn-orange:hover, .btn-orange:active, .btn-orange:visited {
+          background-color: #FF8800 !important;
+      }    
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -165,6 +168,7 @@ include("./header.php");
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
         foreach ($rows as $rows_key => $rows_value) {
             $this_value=0;
             foreach ($rows_risk_level as $key=>$value){
@@ -174,7 +178,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
@@ -198,7 +202,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
