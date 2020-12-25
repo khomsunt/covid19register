@@ -77,6 +77,9 @@ $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+      .btn-orange, .btn-orange:hover, .btn-orange:active, .btn-orange:visited {
+          background-color: #FF8800 !important;
+      }    
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -174,7 +177,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['risk_level_color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
