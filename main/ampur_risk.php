@@ -4,9 +4,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 
-$sql_current_cut=" select a.ampur_code, a.ampur_name, a.ampur_code_full, 
-count(tambon_code) as total_tambon from ampur a
+$sql_current_cut=" select a.ampur_code, a.ampur_name, a.ampur_code_full,
+r.risk_status_id, r.risk_status_name, count(tambon_code) as total_tambon 
+from ampur a
 LEFT JOIN tambon t on a.ampur_code_full = t.ampur_code_full
+LEFT JOIN risk_status r on a.risk_status_id = r.risk_status_id
 where a.changwat_code = :changwat_code
 GROUP BY a.ampur_code";
 $obj=$connect->prepare($sql_current_cut);
@@ -59,22 +61,49 @@ include("./header.php");
 <table class="table" id="myTable">
   <thead>
     <tr>
-      <th data-card-title>ชื่ออำเภอ</th>  
-      <!-- <th>รวม</th> -->
+      <th data-card-title>ชื่ออำเภอ</th>
       <th>รวมตำบล</th>
+      <!-- <th>ตำบลที่ระบาดแล้ว</th> -->
       <th data-card-footer>รายละเอียด</th>
     </tr>
   </thead>
   <tbody>
       <?php
+      $sql="select * from risk_status";
+      $obj=$connect->prepare($sql);
+      $obj->execute();
+      $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
+
       foreach ($rows_current_cut as $key => $value) {
           ?>
         <tr>
             <td><?php echo $value['ampur_name']; ?></td>
             <td><?php echo $value['total_tambon']; ?></td>
+            <!-- <td><?php echo $value['total_tambon']; ?></td> -->
             <td>
-              <button type="button" class="btn btn-danger">ระบาด</button>
-              <button changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $_POST['changwat_name']; ?>"  ampur_code_full = "<?php echo $value['ampur_code_full']; ?>"  ampur_name = "<?php echo $value['ampur_name']; ?>"  type="button" class="btn btn-warning tag-link">รายละเอียด</button>
+            <div class="btn-group">
+                    <button type="button" 
+                    <?php if($value['risk_status_id']==0){ ?> 
+                        class="btn btn-warning dropdown-toggle" 
+                    <?php }else{ ?> 
+                        class="btn btn-danger dropdown-toggle" 
+                    <?php } ?> 
+                        data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <?php echo $value['risk_status_name']; ?>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                        <?php
+                        foreach ($rows_ampur_risk as $key_risk_area => $value_risk) {
+                            ?>
+                            <button ampur_code_full="<?php echo $value['ampur_code_full']; ?>" risk_status_id="<?php echo $value_risk['risk_status_id']; ?>" class="dropdown-item btn-change-ampur-risk" type="button">
+                                <?php echo $value_risk['risk_status_name']; ?>
+                            </button>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+              <button changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $_POST['changwat_name']; ?>"  ampur_code_full = "<?php echo $value['ampur_code_full']; ?>"  ampur_name = "<?php echo $value['ampur_name']; ?>"  type="button" class="btn btn-primary tag-link">รายละเอียด</button>
             </td>
           </tr>
         <?php
@@ -98,6 +127,18 @@ include("./header.php");
                 var form = $('<form action="./tambon_risk_detail.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input> <input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input><input type="hidden" name="ampur_name" value="' + $(this).attr("ampur_name") + '"></input> <input type="hidden" name="ampur_code_full" value="' + $(this).attr("ampur_code_full") + '"></input> ' + '</form>');
                 $('body').append(form);
                 $(form).submit(); 
+            })
+            $(".btn-change-ampur-risk").click(function(){ //เปลี่ยนสถานะ
+                console.log($(this).attr("ampur_code_full"));
+                $.ajax({
+                    method: "POST",
+                    url: "./change_risk_ampur.php",
+                    data: { ampur_code_full: $(this).attr("ampur_code_full"),risk_status_id: $(this).attr("risk_status_id")}
+                })
+                .done(function( msg ) {
+                  console.log(msg)
+                  location.reload();
+               })
             })
         })
       </script>
