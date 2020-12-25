@@ -83,8 +83,9 @@ include("./header.php");
         <th>อาชีพ</th>
         <th>มาจาก</th>
         <th>มาที่</th>
-        <th>วันที่</th>  
+        <th>วันที่มาถึงสกลนคร</th>  
         <th>ประเมินตนเอง</th>
+        <th>ไปพื้นที่เสี่ยง</th>
         <th>มาจากพื้นที่เสี่ยง</th>
         <th>ทำงานในสถานกักกัน</th>
         <th>มีประวัติสัมผัสโรค</th>
@@ -138,7 +139,20 @@ include("./header.php");
                   <?php echo $value['date_to_sakonnakhon']; ?>
               </td>
               <td><?php echo $value['evaluate_level_name']; ?></td>
-
+              <td>
+              <?php
+              $sql_risk_area = "select * from covid_register_risk_area c left join risk_area r on c.risk_area_id=r.risk_area_id where c.covid_register_id=:covid_register_id";
+              
+              $obj=$connect->prepare($sql_risk_area);
+              $obj->execute(["covid_register_id"=>$value['covid_register_id']]);
+              $rows_risk_area=$obj->fetchAll(PDO::FETCH_ASSOC);
+              $a_area=[];
+              foreach ($rows_risk_area as $key_risk_area => $value_risk_area) {
+                array_push($a_area,$value_risk_area['area_name']);
+              } 
+              echo implode(",",$a_area); 
+              ?>            
+              </td>
               <td><?php echo ($value['q1_enter_risk_area']=="1")?"ใช่":"ไม่ใช่"; ?></td>
               <td><?php echo ($value['q2_quarantine_work_place']=="1")?"ใช่":"ไม่ใช่"; ?></td>
               <td><?php echo ($value['q3_touch_patient']=="1")?"ใช่":"ไม่ใช่"; ?></td>
