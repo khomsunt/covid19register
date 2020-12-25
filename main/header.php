@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 ?>
 <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="./index.php">Covid-19 register</a>
+    <a class="navbar-brand" href="./index.php">สกลชนะโควิด</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
