@@ -21,6 +21,7 @@
                 data: { user_login: $("#user_login").val(), user_password: $("#user_password").val() }
             })
             .done(function( msg ) {
+              // console.log(msg);
                 let userData = JSON.parse(msg);
                 if (userData.length>0) {
                     localStorage.setItem("user_id", userData[0]['user_id']);
@@ -68,9 +69,10 @@
   <body>
     <form class="form-signin">
   <div class="text-center mb-4">
-    <img class="mb-4" src="../image/moph-logo.png" alt="" width="92" height="92">
-    <h1 class="h3 mb-3 font-weight-normal">ทะเบียนแจ้งเข้าจังหวัดสกลนคร</h1>
-    <p></p>
+    <img src="../image/logo_skn.png" width="70" style="margin-right: 10px;">
+    <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
+    <h3 class="h4 mb-3 font-weight-normal" style="margin-top:20px;">ทะเบียนแจ้งเข้าจังหวัดสกลนคร</h1>
+    <br>
   </div>
 
   <div class="form-label-group">

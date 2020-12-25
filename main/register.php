@@ -1,7 +1,35 @@
 <?php 
 include('../include/config.php');
-// echo "<br>config=";
-// print_r($configs);
+
+$changwat_code_samut_sakhon='74';
+
+function thaiDateShort($d) {
+  $r=$d;
+  if (strlen($r)==10) {
+    $x=explode("-",$r);
+    $r=$x[2]." ".thaiMonthShort($x[1])." ".($x[0]+543);
+  }
+  return $r;
+}
+
+function thaiMonthShort($x) {
+  $r=$x;
+  switch ($x+0) {
+    case 1:$r="ม.ค."; break;
+    case 2:$r="ก.พ."; break;
+    case 3:$r="มี.ค."; break;
+    case 4:$r="เม.ย."; break;
+    case 5:$r="พ.ค."; break;
+    case 6:$r="มิ.ย."; break;
+    case 7:$r="ก.ค."; break;
+    case 8:$r="ส.ค."; break;
+    case 9:$r="ก.ย."; break;
+    case 10:$r="ต.ค."; break;
+    case 11:$r="พ.ย."; break;
+    case 12:$r="ธ.ค."; break;
+  }
+  return $r;
+}
 ?>
 
 <!doctype html>
@@ -45,10 +73,11 @@ include('../include/config.php');
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
   </head>
-  <body>
+
+<body style="background-color: #b9ddff;">
 
 <script>
-var input_required=['fname','lname','cid','ampur_in_code'];
+var input_required=['fname','lname','cid','tel','ampur_in_code'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -70,7 +99,7 @@ $(document).ready(function () {
 </script>
 
 
-<div class="container" style="background-color: #b9ddff;background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
+<div class="container" style="background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: contain, cover; background-position: top center;">
 
   <div style="height: 100;"><br></div>
   <div style="display: flex; align-items: flex-start;">
@@ -195,15 +224,15 @@ for ($i=0;$i<count($rows);$i++) {
         <label for="exampleFormControlSelect1">อำเภอ <span class="required"></span></label>
         <select class="form-control" id="ampur_in_code">
           <option value="">--เลือก--</option>
-          <?php
-    $sql="select * from `ampur` where changwat_code='47' ";
-    $obj=$connect->prepare($sql);
-    $obj->execute();
-    $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-    for ($i=0;$i<count($rows);$i++) {
-      echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
-    }
-    ?>
+<?php
+$sql="select * from `ampur` where changwat_code='47' ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
+}
+?>
         </select>
         </div>
 
@@ -232,7 +261,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <label for="exampleFormControlInput1">ข้อที่ 1. ท่านได้เดินทางมาจากหรืออาศัยอยู่ในพื้นที่(ภายในประเทศไทย)ที่มีการรายงานการติดเชื้อหรือไม่ ภายใน 1 เดือนที่ผ่านมา <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q1_enter_risk_area" id="q1_enter_risk_area0" value="0" checked>
         <label class="form-check-label" for="q1_enter_risk_area0">ไม่ใช่</label>
@@ -243,8 +272,55 @@ for ($i=0;$i<count($rows);$i++) {
       </div>
     </div>
 
+    <div style="margin-top: -15px; margin-bottom: 20px; display: none;" id="risk_area_box">
+      ระบุพื้นที่เสี่ยง
+      <div style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+<?php
+$sql="select c.* from changwat c inner join ( ". 
+" select changwat_code from risk_area where status_id is not null and status_id=1 group by changwat_code ". 
+" ) x on x.changwat_code=c.changwat_code ". 
+" order by if(c.changwat_code='".$changwat_code_samut_sakhon."',1,10) asc ,c.changwat_name asc ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  $changwat_red="N";
+  if ($rows[$i]["changwat_code"]==$changwat_code_samut_sakhon) {
+    $changwat_red="Y";
+  }
+?>
+        <div class="form-check" style="margin-bottom:5px">
+          <input type="checkbox" class="form-check-input risk_changwat_input" id="risk_changwat_<?php echo $rows[$i]["changwat_code"]; ?>">
+          <label class="form-check-label" for="risk_changwat_<?php echo $rows[$i]["changwat_code"]; ?>" style="margin-bottom:5px">
+            <?php echo $rows[$i]["changwat_name"]; ?>
+          </label>
+          <div id="area_list_<?php echo $rows[$i]["changwat_code"]; ?>" class="area_list" style="display: none;">
+<?php
+$sql2="select * from risk_area where changwat_code='".$rows[$i]["changwat_code"]."' and status_id is not null and status_id=1 ";
+$obj2=$connect->prepare($sql2);
+$obj2->execute();
+$rows2=$obj2->fetchAll(PDO::FETCH_ASSOC);
+for ($n=0;$n<count($rows2);$n++) {
+?>
+            <div class="form-check" style="margin-bottom:5px">
+              <input type="checkbox" class="form-check-input risk_area_input" changwat_red="<?php echo $changwat_red; ?>" id="risk_area_<?php echo $rows2[$n]["risk_area_id"]; ?>">
+              <label class="form-check-label" for="risk_area_<?php echo $rows2[$n]["risk_area_id"]; ?>">
+                <?php echo $rows2[$n]["area_name"]; ?> (ตั้งแต่วันที่ <?php echo thaiDateShort(substr($rows2[$n]["risk_start_datetime"],0,10)); ?>)
+              </label>
+            </div>
+<?php
+}
+?>
+          </div>
+        </div>
+<?php
+}
+?>
+      </div>
+    </div>
+
     <label for="exampleFormControlInput1">ข้อที่ 2 : ท่านทำงานใน สถานกักกันโรค ( State quanratine หรือ local quanrantine ) <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q2_quarantine_work_place" id="q2_quarantine_work_place0" value="0" checked>
         <label class="form-check-label" for="q2_quarantine_work_place0">ไม่ใช่</label>
@@ -256,7 +332,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <label for="exampleFormControlInput1">ข้อที่ 3 : มีประวัติสัมผัสกับผู้ป่วยยืนยันโรคติดเชื้อไวรัส COVID-19 <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q3_touch_patient" id="q3_touch_patient0" value="0" checked>
         <label class="form-check-label" for="q3_touch_patient0">ไม่ใช่</label>
@@ -268,7 +344,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <label for="exampleFormControlInput1">ข้อที่ 4 : เป็นบุคลากรทางการแพทย์หรือสาธารณสุข ทั้งสถานพยาบาล, คลินิค , ทีมสอบสวนโรค หรือ ร้านขายยา <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q4_health_officer" id="q4_health_officer0" value="0" checked>
         <label class="form-check-label" for="q4_health_officer0">ไม่ใช่</label>
@@ -280,7 +356,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <label for="exampleFormControlInput1">ข้อที่ 5 : มีประวัติไปในสถานที่ประชาชนหนาแน่น ชุมนุมชน หรือที่มีการรวมกลุ่มคน เช่น ตลาดนัด ห้างสรรพสินค้า สถานพยาบาล หรือขนส่งสาธารณะ ที่พบผู้สงสัยหรือยืนยัน COVID-19 ในช่วง 1 เดือนที่ผ่านมา <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q5_enter_patient_area" id="q5_enter_patient_area0" value="0" checked>
         <label class="form-check-label" for="q5_enter_patient_area0">ไม่ใช่</label>
@@ -292,7 +368,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <label for="exampleFormControlInput1">ข้อที่ 6 : ในสถานที่ท่านที่ไปประจำ คนที่สนิทใกล้ชิดกับท่าน มีอาการ ไข้ ไอ น้ำมูก เสมหะ มากกว่า 5 คน พร้อมๆกัน ในช่วงเวลาภายในสัปดาห์หรือไม่่ <span class="required"></span></label>
-    <div class="form-group" style="background-color: #FFFFFF; padding-left: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
+    <div class="form-group" style="background-color: #FFFFFF; padding: 10px; border: solid 1px #e5e5e5; border-radius: 5px;">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="q6_sick_closer" id="q6_sick_closer0" value="0" checked>
         <label class="form-check-label" for="q6_sick_closer0">ไม่ใช่</label>
@@ -380,7 +456,21 @@ for ($i=0;$i<count($rows);$i++) {
 </html>
 
 <script>
+var evaluate_level=0;
+
 $("#btnSave").click(function() {
+  var x=$(".risk_area_input");
+  var s=[];
+  var evaluate_changwat_red="N";
+  for (var i=0;i<x.length;i=i+1) {
+    if ($(x[i]).prop('checked')==true) {
+      s.push($(x[i]).attr('id').replace('risk_area_',''));
+    }
+    if ($(x[i]).prop('checked')==true && $(x[i]).attr('changwat_red')=="Y") {
+      evaluate_changwat_red="Y";
+    }
+  }
+
   var data= {
     prename_id : $("#prename_id").val(),
     fname : $("#fname").val(),
@@ -414,8 +504,46 @@ $("#btnSave").click(function() {
     symptom_not_smell : $("#symptom_not_smell").prop('checked')?"1":"0",
     symptom_not_taste : $("#symptom_not_taste").prop('checked')?"1":"0",
     symptom_date : formatDate($("#symptom_date").val()),
+    risk_area : s.length>0?s.join(','):"",
   }
-  console.log(data);
+
+  var occupation_red=[1,2];
+  var evaluate_occupation_red="N";
+  if (occupation_red.indexOf(parseInt($("#occupation_id").val()))>-1) {
+    evaluate_occupation_red="Y";
+  }
+
+  var evaluate_symptom="N";
+  if (data['symptom_fever']=="1" | data['symptom_cough']=="1" | data['symptom_nasal_mucus']=="1" | data['symptom_sore_throat']=="1" | data['symptom_dyspnea']=="1" | data['symptom_not_smell']=="1" | data['symptom_not_taste']=="1") {
+    evaluate_symptom="Y";
+  }
+
+  var evaluate_q1=data['q1_enter_risk_area'];
+  var evaluate_q2=data['q2_quarantine_work_place'];
+  var evaluate_q3=data['q3_touch_patient'];
+  var evaluate_q4=data['q4_health_officer'];
+  var evaluate_q5=data['q5_enter_patient_area'];
+  var evaluate_q6=data['q6_sick_closer'];
+  var evaluate_risk_area=data['risk_area'];
+
+  if (evaluate_risk_area=="" | evaluate_q2=="1" | evaluate_q4=="1" | evaluate_q5=="1") {
+    evaluate_level=1;
+  }
+  if (evaluate_occupation_red=="Y" | evaluate_q6=="1" | (evaluate_risk_area!="" & evaluate_changwat_red=="N")) {
+    evaluate_level=2;
+  }
+  if (evaluate_q3=="1" | evaluate_changwat_red=="Y") {
+    evaluate_level=3;
+  }
+  if (evaluate_symptom=="Y") {
+    evaluate_level=evaluate_level+1;
+  }
+  if (evaluate_level>3) {
+    evaluate_level=3;
+  }
+
+  data['evaluate_level']=evaluate_level;
+  // console.log(data);
 
   var not_complete=0;
   input_required.forEach(element => {
@@ -454,8 +582,9 @@ function formatDate(d) {
   return r;
 }
 
-var goPageSuggestion = function() {
-  window.location="suggestion.php";
+var goPageSuggestion = function(x) {
+  // console.log(evaluate_level);
+  window.location="suggestion.php?evaluate_level="+evaluate_level;
 };
 
 $("#changwat_out_code").change(function() {
@@ -524,6 +653,29 @@ $("#occupation_id").change(function() {
   else {
     $("#occupation_other").val('');
     $("#occupation_other").css({'display':'none'});
+  }
+});
+
+$("input[id^='risk_changwat_']").click(function() {
+  var list_div=$(this).parent().find(".area_list");
+  if ($(this).prop('checked')==true) {
+    list_div.css({'display':'block'});
+  }
+  else {
+    list_div.css({'display':'none'});
+    list_div.find("input").prop('checked',false);
+  }
+});
+
+$('input[name="q1_enter_risk_area"]').click(function() {
+  if ($('input[name="q1_enter_risk_area"]:checked').val()==1) {
+    $("#risk_area_box").css({'display':'block'});
+  }
+  else {
+    $(".risk_area_input").prop('checked',false);
+    $(".risk_changwat_input").prop('checked',false);
+    $(".area_list").css({'display':'none'});
+    $("#risk_area_box").css({'display':'none'});
   }
 });
 
