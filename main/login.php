@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Floating labels example · Bootstrap</title>
+    <title>สกลชนะโควิด</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/">
 
@@ -71,7 +71,7 @@
   <div class="text-center mb-4">
     <img src="../image/logo_skn.png" width="70" style="margin-right: 10px;">
     <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
-    <h3 class="h4 mb-3 font-weight-normal" style="margin-top:20px;">ทะเบียนแจ้งเข้าจังหวัดสกลนคร</h1>
+    <h3 class="h4 mb-3 font-weight-normal" style="margin-top:20px;">สกลชนะโควิด</h1>
     <br>
   </div>
 
