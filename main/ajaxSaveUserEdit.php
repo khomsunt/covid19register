@@ -3,7 +3,7 @@ include('../include/config.php');
 
 $sql="update user set ( ". 
 " user_login,user_password,prename_id,fname ".
-" ,lname,phone,office_id,group_id,status_id ". 
+" ,lname,phone,office_id,line_token,group_id,status_id ". 
 " ) ".
 " value ( ".
 "'".$_POST['user_login']."' ".
@@ -13,6 +13,7 @@ $sql="update user set ( ".
 ",'".$_POST['lname']."' ".
 ",'".$_POST['phone']."' ".
 ",'".$_POST['office_id']."' ".
+",'".$_POST['line_token']."' ".
 ",'".$_POST['group_id']."' ".
 ",'".$_POST['status_id']."' ".
 " WHERE user_id ='".$_POST['user_id']."'";
@@ -25,6 +26,7 @@ $sql="update user set ".
 " ,lname='".$_POST['lname']."' ".
 " ,phone='".$_POST['phone']."' ".
 " ,office_id='".$_POST['office_id']."' ".
+" ,line_token='".$_POST['line_token']."' ".
 " ,group_id='".$_POST['group_id']."' ".
 " ,status_id='".$_POST['status_id']."' ".
 " WHERE user_id ='".$_POST['user_id']."'";

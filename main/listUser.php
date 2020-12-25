@@ -76,6 +76,7 @@ try {
           <th>สกุล</th>
           <th>เบอร์โทร</th>
           <th>หน่วยงาน</th>
+          <th>Line_Token</th>
           <th>สิทธิ์การใช้งาน</th>
           <th>สถานะ</th>
           <th>วันที่ลงทะเบียน</th>
@@ -96,12 +97,14 @@ try {
               <td><?php echo htmlspecialchars($row['lname']) ?></td>
               <td><?php echo htmlspecialchars($row['phone']) ?></td>
               <td><?php echo htmlspecialchars($row['office_name']) ?></td>
+              <td><?php echo htmlspecialchars($row['line_token']) ?></td>
               <td><?php echo htmlspecialchars($row['group_name']) ?></td>
               <td><?php echo htmlspecialchars($row['status_name']) ?></td>
               <td><?php echo htmlspecialchars($row['date_register']) ?></td>
               <td>
                 <a href="../main/userEdit.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">แก้ไข</a>
                 <a href="../main/userDelete.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-danger btn-delete-user">ลบ</a>
+                <a href="../main/userChangePassword.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">เปลี่ยนรหัสผ่าน</a>
               </td>
             </tr>
           <?php 

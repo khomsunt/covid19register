@@ -124,6 +124,9 @@ $(document).ready(function () {
       ?>
     </select>
 
+    <label for="line_token">Line_Token <span class="required"></span></label>
+    <input type="line_token" class="form-control" id="line_token">
+
     <label for="group_id">สิทธิ์การใช้งาน</label>
     <select class="form-control" id="group_id">
     <option value="">--เลือก--</option>
@@ -204,6 +207,7 @@ $(document).ready(function () {
     lname : $("#lname").val(),
     phone : $("#phone").val(),
     office_id : $("#office_id").val(),
+    line_token : $("#line_token").val(),
     group_id : $("#group_id").val(),
     status_id : $("#status_id").val(),
     date_register : $("#date_register").val()

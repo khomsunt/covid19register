@@ -115,8 +115,10 @@ $(document).ready(function () {
     
     <label for="fname">ชื่อ <span class="required"></span></label>
     <input type="fname" class="form-control" id="fname" value="<?php echo $rows[0]['fname']; ?>">
+    
     <label for="lname">สกุล <span class="required"></span></label>
     <input type="lname" class="form-control" id="lname" value="<?php echo $rows[0]['lname']; ?>">
+    
     <label for="phone">เบอร์โทร <span class="required"></span></label>
     <input type="phone" class="form-control" id="phone" value="<?php echo $rows[0]['phone']; ?>">
 
@@ -138,6 +140,9 @@ $(document).ready(function () {
         }
       ?>
     </select>
+
+    <label for="line_token">Line_Token <span class="required"></span></label>
+    <input type="line_token" class="form-control" id="line_token" value="<?php echo $rows[0]['line_token']; ?>">
 
     <label for="group_id">สิทธิ์การใช้งาน</label>
     <select class="form-control" id="group_id">
@@ -225,6 +230,7 @@ $(document).ready(function () {
     lname : $("#lname").val(),
     phone : $("#phone").val(),
     office_id : $("#office_id").val(),
+    line_token : $("#line_token").val(),
     group_id : $("#group_id").val(),
     status_id : $("#status_id").val(),
     date_register : $("#date_register").val()
