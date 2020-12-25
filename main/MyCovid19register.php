@@ -3,6 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include('../include/config.php');
+include('../include/functions.php');
 $sql="select c.*,
 p.prename_name,
 cw.changwat_name as changwat_name_out,
@@ -12,7 +13,8 @@ a47.ampur_name as ampur_name_in,
 t47.tambon_name as tambon_name_in,
 o.occupation_name,
 r.risk_level_long_name,
-r2.risk_level_long_name as evaluate_level_name
+r2.risk_level_long_name as evaluate_level_name,
+f.foreign_worker_nation_name
 from covid_register c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
@@ -23,10 +25,14 @@ left join coccupation o on c.occupation_id=o.occupation_id
 left join risk_level r on c.risk_level_id=r.risk_level_id
 left join risk_level r2 on c.evaluate_level=r2.risk_level_id
 left join prename p on c.prename_id=p.prename_id
+left join foreign_worker_nation f on c.foreign_worker_nation_id=f.foreign_worker_nation_id
 where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
 if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
 }
+// echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
+// echo "<br>node_id=".$_SESSION['node_id'];
+// echo $sql;
 $obj=$connect->prepare($sql);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -76,7 +82,7 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
   <div class="container">
-    <h5>รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo $_GET['risk_level_id']; ?></h5>
+    <h5>รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?></h5>
   </div>
   <table class="table" id="myTable">
     <thead>
@@ -88,6 +94,8 @@ include("./header.php");
         <th>มาจาก</th>
         <th>มาที่</th>
         <th>วันที่มาถึงสกลนคร</th>  
+        <th>เป็นแรงงานต่างด้าว</th>
+        <th>สัญชาติ</th>
         <th>ไปพื้นที่เสี่ยง</th>
         <th>มาจากพื้นที่เสี่ยง</th>
         <th>ทำงานในสถานกักกัน</th>
@@ -142,6 +150,14 @@ include("./header.php");
               <td><div class="data">
                   <?php echo $value['date_to_sakonnakhon']; ?>
               </div></td>
+              <td><div class="data">
+                  <?php echo ($value['foreign_worker']=='1')?"ใช่":"ไม่ใช่"; ?>
+              </div></td>
+              <td><div class="data">
+                  <?php echo $value['foreign_worker_nation_name']; ?>
+              </div></td>
+
+
               <td><div class="data">
               <?php
               $sql_risk_area = "select * from covid_register_risk_area c left join risk_area r on c.risk_area_id=r.risk_area_id where c.covid_register_id=:covid_register_id";

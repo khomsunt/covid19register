@@ -80,8 +80,8 @@ $obj=$connect->prepare($sql);
 $obj->execute(["changwat_code"=>$_POST['changwat_code']]);
 $rows_area=$obj->fetchAll(PDO::FETCH_ASSOC);
 //print_r($rows_area);
-$changwat = $rows_area[0]['changwat_code'];
-//echo $changwat;
+//echo $_POST['changwat_name'];
+//echo $rows_area;  
 ?>
 
 
@@ -95,9 +95,10 @@ $changwat = $rows_area[0]['changwat_code'];
 
   <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">เพิ่มสถานที่เสี่ยง</h2>
 
+ 
   <div class="form-group">
     <label for="changwat_name">จังหวัด</label>
-        <input type="changwat_name" class="form-control" id="changwat_name" readonly="readonly" value="<?php echo $rows_area[0]['changwat_name']; ?>">
+        <input type="changwat_name" class="form-control" id="changwat_name" readonly="readonly" value="<?php echo $_POST['changwat_name']; ?>">
     
     <label for="area_name">ชื่อสถานที่<span class="required"></span></label>
         <input type="area_name" class="form-control" id="area_name">
@@ -109,7 +110,7 @@ $changwat = $rows_area[0]['changwat_code'];
         <input name="risk_last_datetime" class="form-control datepicker" id="risk_last_datetime"/>
     
     
-    <label for="status_id">สถานะ<span class="required"></span></label>
+    <label for="status_id">สถานะ</label>
     <select class="form-control" id="status_id">
     <option value="">--เลือก--</option>
     <?php
@@ -126,8 +127,8 @@ $changwat = $rows_area[0]['changwat_code'];
     <div style="height: 200"><br></div>
 
     <div class="form-group d-flex justify-content-between">
-      <button type="button" class="btn btn-primary" changwat_code = "<?php echo $_POST['changwat_code']; ?>" style="width: 48%" id="btnSave">บันทึก</button>
-      <button type="button" class="btn btn-secondary btn-GoTo" changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $rows_area[0]['changwat_name']; ?>" style="width: 48%" id="btnClose">ปิด</button>
+      <button type="button" class="btn btn-primary" changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $_POST['changwat_name']; ?>" style="width: 48%" id="btnSave">บันทึก</button>
+      <button type="button" class="btn btn-secondary btn-GoTo" changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $_POST['changwat_name']; ?>" style="width: 48%" id="btnClose">ปิด</button>
     </div>
 
     <div style="height: 200"><br></div>
@@ -183,7 +184,7 @@ $changwat = $rows_area[0]['changwat_code'];
         $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้ว');
         $("#modal01").modal('show');
         //$( "#btnInsideModal" ).bind( "click", btn-GoTo );
-        $( "#btnInsideModal" ).bind( "click", GoGo );
+        $( "#btnInsideModal" ).bind("click",GoGo);
       }
     });
   }
@@ -206,7 +207,8 @@ function formatDate(d) {
   return r;
 }
 var GoGo = function() {
-  window.location="risk_area.php";
+  //window.location="risk_area.php";
+  $(".btn-GoTo").click();
 };
 
 </script>
