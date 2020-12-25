@@ -77,7 +77,7 @@ function thaiMonthShort($x) {
 <body style="background-color: #b9ddff;">
 
 <script>
-var input_required=['fname','lname','cid','ampur_in_code'];
+var input_required=['fname','lname','cid','tel','ampur_in_code'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',

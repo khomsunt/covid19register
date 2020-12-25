@@ -13,10 +13,6 @@ include('../include/config.php');
 
     <script src="../js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
-
-    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/"> -->
-
-    <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style>
