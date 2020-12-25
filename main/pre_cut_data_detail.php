@@ -169,7 +169,7 @@ include("./header.php");
       <script>
         $(function(){
             $(".btn_cut").click(function(){
-                alert('cut data');
+                // alert('cut data');
                 window.location="./cut_data_execute.php";
             })
         })
