@@ -27,6 +27,9 @@ where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
 if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
 }
+// echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
+// echo "<br>node_id=".$_SESSION['node_id'];
+// echo $sql;
 $obj=$connect->prepare($sql);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
