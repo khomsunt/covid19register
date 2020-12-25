@@ -29,6 +29,9 @@ if (session_status() == PHP_SESSION_NONE) {
           <li class="nav-item active">
             <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
           </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./risk_area.php">พื้นที่เสี่ยง</a>
+          </li>
           <?php
         } ?>
       </ul>

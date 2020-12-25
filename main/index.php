@@ -2,9 +2,9 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if ($_SESSION['group_id']<=0){
-  header("Location: ./login.php");
-}
+// if ($_SESSION['group_id']<=0){
+//   header("Location: ./login.php");
+// }
 // print_r($_SESSION);
 include('../include/config.php');
 $sql_common="select 
@@ -40,7 +40,7 @@ switch ($_SESSION['group_id']) {
       c.risk_level_id";
     $sql_all=$sql_common."
       where 
-      and a.node_id=:user_node_id 
+      a.node_id=:user_node_id 
       group by
       c.risk_level_id";
     break;

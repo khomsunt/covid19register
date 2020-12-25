@@ -56,7 +56,7 @@ include("./header.php");
 <main role="main" style="margin-top:60px;">
 <br>
 <h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
-<h5 style="text-align:center;">รหัสจังหวัด <?php echo $_POST['changwat_code']; ?></h5>
+<!-- <h5 style="text-align:center;">รหัสจังหวัด <?php echo $_POST['changwat_code']; ?></h5> -->
 <table class="table" id="myTable">
   <thead>
     <tr>
@@ -81,7 +81,6 @@ include("./header.php");
             <td><?php echo $value['risk_start_datetime']; ?></td>
             <td><?php echo $value['risk_last_datetime']; ?></td>
             <td>
-            <span class="float-right">
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                         <?php echo $value['status_name']; ?>
@@ -98,7 +97,6 @@ include("./header.php");
                         ?>
                     </div>
                 </div>
-            </span>
             </td>
         </tr>
         <?php
@@ -109,7 +107,7 @@ include("./header.php");
     <div class="container">
       <div class="row">
         <div class="col text-center">
-          <button type="button" class="btn btn-success btn-add-area" changwat_code = "<?php echo $_POST['changwat_code']; ?>">เพิ่มสถานที่</button>
+          <button type="button" class="btn btn-success btn-add-area" changwat_code = "<?php echo $_POST['changwat_code']; ?>" changwat_name = "<?php echo $_POST['changwat_name']; ?>">เพิ่มสถานที่</button>
         </div>
       </div>
     </div>
@@ -138,7 +136,7 @@ include("./header.php");
             })
             $(".btn-add-area").click(function(){ //เพิ่มสถานที่
                 console.log($(this).attr("changwat_code"));
-                var form = $('<form action="./add_area.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input>' + '</form>');
+                var form = $('<form action="./add_area.php" method="post"><input type="hidden" name="changwat_code" value="' + $(this).attr("changwat_code") + '"></input> <input type="hidden" name="changwat_name" value="' + $(this).attr("changwat_name") + '"></input>'  + '</form>');
                 $('body').append(form);
                 $(form).submit(); 
             })

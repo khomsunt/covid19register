@@ -8,7 +8,7 @@ include('../include/config.php');
 $sql="select 
     c.* 
     from covid_register c
-    where c.cut_status_id=0 and c.risk_level_id>0";
+    where c.cut_status_id=0 and c.risk_level_id<99";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -32,28 +32,14 @@ foreach ($rows as $rows_i => $row) {
     $keys=implode(",",$a_row_key);
     $values=implode(",",$a_value);
     $sql.="(".$keys.") value (".$values.")";
-    echo "<br>sql=".$sql;
+    // echo "<br>sql=".$sql;
     $obj=$connect->prepare($sql);
     $obj->execute();
 
     $sql_update="update covid_register set cut_status_id=1 where covid_register_id=".$row['covid_register_id'];
-    echo "<br>sql_update=".$sql_update;
+    // echo "<br>sql_update=".$sql_update;
     $obj=$connect->prepare($sql_update);
     $obj->execute();
-
+    header("Location: ./cut_data.php");
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <main class='container' style="margin-top:60px;">
-        ตัดข้อมูล
-    </main>
-</body>
-</html>
