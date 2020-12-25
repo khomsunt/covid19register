@@ -8,7 +8,7 @@ include('../include/config.php');
 $sql="select 
     c.* 
     from covid_register c
-    where c.cut_status_id=0 and c.risk_level_id>0";
+    where c.cut_status_id=0 and c.risk_level_id<99";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
