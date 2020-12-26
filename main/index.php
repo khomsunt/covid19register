@@ -162,7 +162,13 @@ include("./header.php");
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <div class="col-lg-4">
-        <h4>ข้อมูลใหม่</h4>
+        <?php
+          $count_rows_risk_level=0;
+          foreach ($rows_risk_level as $key=>$value){
+            $count_rows_risk_level+=$value['count_risk_level'];
+          }
+        ?>
+        <h4>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h4>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
@@ -187,7 +193,13 @@ include("./header.php");
       </div><!-- /.col-lg-4 -->
 
       <div class="col-lg-4">
-        <h4>ข้อมูลสะสม</h4>
+      <?php
+          $count_rows_risk_level_all=0;
+          foreach ($rows_risk_level_all as $key=>$value){
+            $count_rows_risk_level_all+=$value['count_risk_level_all'];
+          }
+        ?>
+        <h4>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h4>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);

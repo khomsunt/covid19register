@@ -16,7 +16,9 @@ a47.ampur_name as ampur_name_in,
 t47.tambon_name as tambon_name_in,
 o.occupation_name,
 r.risk_level_long_name,
-r2.risk_level_long_name as evaluate_level_name
+r2.risk_level_long_name as evaluate_level_name,
+r.background_color,
+r.color
 from covid_register c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
@@ -101,7 +103,7 @@ include("./header.php");
       <tr>
         <th data-card-title>ชื่อ นามสกุล</th>
         <th>CID</th>
-        <th data-card-action-links>วันที่บันทึก</th>
+        <th>วันที่บันทึก</th>
         <th>อาชีพ</th>
         <th>ที่อยู่ก่อนเข้าสกลนคร</th>
         <th>ที่ทำงาน</th>
@@ -113,7 +115,7 @@ include("./header.php");
         <th>ผลการประเมินตนเอง</th>
         <th>ผลการประเมิน (จนท)</th>
         <?php } ?>
-        <th data-card-footer>มาจาก</th>
+        <th data-card-footer>โทรศัพท์</th>
       </tr>
     </thead>
     <tbody>
@@ -126,10 +128,10 @@ include("./header.php");
         
         foreach ($rows as $key => $value) {
           ?>
-          <tr id="hhhhh<?php echo $value['covid_register_id'] ?>">
+          <tr id="<?php echo $value['covid_register_id'] ?>">
 
               <td>
-              <span class="badge badge-info"><?php echo $key+1; ?></span>
+              <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $key+1; ?></span>
               <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
               </div></td>
 
@@ -163,7 +165,7 @@ include("./header.php");
               <td>
                 <span class="float-right">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;">
                             <?php echo $value['risk_level_long_name']; ?>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
@@ -206,21 +208,19 @@ include("./footer.php");
       <script>
         $(function(){
             $(".btn-change-risk-level").click(function(){
-                $(this).parent().parent().parent().parent().parent().parent().parent().hide();
+                var thisObj=$(this);
                 $.ajax({
                     method: "POST",
                     url: "./changeRiskLevel.php",
-                    data: { covid_register_id: $(this).attr("covid_register_id"), risk_level_id: $(this).attr("risk_level_id") }
+                    data: { covid_register_id: thisObj.attr("covid_register_id"), risk_level_id: thisObj.attr("risk_level_id") }
                 })
                 .done(function( msg ) {
-                  if ($(this).parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
-                    $(this).parent().parent().parent().parent().parent().hide();
+                  if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+                    thisObj.parent().parent().parent().parent().parent().hide();
                   }else{
-                    $(this).parent().parent().parent().parent().parent().parent().parent().hide();
+                    thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
                   }
                   console.log(msg)
-                  // location.reload();
-                  // $(this).parent().parent().children().first().html($(this).html())
                 })
             })
         })
