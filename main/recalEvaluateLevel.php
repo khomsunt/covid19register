@@ -99,13 +99,13 @@ $(document).ready(function () {
 
 <div style="height: 200"><br></div>
 
-<div class="modal fade" id="modal01">
+<div class="modal fade" id="modal01" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
         ...
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" id="modal01_action" style="text-align: right;">
         <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
       </div>
     </div>
@@ -118,22 +118,25 @@ $(document).ready(function () {
 
 <script>
 $("#btnRecal").click(function() {
-  var data= {
-    ampur_in_code : $("#ampur_in_code").val(),
-  }
+  var data= {}
   // console.log(data);
-  $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+  $("#modal01_body").html('กำลังประมวลผล ..');
+  $("#modal01_action").css({'display':'none'});
+  $("#modal01").modal('show');
+console.log('ajaxRecalEvaluateLevel');
+  $.ajax({method: "POST", url: "ajaxRecalEvaluateLevel.php",
     data: data
   })
   .done(function(x) {
-    // console.log(jQuery.parseJSON(x));
+    console.log(jQuery.parseJSON(x));
     var r=jQuery.parseJSON(x).data;
     if (r.status=="success") {
-      // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
-      // $("#modal01").modal('show');
-      // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
-
-      goPageSuggestion();
+      $("#modal01").modal('hide');
+      setTimeout(() => {
+        $("#modal01_body").html('ประมวลผลเสร็จแล้ว');
+        $("#modal01_action").css({'display':'block'});
+        $("#modal01").modal('show');
+      }, 500);
     }
   });
 });

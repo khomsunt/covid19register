@@ -2,13 +2,15 @@
 include('../include/config.php');
 
 $evaluate_level=0;
+$evaluate_level_home=0;
+$evaluate_level_work=0;
 for ($i=3;$i>=1;$i=$i-1) {
     $sql=" select ampur_code_full from ampur a where a.risk_status_id=".$i." and ampur_code_full='".$_POST['changwat_out_code'].$_POST['ampur_out_code']."' ";
     $obj=$connect->prepare($sql);
     $obj->execute();
     $count=$obj->rowCount();
     if ($count>0) {
-        $evaluate_level=$i;
+        $evaluate_level_home=$i;
         break;
     }
     else {
@@ -17,7 +19,7 @@ for ($i=3;$i>=1;$i=$i-1) {
         $obj->execute();
         $count=$obj->rowCount();
         if ($count>0) {
-            $evaluate_level=$i;
+            $evaluate_level_home=$i;
             break;
         }   
     }
@@ -27,7 +29,7 @@ for ($i=3;$i>=1;$i=$i-1) {
     $obj->execute();
     $count=$obj->rowCount();
     if ($count>0) {
-        $evaluate_level=$i;
+        $evaluate_level_work=$i;
         break;
     }
     else {
@@ -36,10 +38,15 @@ for ($i=3;$i>=1;$i=$i-1) {
         $obj->execute();
         $count=$obj->rowCount();
         if ($count>0) {
-            $evaluate_level=$i;
+            $evaluate_level_work=$i;
             break;
         }   
     }
+}
+
+$evaluate_level=$evaluate_level_home;
+if ($evaluate_level_work>$evaluate_level_home) {
+    $evaluate_level=$evaluate_level_work;
 }
 
 if ($evaluate_level<3) {
