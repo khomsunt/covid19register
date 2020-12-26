@@ -188,7 +188,7 @@ for ($i=0;$i<count($rows);$i++) {
         <div class="form-check">
           <input type="checkbox" class="form-check-input risk_area_input" id="address_work">
           <label class="form-check-label" for="address_work">
-            เป็นพื้นที่เดียวกันกับที่พักอาศัย
+            เป็นที่อยู่เดียวกันกับที่พักอาศัย
           </label>
         </div>
       </div>
@@ -348,9 +348,10 @@ $("#btnSave").click(function() {
       // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
-        $("#modal01").modal('show');
-        $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+        // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
+        // $("#modal01").modal('show');
+        // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+        goPageSuggestion();
       }
     });
   }
