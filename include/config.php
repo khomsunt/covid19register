@@ -1,14 +1,10 @@
 <?php
-<<<<<<< HEAD
-=======
-
->>>>>>> 47b78cd1e27424f50f26a72bfb97230d82ad4809
 $projectTitle="รายงานตัวเข้าสกลนคร";
-$host='';
-$username='';
-$password='';
-$port='';
-$db='';
+$host='203.157.177.7';
+$username='root';
+$password='64127427';
+$port='3306';
+$db='covid19register';
 
 
 $query_string="mysql:host=".$host.";dbname=".$db.";port=".$port;
