@@ -288,13 +288,13 @@ for ($i=0;$i<count($rows);$i++) {
 <div style="height: 200"><br></div>
 
 
-<div class="modal fade" id="modal01">
+<div class="modal fade" id="modal01" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
         ...
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" id="modal01_action" style="text-align: right;">
         <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
       </div>
     </div>
@@ -338,9 +338,14 @@ $("#btnSave").click(function() {
 
   if (not_complete>0) {
     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
+    $("#modal01_action").css({'display':'block'});
     $("#modal01").modal('show');
   }
   else {
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_action").css({'display':'none'});
+    $("#modal01").modal('show');
+
     $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
       data: data
     })
@@ -348,11 +353,9 @@ $("#btnSave").click(function() {
       // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
-        // $("#modal01").modal('show');
-        // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
-
-        goPageSuggestion();
+        setTimeout(() => {
+          goPageSuggestion();
+        }, 1500);
       }
     });
   }
