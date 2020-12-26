@@ -351,6 +351,7 @@ $("#btnSave").click(function() {
         // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
         // $("#modal01").modal('show');
         // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+
         goPageSuggestion();
       }
     });
