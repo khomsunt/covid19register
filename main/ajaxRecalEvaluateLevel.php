@@ -3,9 +3,10 @@ include('../include/config.php');
 
 $status="";
 
-$sql=" select covid_register_id,evaluate_level from covid_register_test_recal ";
+$sql=" select * from covid_register_test_recal ";
 $obj=$connect->prepare($sql);
-$obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
+// $obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
+$obj->execute();
 $rowsCR=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 for ($n=0;$n<count($rowsCR);$n=$n+1) {
@@ -63,9 +64,6 @@ for ($n=0;$n<count($rowsCR);$n=$n+1) {
             $evaluate_level=2;
         }
     }
-
-    // $rowsCR[$n]['evaluate_level_new']=$evaluate_level;
-    // $sqlUp=" update covid_register_test_recal set evaluate_level_new=".$rowsCR[$n]['evaluate_level_new']." where covid_register_id=".$rowsCR[$n]['covid_register_id'];
         
     $sqlUp=" update covid_register_test_recal set evaluate_level_new=".$evaluate_level." where covid_register_id=".$rowsCR[$n]['covid_register_id'];
     $objUp=$connect->prepare($sqlUp);
