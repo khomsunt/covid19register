@@ -32,12 +32,20 @@
         <img src="../image/cartoon_nurse_04.png" width="120px">
       </div>
       <div id="announce_text" style="width: 80%; position: absolute; z-index: 1; border: solid 10px #4db1ff; border-radius: 30px; padding: 20px; text-align: center; background-color: white; padding-top: 80px; padding-bottom: 80px;">
-        <h4>
-ขอบคุณมากค่ะ <br> 
-ท่านได้รายงานตัวเข้าสู่จังหวัดสกลนครเรียบร้อยแล้ว<br>
-ขอให้เดินทางโดยสวัสดิภาพ และขอให้สวมแมสตลอดเวลา<br>
-หากท่านเป็นกลุ่มเสี่ยง จะมีเจ้าหน้าที่สาธารณสุขโทรศัพท์ติดต่อท่านภายหลังค่ะ<br>
-        </h4>
+        <h5>
+ขอบคุณมากค่ะ<br>
+ท่านได้รายงานตัว<br>
+เข้าสู่จังหวัดสกลนคร<br>
+เรียบร้อยแล้ว<br>
+<br>
+ขอให้เดินทางโดยสวัสดิภาพ<br>
+และขอให้สวมแมสตลอดเวลา<br>
+<br>
+หากท่านเป็นกลุ่มเสี่ยง<br>
+จะมีเจ้าหน้าที่สาธารณสุข<br>
+โทรศัพท์ติดต่อท่าน<br>
+ภายหลังค่ะ<br>
+        </h5>
       </div>
     </div>
     <div style="width: 10%;"><br></div>
