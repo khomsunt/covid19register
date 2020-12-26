@@ -1,4 +1,8 @@
 <?php
+<<<<<<< HEAD
+=======
+
+>>>>>>> 47b78cd1e27424f50f26a72bfb97230d82ad4809
 $projectTitle="รายงานตัวเข้าสกลนคร";
 $host='';
 $username='';
