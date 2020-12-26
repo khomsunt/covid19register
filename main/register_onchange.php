@@ -55,6 +55,8 @@ function thaiMonthShort($x) {
 
 <script>
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','date_to_sakonnakhon'];
+var require_list={};
+
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -72,7 +74,11 @@ $(document).ready(function () {
 
   input_required.forEach(element => {
     $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
+    require_list[element]=0;
   });
+  // console.log(require_list);
+  // console.log(Object.keys(require_list).length);
+  $("#req_all").text(Object.keys(require_list).length);
 });
 </script>
 
@@ -108,27 +114,27 @@ $(document).ready(function () {
 
     <div class="form-group">
       <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
-      <input type="text" class="form-control" id="fname" placeholder="">
+      <input type="text" class="form-control data_input" id="fname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
-      <input type="text" class="form-control" id="lname" placeholder="">
+      <input type="text" class="form-control data_input" id="lname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
-      <input type="text" class="form-control" id="cid" placeholder="">
+      <input type="text" class="form-control data_input" id="cid" placeholder="">
     </div>
   
     <div class="form-group">
       <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
-      <input type="text" class="form-control" id="tel" placeholder="">
+      <input type="text" class="form-control data_input" id="tel" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
-      <select class="form-control" id="occupation_id">
+      <select class="form-control data_input" id="occupation_id">
         <option value="">--เลือก--</option>
 <?php
 $sql="select * from `coccupation` ";
@@ -151,7 +157,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_out_code">
+          <select class="form-control data_input" id="changwat_out_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -167,14 +173,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_out_code">
+          <select class="form-control data_input" id="ampur_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_out_code">
+          <select class="form-control data_input" id="tambon_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -196,7 +202,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_work_code">
+          <select class="form-control data_input" id="changwat_work_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -212,14 +218,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_work_code">
+          <select class="form-control data_input" id="ampur_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_work_code">
+          <select class="form-control data_input" id="tambon_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -231,17 +237,16 @@ for ($i=0;$i<count($rows);$i++) {
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
     <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
+      <input name="datepicker" class="form-control datepicker data_input" id="date_to_sakonnakhon"/>
     </div>
 
     <div class="card">
       <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
-
         <div class="form-group">
         <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-        <select class="form-control" id="ampur_in_code">
+        <select class="form-control data_input" id="ampur_in_code">
           <option value="">--เลือก--</option>
 <?php
 $sql="select * from `ampur` where changwat_code='47' ";
@@ -257,19 +262,19 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
         <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-        <select class="form-control" id="tambon_in_code">
+        <select class="form-control data_input" id="tambon_in_code">
           <option value="">--เลือก--</option>
         </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="moo_in_code">
+          <input type="text" class="form-control data_input" id="moo_in_code">
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="house_in_no">
+          <input type="text" class="form-control data_input" id="house_in_no">
         </div>
 
       </div>
@@ -278,11 +283,21 @@ for ($i=0;$i<count($rows);$i++) {
 
 </div>
 
-<div style="width: 100%; padding: 20px;">
-  <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
-    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave"  disabled>บันทึก</button>
-    <!-- <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button> -->
+<div style="width: 100%; padding: 5px; display: flex; flex-flow: row wrap;">
+
+  <div class="col-lg-12 col-md-12 col-sm-12">
+
+    <div class="card" style="padding: 0px; background-color: white; border-radius: 5px; margin-top: 20px;">
+      <div class="card-body" style="padding:10px;">
+        <div id="req_info" style="color: red; text-align: center; margin-bottom: 10px;">
+          [<span id="req_pass">0</span>/<span id="req_all">0</span>] <span id="req_text">ท่านกรอกข้อมูล *จำเป็น ยังไม่ครบ</span>
+        </div>
+        <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave" disabled>บันทึก</button>
+      </div>
+    </div>
+
   </div>
+
 </div>
 
 <div style="height: 200"><br></div>
@@ -328,7 +343,7 @@ $("#btnSave").click(function() {
     ampur_in_code : $("#ampur_in_code").val(),
   }
   // console.log(data);
- 
+
   var not_complete=0;
   input_required.forEach(element => {
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
@@ -494,6 +509,44 @@ $("#address_work").click(function() {
     $("#changwat_work_code").val('');
     $("#ampur_work_code").val('');
     $("#tambon_work_code").val('');
+  }
+});
+
+$(".data_input").on('keyup change',function() {
+  var id=$(this).attr('id');
+  var x=$(this).val();
+
+  if (typeof require_list[id] != "undefined") {
+    if (x.trim()=="" | x==null | typeof x =="undefined") {
+      require_list[id]=0;
+      $("#"+id).parent().find(".required").css({'color':'red'});
+    }
+    else {
+      require_list[id]=1;
+      $("#"+id).parent().find(".required").css({'color':'#00de0a'});
+    }
+  }
+
+  var req_all=0;
+  var req_pass=0;
+  $.each(require_list,function(k,v){
+    req_all=req_all+1
+    if (v===1) {
+      req_pass=req_pass+1;
+    }
+  });
+
+  $("#req_pass").text(req_pass);
+
+  if (req_all===req_pass) {
+    $("#btnSave").prop( "disabled", false );
+    $("#req_text").text("กรอกข้อมูล *จำเป็น ครบแล้ว");
+    $("#req_info").css({'color':'#00de0a'});
+  }
+  else {
+    $("#btnSave").prop( "disabled", true );
+    $("#req_text").text("ท่านกรอกข้อมูล *จำเป็น ยังไม่ครบ");
+    $("#req_info").css({'color':'red'});
   }
 });
 
