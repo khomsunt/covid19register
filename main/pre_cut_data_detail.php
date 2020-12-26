@@ -61,7 +61,7 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Carousel Template · Bootstrap</title>
+    <title><?php echo $projectTitle; ?></title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
