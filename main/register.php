@@ -54,7 +54,7 @@ function thaiMonthShort($x) {
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','tambon_out_code','ampur_in_code','tambon_in_code'];
+var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','tambon_out_code','ampur_in_code','tambon_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -351,6 +351,7 @@ $("#btnSave").click(function() {
         // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
         // $("#modal01").modal('show');
         // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+
         goPageSuggestion();
       }
     });
