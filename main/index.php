@@ -17,7 +17,6 @@ $sql_common="select
     left join risk_level r on c.risk_level_id=r.risk_level_id 
     left join ampur47 a on c.ampur_in_code=a.ampur_code ";
 switch ($_SESSION['group_id']) {
-  case 0:
   case 1:
   case 2:
   case 4:
@@ -161,6 +160,9 @@ include("./header.php");
 
     <!-- Three columns of text below the carousel -->
     <div class="row">
+      <?php
+      if ($_SESSION['group_id'>0]){
+      ?>
       <div class="col-lg-4">
         <?php
           $count_rows_risk_level=0;
@@ -222,7 +224,8 @@ include("./header.php");
         } ?>
 
       </div><!-- /.col-lg-4 -->
-
+      <?php 
+      } ?>
 
       <!-- <div class="col-lg-4">
         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
