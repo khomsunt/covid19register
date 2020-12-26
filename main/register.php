@@ -54,7 +54,7 @@ function thaiMonthShort($x) {
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','tambon_out_code','ampur_in_code','tambon_in_code'];
+var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -188,7 +188,7 @@ for ($i=0;$i<count($rows);$i++) {
         <div class="form-check">
           <input type="checkbox" class="form-check-input risk_area_input" id="address_work">
           <label class="form-check-label" for="address_work">
-            เป็นพื้นที่เดียวกันกับที่พักอาศัย
+            เป็นที่อยู่เดียวกันกับที่พักอาศัย
           </label>
         </div>
       </div>
@@ -348,9 +348,11 @@ $("#btnSave").click(function() {
       // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
-        $("#modal01").modal('show');
-        $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+        // $("#modal01_body").html('ลงทะเบียนเสร็จเรียบร้อยแล้วค่ะ');
+        // $("#modal01").modal('show');
+        // $( "#btnInsideModal" ).bind( "click", goPageSuggestion );
+
+        goPageSuggestion();
       }
     });
   }
