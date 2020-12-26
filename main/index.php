@@ -68,7 +68,7 @@ $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Carousel Template · Bootstrap</title>
+    <title><?php echo $projectTitle; ?></title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
 
@@ -161,7 +161,7 @@ include("./header.php");
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <?php
-      if ($_SESSION['group_id'>0]){
+      if ($_SESSION['group_id']>0){
       ?>
       <div class="col-lg-4">
         <?php
