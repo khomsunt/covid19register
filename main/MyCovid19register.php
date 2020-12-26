@@ -2,6 +2,9 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+if ($_SESSION['group_id']<=0){
+  header("Location: ./login.php");
+}
 include('../include/config.php');
 include('../include/functions.php');
 $sql="select c.*,
@@ -32,14 +35,15 @@ left join coccupation o on c.occupation_id=o.occupation_id
 left join risk_level r on c.risk_level_id=r.risk_level_id
 left join risk_level r2 on c.evaluate_level=r2.risk_level_id
 left join prename p on c.prename_id=p.prename_id";
-if ($_SESSION['group_id']==3){
+// if ($_SESSION['group_id']==3){
   $sql.=" where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
-}else{
-  $sql.=" where c.risk_level_id=:risk_level_id";
-}
+// }else{
+//   $sql.=" where c.risk_level_id=:risk_level_id";
+// }
 if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
 }
+$sql.=" limit 20";
 // echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
 // echo "<br>node_id=".$_SESSION['node_id'];
 // echo $sql;
