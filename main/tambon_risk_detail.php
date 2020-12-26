@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 include('../include/config.php');
 
 $sql_current_cut=" SELECT t.*, r.* from tambon t
-LEFT JOIN risk_status r on t.risk_status_id = r.risk_status_id
+LEFT JOIN risk_level r on t.risk_status_id = r.risk_level_long_name
 where ampur_code_full =".$_POST['ampur_code_full'];
 
 $obj=$connect->prepare($sql_current_cut);
@@ -69,7 +69,8 @@ include("./header.php");
   </thead>
   <tbody>
       <?php
-      $sql="select * from risk_status";
+      //$sql="select * from risk_status";
+      $sql="select * from risk_level where not risk_level_id ='99'  order by risk_level_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -79,22 +80,16 @@ include("./header.php");
             <tr>
             <td><?php echo $value['tambon_name']; ?></td>
             <td>
-                <div class="btn-group">
-                    <button type="button" 
-                    <?php if($value['risk_status_id']==0){ ?> 
-                        class="btn btn-warning dropdown-toggle" 
-                    <?php }else{ ?> 
-                        class="btn btn-danger dropdown-toggle" 
-                    <?php } ?> 
-                        data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_status_name']; ?>
+            <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <?php echo $value['risk_level_long_name']; ?>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php
                         foreach ($rows_risk as $key_risk_area => $value_area) {
                             ?>
-                            <button tambon_code_full="<?php echo $value['tambon_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_status_id']; ?>" class="dropdown-item btn-change-area" type="button">
-                                <?php echo $value_area['risk_status_name']; ?>
+                            <button ampur_code_full="<?php echo $value['ampur_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_level_id']; ?>" class="dropdown-item btn-change-ampur-risk" type="button">
+                                <?php echo $value_area['risk_level_long_name']; ?>
                             </button>
                             <?php
                         }
