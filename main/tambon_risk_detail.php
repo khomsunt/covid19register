@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 include('../include/config.php');
 
 $sql_current_cut=" SELECT t.*, r.* from tambon t
-LEFT JOIN risk_level r on t.risk_status_id = r.risk_level_long_name
+LEFT JOIN risk_level r on t.risk_status_id = r.risk_level_id
 where ampur_code_full =".$_POST['ampur_code_full'];
 
 $obj=$connect->prepare($sql_current_cut);
@@ -88,7 +88,7 @@ include("./header.php");
                         <?php
                         foreach ($rows_risk as $key_risk_area => $value_area) {
                             ?>
-                            <button ampur_code_full="<?php echo $value['ampur_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_level_id']; ?>" class="dropdown-item btn-change-ampur-risk" type="button">
+                            <button tambon_code_full="<?php echo $value['tambon_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_level_id']; ?>" class="dropdown-item btn-change-area" type="button">
                                 <?php echo $value_area['risk_level_long_name']; ?>
                             </button>
                             <?php

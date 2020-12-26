@@ -63,7 +63,6 @@ include("./header.php");
     <tr>
       <th data-card-title>ชื่ออำเภอ</th>
       <th>รวมตำบล</th>
-      <th>ฟหกฟหก</th>
       <th data-card-footer>รายละเอียด</th>
     </tr>
   </thead>
