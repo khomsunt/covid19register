@@ -2,10 +2,11 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+include('../include/config.php');
 ?>
 <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="./index.php">สกลชนะโควิด</a>
+    <a class="navbar-brand" href="./index.php"><?php echo $projectTitle; ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,7 +31,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="./risk_area.php">พื้นที่เสี่ยง</a>
+            <a class="nav-link" href="./changwat_risk.php">พื้นที่เสี่ยง</a>
           </li>
           <?php
         } ?>

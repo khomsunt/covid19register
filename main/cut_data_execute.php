@@ -13,7 +13,7 @@ $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
-$now_date_time=date('Y-m-d H:m:s');
+$now_date_time=date('Y-m-d H:i:s');
 foreach ($rows as $rows_i => $row) {
     echo "<br><br>";
     // print_r($row);

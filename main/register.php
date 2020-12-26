@@ -40,7 +40,7 @@ function thaiMonthShort($x) {
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>สกลชนะโควิด</title>
+    <title><?php echo $projectTitle ?></title>
 
     <script src="../js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -108,7 +108,7 @@ $(document).ready(function () {
     <img src="../image/logo_ssj.png" width="70" style="margin-right: 10px;">
   </div>
 
-  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;">สกลชนะโควิด</h2>
+  <h2 style="text-align:center; margin-top: 20px; margin-bottom: 20px;"><?php echo $projectTitle ?></h2>
 
   <div class="form-group">
     <label for="exampleFormControlSelect1">คำนำหน้าชื่อ <span class="required"></span></label>
