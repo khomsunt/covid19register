@@ -3,6 +3,34 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include('../include/config.php');
+$sql_cut_data="SELECT
+c.cut_datetime,
+count(*) AS cut_all,
+sum(
+IF
+( c.risk_level_id = 1, 1, 0 )) AS risk_level_1,
+sum(
+IF
+( c.risk_level_id = 2, 1, 0 )) AS risk_level_2,
+sum(
+IF
+( c.risk_level_id = 3, 1, 0 )) AS risk_level_3,
+sum(
+IF
+( c.risk_level_id = 4, 1, 0 )) AS risk_level_4,
+u.fname,
+u.lname
+FROM
+covid_register_cut c 
+left join user u on c.cut_user_id=u.user_id
+where c.cut_datetime=:cut_datetime
+GROUP BY
+c.cut_datetime";
+$obj=$connect->prepare($sql_cut_data);
+$obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
+$rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+
 $sql="select c.*,
   cw.changwat_name as changwat_name_out,
   a.ampur_name as ampur_name_out,
