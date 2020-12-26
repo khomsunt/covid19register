@@ -280,7 +280,7 @@ for ($i=0;$i<count($rows);$i++) {
 
 <div style="width: 100%; padding: 20px;">
   <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
-    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave"  disabled>บันทึก</button>
+    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave">บันทึก</button>
     <!-- <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button> -->
   </div>
 </div>
