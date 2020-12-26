@@ -40,7 +40,7 @@ function thaiMonthShort($x) {
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Jekyll v4.1.1">
-  <title>ลงทะเบียนเข้าสกลนคร</title>
+  <title>รายงานตัวเข้าสกลนคร</title>
 
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -87,11 +87,11 @@ $(document).ready(function () {
 
 <div style="width: 100%; padding: 20px;">
   <div style="padding-top: 10px; padding-bottom: 10px; border-radius: 5px; background-color:rgba(250, 255, 255, 0.5);">
-    <h4 style="text-align:center; color: black;">ลงทะเบียนเข้าสกลนคร</h4>
+    <h4 style="text-align:center; color: black;">รายงานตัวเข้าสกลนคร</h4>
   </div>
 </div>
 
-<div style="width: 100%; padding: 20px; padding-top: 0px; display: flex; justify-content: space-between;">
+<!-- <div style="width: 100%; padding: 20px; padding-top: 0px; display: flex; justify-content: space-between;">
   <div style="width: 100%; border: solid 4px #4db1ff; border-radius: 10px; padding: 15px; text-align: center; background-color: white; margin-right: 0px;">
     ท่านสามารถรายงานตัวออนไลน์ล่วงหน้า ก่อนที่จะเข้าสู่พื้นที่จังหวัดสกลนคร ผ่านเว็บไซต์นี้ <br>
     หรือ รายงานตัวกับ อสม./ผู้ใหญ่บ้าน/ผู้นำชุมชน ทันทีที่เดินทางถึงพื้นที่ปลายทางค่ะ <br> 
@@ -100,7 +100,7 @@ $(document).ready(function () {
   <div style="margin-left: -20px;">
     <img src="../image/cartoon_nurse_03.png" width="70px">
   </div>
-</div>
+</div> -->
 
 <div style="width: 100%; padding: 5px; display: flex; flex-flow: row wrap;">
 
