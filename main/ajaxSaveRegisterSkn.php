@@ -55,11 +55,11 @@ if ($evaluate_level<3) {
     }
 }
 
-if ($evaluat_level==2){
+if ($evaluate_level==2){
     $risk_level_id=0; 
     $auto_cut_status_id=0;
 }else{
-    $risk_level_id=$evaluate_status_id; 
+    $risk_level_id=$evaluate_level; 
     $auto_cut_status_id=1;
 }
 
