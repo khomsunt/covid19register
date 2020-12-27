@@ -64,6 +64,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   <body>
 <?php
 include("./header.php");
+$cut_datetime  = $_POST['cut_datetime'];
 ?>
 <main role="main" style="margin-top:60px;">
 <div class="container">
@@ -74,9 +75,23 @@ include("./header.php");
 <div class="table-responsive">
 <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
+  <tr class="text-center" >
+  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h4></th>
+  </tr>
   <tr>
-  <th colspan="39"><h5>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h5></th>
-  <th colspan="39"><h3>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h3></th>
+  <th colspan="39" style="background-color:#C8C6C5">
+  <h5>
+  หมายเหตุ (1) หมายถึง ผู้เดินทางมาจากจังหวัดสมุทรสาคร (ไม่เกี่ยวข้องกับตลาดอาหารปลา)<br>
+  หมายเหตุ (2) หมายถึง ผู้มีประหวัดเกี่ยวข้องกับตลาดอาหารทะเลทั้งหมดในจังหวัดสมุทรสาคร<br>
+  หมายเหตุ (3) หมายถึง ผู้ประกอบการ/พ่อค้า แม่ค้า ที่มีการติดต่อกับอาหารทะเลทั้งหมดในจังหวัดสมุทรสาคร<br>
+  หมายเหตุ (2) หมายถึง พนักงานขับรถและผู้สัมผัสใกล้ชิดรถขนส่งอาหารจำหน่ายอาหารทะเลในจังหวัดสมุทรสาคร<br>
+  หมายเหตุ (2) หมายถึง แรงงานต่างด้าว ในพื้นที่จังหวัดสกลนคร<br>
+  </h5>
+  </th>
+  <th colspan="39"></th>
+  </tr>
+  <tr>
+  <th colspan="39"></th>
   </tr>
   <tr class="text-center">
     <th rowspan="2">วันที่ตัดข้อมูล</th>
@@ -271,7 +286,7 @@ include("./header.php");
             var $btnDLtoExcel = $('.btn_cut_print');
             $btnDLtoExcel.on('click', function Export() {
             $("#myTable").table2excel({
-                filename: "aummmmmmmmm.xls"
+                filename: "<?php echo $_POST['cut_datetime']?>"+".xls"
             });
             });
             
