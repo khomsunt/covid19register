@@ -142,11 +142,7 @@ $(function(){
       $("#forExcelExport").table2excel({
         filename: "uuuuuuuu.xls"
       });
-      // console.log(jQuery.parseJSON(x));
-      // var r=jQuery.parseJSON(x).data;
-      // if (r.status=="success") {
 
-      // }
     });
   });   
 })
