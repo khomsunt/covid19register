@@ -284,9 +284,13 @@ $cut_datetime  = $_POST['cut_datetime'];
       </script>
       <script type="text/javascript">
             var $btnDLtoExcel = $('.btn_cut_print');
+            var file_name="<?php echo $_POST['cut_datetime']?>";
+            file_name=file_name.replaceAll('-','');
+            file_name=file_name.replaceAll(' ','');
+            file_name=file_name.replaceAll(':','');
             $btnDLtoExcel.on('click', function Export() {
             $("#myTable").table2excel({
-                filename: "<?php echo $_POST['cut_datetime']?>"+".xls"
+                filename: file_name+".xls"
             });
             });
             
