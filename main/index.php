@@ -10,14 +10,24 @@ include('../include/config.php');
 include('../include/functions.php');
 
 $sql_common="select 
-    c.risk_level_id,
-    r.risk_level_long_name,
-    r.risk_level_name,
-    count(c.covid_register_id) as count_risk_level 
-    from 
-    covid_register c 
-    left join risk_level r on c.risk_level_id=r.risk_level_id 
-    left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+  c.risk_level_id,
+  r.risk_level_long_name,
+  r.risk_level_name,
+  count(c.covid_register_id) as count_risk_level 
+  from 
+  covid_register c 
+  left join risk_level r on c.risk_level_id=r.risk_level_id 
+  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+$sql_e_common="select 
+  c.evaluate_level,
+  r.risk_level_long_name,
+  r.risk_level_name,
+  count(*) as count_e 
+  from 
+  covid_register c 
+  left join risk_level r on c.risk_level_id=r.risk_level_id 
+  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+
 switch ($_SESSION['group_id']) {
   case 1:
   case 2:
@@ -31,6 +41,19 @@ switch ($_SESSION['group_id']) {
     $sql_all=$sql_common."
       group by
       c.risk_level_id";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      group by 
+      c.evaluate_level";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      group by 
+      c.evaluate_level";
+    $sql_e_all=$sql_e_common."
+      group by 
+      c.evaluate_level";
     break;
   case 3:
     $sql=$sql_common."
@@ -44,6 +67,23 @@ switch ($_SESSION['group_id']) {
       a.node_id=:user_node_id 
       group by
       c.risk_level_id";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      and a.node_id=:user_node_id 
+      group by 
+      c.evaluate_level";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      and a.node_id=:user_node_id 
+      group by 
+      c.evaluate_level";
+    $sql_e_all=$sql_e_common."
+      where 
+      a.node_id=:user_node_id 
+      group by 
+      c.evaluate_level";
     break;
   default:
     # code...
@@ -58,8 +98,23 @@ $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 $obj=$connect->prepare($sql_all);
 $obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
 $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
-
 // print_r($rows_risk_level_all);
+
+// echo "<br>sql_e_pending=".$sql_e_pending;
+$obj=$connect->prepare($sql_e_pending);
+$obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
+$rows_e_pending=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+// echo "<br>sql_e_cutted=".$sql_e_cutted;
+$obj=$connect->prepare($sql_e_cutted);
+$obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
+$rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+// echo "<br>sql_e_all=".$sql_e_all;
+$obj=$connect->prepare($sql_e_all);
+$obj->execute([ 'user_node_id' => $_SESSION['node_id'] ]);
+$rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -159,16 +214,18 @@ include("./header.php");
   <!-- Wrap the rest of the page in another container to center all the content. -->
 
   <div class="container marketing">
+    <center>
+      <h5>ข้อมูลการประเมิน (จนท.)</h5>
+    </center>
+    <?php
+      // print_r($_SESSION);
+      if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+      ?>
+      <center>
+      <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
+      </center>
       <?php
-        // print_r($_SESSION);
-        if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
-        ?>
-        <center>
-        <h5>ข้อมูลการรายงานตัวเข้าสกลนคร</h5>
-        <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
-        </center>
-        <?php
-      }?>
+    }?>
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <?php
@@ -250,6 +307,121 @@ include("./header.php");
         <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
         <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
       </div>/.col-lg-4 -->
+    </div><!-- /.row -->
+
+
+    <center>
+      <h5>ข้อมูลการประเมินตนเอง</h5>
+    </center>
+    <?php
+      // print_r($_SESSION);
+      if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+      ?>
+      <center>
+      <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
+      </center>
+      <?php
+    }?>
+    <div class="row">
+      <?php
+        if ($_SESSION['group_id']>0){
+      ?>
+
+      <div class="col-lg-4">
+        <?php
+          $count_rows_e_pending=0;
+          foreach ($rows_e_pending as $key=>$value){
+            $count_rows_e_pending+=$value['count_e'];
+          }
+        ?>
+        <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_e_pending; ?></span></h5>
+        <?php
+        $sql="select * from risk_level order by risk_level_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($rows_e_pending as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-4 -->
+
+      <div class="col-lg-4">
+        <?php
+          $count_rows_e_cutted=0;
+          foreach ($rows_e_cutted as $key=>$value){
+            $count_rows_e_cutted+=$value['count_e'];
+          }
+        ?>
+        <h5>ข้อมูลตัดแล้ว <span class="badge badge-primary"><?php echo $count_rows_e_cutted; ?></span></h5>
+        <?php
+        $sql="select * from risk_level order by risk_level_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($rows_e_cutted as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-4 -->
+
+      <div class="col-lg-4">
+        <?php
+          $count_rows_e_all=0;
+          foreach ($rows_e_all as $key=>$value){
+            $count_rows_e_all+=$value['count_e'];
+          }
+        ?>
+        <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
+        <?php
+        $sql="select * from risk_level order by risk_level_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($rows_e_all as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-4 -->
+
+      <?php 
+      } ?>
     </div><!-- /.row -->
 
 

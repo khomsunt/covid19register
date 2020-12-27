@@ -132,18 +132,18 @@ $(function(){
   });
 
   $(".btn_cut_print").click(function() {
-    console.log('btn_cut_print----------');
+    //console.log('btn_cut_print----------');
     var file_name=$(this).attr('cut_datetime').toString();
-    console.log(file_name);
+    //console.log(file_name);
     file_name=file_name.replaceAll('-','');
     file_name=file_name.replaceAll(' ','');
     file_name=file_name.replaceAll(':','');
-    console.log(file_name);
+    //console.log(file_name);
     $.ajax({method: "POST", url: "ajaxExportCutData.php",
       data: {cut_datetime: $(this).attr("cut_datetime") }
     })
     .done(function(x) {
-     console.log(x);
+    // console.log(x);
       $("#forExcelExport").append(x);
       $("#forExcelExport").table2excel({
         filename: file_name+".xls"
