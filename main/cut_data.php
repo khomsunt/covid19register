@@ -108,22 +108,48 @@ include("./header.php");
     </tbody>
     </table>
 </main>
+
+<div id="forExcelExport" style="display: none;"></div>
+
 <!-- FOOTER -->
 <?php
 include("./footer.php");
 ?>
 <script src="../js/jquery-3.2.1.min.js" ></script>
-      <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-      <script src="../js/tableToCards.js"></script>
-      <script>
-        $(function(){
-            $(".btn_cut_data_detail").click(function(){
-                console.log($(this).attr("cut_datetime"));
-                var form = $('<form action="./cut_data_detail.php" method="post"><input type="hidden" name="cut_datetime" value="' + $(this).attr("cut_datetime") + '"></input>' + '</form>');
-                $('body').append(form);
-                $(form).submit();                
-            })
-        })
-      </script>
+<script>
+  window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')
+</script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/tableToCards.js"></script>
+<script src='../js/table2excel.js'></script>
+<script>
+$(function(){
+  $(".btn_cut_data_detail").click(function(){
+      console.log($(this).attr("cut_datetime"));
+      var form = $('<form action="./cut_data_detail.php" method="post"><input type="hidden" name="cut_datetime" value="' + $(this).attr("cut_datetime") + '"></input>' + '</form>');
+      $('body').append(form);
+      $(form).submit();                
+  });
+
+  $(".btn_cut_print").click(function() {
+    console.log('btn_cut_print----------');
+    $.ajax({method: "POST", url: "ajaxExportCutData.php",
+      data: {}
+    })
+    .done(function(x) {
+      // console.log(x);
+      $("#forExcelExport").append(x);
+      $("#forExcelExport").table2excel({
+        filename: "uuuuuuuu.xls"
+      });
+      // console.log(jQuery.parseJSON(x));
+      // var r=jQuery.parseJSON(x).data;
+      // if (r.status=="success") {
+
+      // }
+    });
+  });   
+})
+</script>
       
 </html>
