@@ -7,6 +7,8 @@ if (session_status() == PHP_SESSION_NONE) {
 // }
 // print_r($_SESSION);
 include('../include/config.php');
+include('../include/functions.php');
+
 $sql_common="select 
     c.risk_level_id,
     r.risk_level_long_name,
@@ -101,7 +103,7 @@ $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:20px;">
 
   <!-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -157,7 +159,16 @@ include("./header.php");
   <!-- Wrap the rest of the page in another container to center all the content. -->
 
   <div class="container marketing">
-
+      <?php
+        // print_r($_SESSION);
+        if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+        ?>
+        <center>
+        <h5>ข้อมูลการรายงานตัวเข้าสกลนคร</h5>
+        <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
+        </center>
+        <?php
+      }?>
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <?php
@@ -170,7 +181,7 @@ include("./header.php");
             $count_rows_risk_level+=$value['count_risk_level'];
           }
         ?>
-        <h4>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h4>
+        <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
@@ -201,7 +212,7 @@ include("./header.php");
             $count_rows_risk_level_all+=$value['count_risk_level_all'];
           }
         ?>
-        <h4>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h4>
+        <h5>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);

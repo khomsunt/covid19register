@@ -3,7 +3,7 @@ include('../include/config.php');
 
 $status="";
 
-$sql=" select * from covid_register ";
+$sql=" select * from covid_register limit 1000,500 ";
 $obj=$connect->prepare($sql);
 // $obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
 $obj->execute();
