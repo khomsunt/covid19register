@@ -99,7 +99,7 @@ include("./header.php");
                 <td><?php echo $value['cut_all']; ?></td>
                 <td><?php echo $value['fname']." ".$value['lname']; ?></td>
                 <td>
-                    <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+                    <button cut_datetime="<?php echo $value['cut_datetime']; ?> type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
                     <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
                 </td>
             </tr>
@@ -132,12 +132,12 @@ $(function(){
   });
 
   $(".btn_cut_print").click(function() {
-    console.log('btn_cut_print----------');
+    //console.log('btn_cut_print----------');
     $.ajax({method: "POST", url: "ajaxExportCutData.php",
-      data: {}
+      data: {cut_datetime: $(this).attr("cut_datetime") }
     })
     .done(function(x) {
-      // console.log(x);
+     console.log(cut_datetime);
       $("#forExcelExport").append(x);
       $("#forExcelExport").table2excel({
         filename: "uuuuuuuu.xls"
