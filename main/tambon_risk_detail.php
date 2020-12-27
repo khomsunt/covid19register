@@ -81,8 +81,19 @@ include("./header.php");
             <td><?php echo $value['tambon_name']; ?></td>
             <td>
             <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_level_long_name']; ?>
+                    <button type="button" 
+                    <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
+                          class="btn dropdown-toggle" style="background-color:#00FF00; " 
+                      <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
+                          class="btn dropdown-toggle" style="background-color:#FFFF00; "
+                      <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
+                          class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
+                      <?php } else {  //เสี่ยงสูง ?>
+                        class="btn dropdown-toggle" style="background-color:#FF0000; color:#FFFFFF"
+                      <?php } ?>
+                        data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                      <?php echo $value['risk_level_long_name']; ?>
+                      
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php

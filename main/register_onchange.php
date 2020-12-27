@@ -49,31 +49,14 @@ function thaiMonthShort($x) {
   <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
-
-  <style>
-  .modal {
-    overflow-y:auto;
-  }
-  .dupContentField {
-    display: inline; background-color: #b0e8ff; padding-left: 7px; padding-right: 7px; border-radius: 10px;
-  }
-  .dupContentFieldImportant{
-    display: inline; background-color: #0071ea; padding-left: 7px; padding-right: 7px; border-radius: 10px; color: #FFFFFF;
-  }
-  .dupContentValue {
-    display: inline;
-  }
-  .dupContentRow {
-    padding: 7px;
-  }
-  </style>
 </head>
 
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-// var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','date_to_sakonnakhon'];
-var input_required=['cid'];
+var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','date_to_sakonnakhon'];
+var require_list={};
+
 $(document).ready(function () {
   $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -91,7 +74,11 @@ $(document).ready(function () {
 
   input_required.forEach(element => {
     $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
+    require_list[element]=0;
   });
+  // console.log(require_list);
+  // console.log(Object.keys(require_list).length);
+  $("#req_all").text(Object.keys(require_list).length);
 });
 </script>
 
@@ -127,27 +114,27 @@ $(document).ready(function () {
 
     <div class="form-group">
       <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
-      <input type="text" class="form-control" id="fname" placeholder="">
+      <input type="text" class="form-control data_input" id="fname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
-      <input type="text" class="form-control" id="lname" placeholder="">
+      <input type="text" class="form-control data_input" id="lname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
-      <input type="text" class="form-control" id="cid" placeholder="">
+      <input type="text" class="form-control data_input" id="cid" placeholder="">
     </div>
   
     <div class="form-group">
       <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
-      <input type="text" class="form-control" id="tel" placeholder="">
+      <input type="text" class="form-control data_input" id="tel" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
-      <select class="form-control" id="occupation_id">
+      <select class="form-control data_input" id="occupation_id">
         <option value="">--เลือก--</option>
 <?php
 $sql="select * from `coccupation` ";
@@ -170,7 +157,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_out_code">
+          <select class="form-control data_input" id="changwat_out_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -186,14 +173,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_out_code">
+          <select class="form-control data_input" id="ampur_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_out_code">
+          <select class="form-control data_input" id="tambon_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -215,7 +202,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_work_code">
+          <select class="form-control data_input" id="changwat_work_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -231,14 +218,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_work_code">
+          <select class="form-control data_input" id="ampur_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_work_code">
+          <select class="form-control data_input" id="tambon_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -250,17 +237,16 @@ for ($i=0;$i<count($rows);$i++) {
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
     <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
+      <input name="datepicker" class="form-control datepicker data_input" id="date_to_sakonnakhon"/>
     </div>
 
     <div class="card">
       <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
-
         <div class="form-group">
         <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-        <select class="form-control" id="ampur_in_code">
+        <select class="form-control data_input" id="ampur_in_code">
           <option value="">--เลือก--</option>
 <?php
 $sql="select * from `ampur` where changwat_code='47' ";
@@ -276,19 +262,19 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
         <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-        <select class="form-control" id="tambon_in_code">
+        <select class="form-control data_input" id="tambon_in_code">
           <option value="">--เลือก--</option>
         </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="moo_in_code">
+          <input type="text" class="form-control data_input" id="moo_in_code">
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="house_in_no">
+          <input type="text" class="form-control data_input" id="house_in_no">
         </div>
 
       </div>
@@ -297,11 +283,21 @@ for ($i=0;$i<count($rows);$i++) {
 
 </div>
 
-<div style="width: 100%; padding: 20px;">
-  <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
-    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave">บันทึก</button>
-    <!-- <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button> -->
+<div style="width: 100%; padding: 5px; display: flex; flex-flow: row wrap;">
+
+  <div class="col-lg-12 col-md-12 col-sm-12">
+
+    <div class="card" style="padding: 0px; background-color: white; border-radius: 5px; margin-top: 20px;">
+      <div class="card-body" style="padding:10px;">
+        <div id="req_info" style="color: red; text-align: center; margin-bottom: 10px;">
+          [<span id="req_pass">0</span>/<span id="req_all">0</span>] <span id="req_text">ท่านกรอกข้อมูล *จำเป็น ยังไม่ครบ</span>
+        </div>
+        <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave" disabled>บันทึก</button>
+      </div>
+    </div>
+
   </div>
+
 </div>
 
 <div style="height: 200"><br></div>
@@ -315,75 +311,6 @@ for ($i=0;$i<count($rows);$i++) {
       </div>
       <div class="modal-footer" id="modal01_action" style="text-align: right;">
         <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="modal02" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">ตรวจพบข้อมูลลงทะเบียนซ้ำซ้อน</h5>
-      </div>
-      <div class="modal-body" id="modal02_body">
-        <u>ท่านทำการลงทะเบียน <span id="modal02_dup_count"></span> ครั้ง</u> โปรดเลือกข้อมูลชุดที่ตรงกับตัวท่านมากที่สุด แล้วกดปุ่มยืนยันค่ะ
-        <div id="modal02_dup_list">
-        </div>
-      </div>
-      <div class="modal-footer" id="modal02_action" style="text-align: right;">
-        <button type="button" class="btn btn-primary" id="btnConfirmDup" data-dismiss="modal" disabled>ยืนยัน</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="dup_item_master" style="display: none; margin-top: 20px; margin-bottom: 20px; border: solid 2px black; border-radius: 5px; padding: 5px; background-color: #eeeeee;">
-  <div style="dupContentRow">
-    <div class="dupContentFieldImportant">วันเวลาลงทะเบียน</div>
-    <div class="dupContentValue v_register_datetime"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">ชื่อสกุล</div>
-    <div class="dupContentValue v_fname_lname"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">เลขบัตรประจำตัวประชาชน</div>
-    <div class="dupContentValue v_cid"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">เบอร์โทรศัพท์</div>
-    <div class="dupContentValue v_tel"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">อาชีพ</div>
-    <div class="dupContentValue v_occupation"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">ที่พักอาศัยก่อนเดินทางเข้าสกลนคร</div>
-    <div class="dupContentValue v_address_home"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">ที่ทำงาน</div>
-    <div class="dupContentValue v_address_work"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">วันที่เดินทางเข้าถึงสกลนคร</div>
-    <div class="dupContentValue v_date_to_sakonnakhon"></div>
-  </div>
-  <div style="dupContentRow">
-    <div class="dupContentField">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
-    <div class="dupContentValue v_address_sakonnakhon"></div>
-  </div>
-  <div style="dupContentRow" style="width: 100%; padding: 10px;">
-    <div style="width: 100%; display:flex; flex-direction: row-reverse;">
-      <div class="form-check" style="width: 170px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
-        <input type="checkbox" class="form-check-input" id="choose_dup" style="margin-left: 0px;">
-        <label class="form-check-label" for="choose_dup" style="margin-left: 20px;">
-          เลือกข้อมูลชุดนี้
-        </label>
       </div>
     </div>
   </div>
@@ -416,7 +343,7 @@ $("#btnSave").click(function() {
     ampur_in_code : $("#ampur_in_code").val(),
   }
   // console.log(data);
- 
+
   var not_complete=0;
   input_required.forEach(element => {
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
@@ -434,79 +361,18 @@ $("#btnSave").click(function() {
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    var data_cid= { cid: data['cid'] };
-    $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-      data: data_cid
+    $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+      data: data
     })
     .done(function(x) {
       // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        if (r.register_data.length==0) {
-          // ไม่มีข้อมูลซ้ำ
-          $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-            data: data
-          })
-          .done(function(x) {
-            // console.log(jQuery.parseJSON(x));
-            var r=jQuery.parseJSON(x).data;
-            if (r.status=="success") {
-              setTimeout(() => {
-                goPageSuggestion();
-              }, 1000);
-            }
-          });
-        }
-        else {
-          $("#modal02_dup_list").empty();
-          var dupData=[];
-          var newData=data;
-          newData['data_entry']='NEW';
-          var s=$("select");
-          for (var sI=0;sI<s.length;sI=sI+1) {
-            var item=$(s[sI]);
-            var key=item.attr('id');
-            var opt=item.find("option:selected");
-            var value=opt.val()==""?" - ":opt.text();
-            newData[key]=value;
-          }
-          dupData=r.register_data;
-          dupData.push(newData);
-          console.log(dupData);
-          for (var i=0;i<dupData.length;i=i+1) {
-            var d=dupData[i];
-            var dup_item=$(".dup_item_master").clone();
-            dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
-            console.log(d.data_entry);
-            if (typeof d.data_entry == 'undefined') {
-              dup_item.find(".v_register_datetime").text(d.register_datetime);
-            }
-            else {
-              dup_item.find(".v_register_datetime").text('เวลาปัจจุบัน');
-            }
-            dup_item.find(".v_fname_lname").text(d.fname+" "+d.lname);
-            dup_item.find(".v_cid").text(d.cid);
-            dup_item.find(".v_tel").text(d.tel);
-            dup_item.find(".v_occupation").text(d.occupation_id);
-            dup_item.find(".v_address_home").text('ต.'+d.tambon_out_code+' อ.'+d.ampur_out_code+' จ.'+d.changwat_out_code);
-            dup_item.find(".v_address_work").text('ต.'+d.tambon_work_code+' อ.'+d.ampur_work_code+'จ.'+d.changwat_work_code);
-            dup_item.find(".v_date_to_sakonnakhon").text(dupData[i].date_to_sakonnakhon);
-            dup_item.find(".v_address_sakonnakhon").text(d.house_in_no+' ม.'+d.moo_in_code+' ต.'+d.tambon_in_code+' อ.'+d.ampur_in_code+' จ.สกลนคร');
-            $("#modal02_dup_list").append(dup_item);
-          }
-
-          setTimeout(() => {
-            $("#modal01").modal('hide');
-            $("#modal02_dup_count").text(dupData.length);
-            // $(".v-fname-lname").text(dupData[0].fname+" "+dupData[0].lname);
-            // $(".v-cid").text(dupData[0].cid);
-            // $("#modal02_dup_list").text(JSON.stringify(dupData));
-            $("#modal02").modal('show');            
-          }, 1000);
-        }
+        setTimeout(() => {
+          goPageSuggestion();
+        }, 1500);
       }
     });
-
   }
 });
 
@@ -643,6 +509,44 @@ $("#address_work").click(function() {
     $("#changwat_work_code").val('');
     $("#ampur_work_code").val('');
     $("#tambon_work_code").val('');
+  }
+});
+
+$(".data_input").on('keyup change',function() {
+  var id=$(this).attr('id');
+  var x=$(this).val();
+
+  if (typeof require_list[id] != "undefined") {
+    if (x.trim()=="" | x==null | typeof x =="undefined") {
+      require_list[id]=0;
+      $("#"+id).parent().find(".required").css({'color':'red'});
+    }
+    else {
+      require_list[id]=1;
+      $("#"+id).parent().find(".required").css({'color':'#00de0a'});
+    }
+  }
+
+  var req_all=0;
+  var req_pass=0;
+  $.each(require_list,function(k,v){
+    req_all=req_all+1
+    if (v===1) {
+      req_pass=req_pass+1;
+    }
+  });
+
+  $("#req_pass").text(req_pass);
+
+  if (req_all===req_pass) {
+    $("#btnSave").prop( "disabled", false );
+    $("#req_text").text("กรอกข้อมูล *จำเป็น ครบแล้ว");
+    $("#req_info").css({'color':'#00de0a'});
+  }
+  else {
+    $("#btnSave").prop( "disabled", true );
+    $("#req_text").text("ท่านกรอกข้อมูล *จำเป็น ยังไม่ครบ");
+    $("#req_info").css({'color':'red'});
   }
 });
 
