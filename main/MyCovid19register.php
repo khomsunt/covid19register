@@ -113,7 +113,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               if ($_GET['type']=='new'){
             ?>    
             <th>ผลการประเมินตนเอง</th>
-            <th>ผลการประเมิน (จนท)</th>
+            <!-- <th>ผลการประเมิน (จนท)</th> -->
             <?php } ?>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
@@ -154,7 +154,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 <?php echo $value['date_to_sakonnakhon']; ?>
               </div></td>
               <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
-              <?php
+              <!-- <?php
                 if ($_GET['type']=='new'){
                   ?>    
                   <td>
@@ -180,7 +180,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                     </span>
                   </td>
                   <?php 
-                } ?>
+                } ?> -->
               <td>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-telephone-fill" viewBox="0 0 16 16" stroke="blue" fill="yellow"
         fill-opacity="0.5" stroke-opacity="0.8">
