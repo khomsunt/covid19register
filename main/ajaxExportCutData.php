@@ -1,8 +1,6 @@
-<?php 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+<?php
 include('../include/config.php');
+$cut_datetime  = $_POST['cut_datetime'];
 $sql="select c.*,
 cw.changwat_name as changwat_name_out,
 a.ampur_name as ampur_name_out,
@@ -25,58 +23,11 @@ $obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.1.1">
-    
-    <title>Carousel Template · Bootstrap</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
-
-    <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
-
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    
-  </head>
-  <body>
-<?php
-include("./header.php");
-$cut_datetime  = $_POST['cut_datetime'];
-?>
-<main role="main" style="margin-top:60px;">
-<div class="container">
-    <!-- <h5>รายชื่อกลุ่มเสี่ยงประจำวันที่ <?php echo $_POST['cut_datetime']; ?></h5> -->
-    <!-- <h5>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h5> -->
-</div>
-<div><button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button></div>
 <div class="table-responsive">
 <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
-  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h4></th>
+  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง </h4></th>
   </tr>
   <tr>
   <th colspan="39" style="background-color:#C8C6C5">
@@ -251,51 +202,3 @@ $cut_datetime  = $_POST['cut_datetime'];
 </table>
 </div>
 
-
-
-</main>
-<button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
-
-  <!-- FOOTER -->
-  <?php
-  include("./footer.php");
-  ?>
-<script src="../js/jquery-3.2.1.min.js" ></script>
-      <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-      <script src="../js/tableToCards.js"></script>
-      <script src='../js/table2excel.js'></script>
-      <script>
-        $(function(){
-            $(".btn-change-risk-level").click(function(){
-                console.log($(this).attr("covid_register_id"));
-                $.ajax({
-                    method: "POST",
-                    url: "./changeRiskLevel.php",
-                    data: { covid_register_id: $(this).attr("covid_register_id"), risk_level_id: $(this).attr("risk_level_id") }
-                })
-                .done(function( msg ) {
-                  console.log(msg)
-                  location.reload();
-
-                  // $(this).parent().parent().children().first().html($(this).html())
-                })
-            })
-        })
-      </script>
-      <script type="text/javascript">
-            var $btnDLtoExcel = $('.btn_cut_print');
-            var file_name="<?php echo $_POST['cut_datetime']?>";
-            file_name=file_name.replaceAll('-','');
-            file_name=file_name.replaceAll(' ','');
-            file_name=file_name.replaceAll(':','');
-            $btnDLtoExcel.on('click', function Export() {
-            $("#myTable").table2excel({
-                filename: file_name+".xls"
-            });
-            });
-            
-
-        </script>
-
-        
-</html>

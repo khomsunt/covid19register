@@ -99,7 +99,7 @@ include("./header.php");
                 <td><?php echo $value['cut_all']; ?></td>
                 <td><?php echo $value['fname']." ".$value['lname']; ?></td>
                 <td>
-                    <button type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+                    <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
                     <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
                 </td>
             </tr>
@@ -108,22 +108,50 @@ include("./header.php");
     </tbody>
     </table>
 </main>
+
+<div id="forExcelExport" style="display: none;"></div>
+
 <!-- FOOTER -->
 <?php
 include("./footer.php");
 ?>
 <script src="../js/jquery-3.2.1.min.js" ></script>
-      <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-      <script src="../js/tableToCards.js"></script>
-      <script>
-        $(function(){
-            $(".btn_cut_data_detail").click(function(){
-                console.log($(this).attr("cut_datetime"));
-                var form = $('<form action="./cut_data_detail.php" method="post"><input type="hidden" name="cut_datetime" value="' + $(this).attr("cut_datetime") + '"></input>' + '</form>');
-                $('body').append(form);
-                $(form).submit();                
-            })
-        })
-      </script>
+<script>
+  window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')
+</script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/tableToCards.js"></script>
+<script src='../js/table2excel.js'></script>
+<script>
+$(function(){
+  $(".btn_cut_data_detail").click(function(){
+      console.log($(this).attr("cut_datetime"));
+      var form = $('<form action="./cut_data_detail.php" method="post"><input type="hidden" name="cut_datetime" value="' + $(this).attr("cut_datetime") + '"></input>' + '</form>');
+      $('body').append(form);
+      $(form).submit();                
+  });
+
+  $(".btn_cut_print").click(function() {
+    //console.log('btn_cut_print----------');
+    var file_name=$(this).attr('cut_datetime').toString();
+    //console.log(file_name);
+    file_name=file_name.replaceAll('-','');
+    file_name=file_name.replaceAll(' ','');
+    file_name=file_name.replaceAll(':','');
+    //console.log(file_name);
+    $.ajax({method: "POST", url: "ajaxExportCutData.php",
+      data: {cut_datetime: $(this).attr("cut_datetime") }
+    })
+    .done(function(x) {
+    // console.log(x);
+      $("#forExcelExport").append(x);
+      $("#forExcelExport").table2excel({
+        filename: file_name+".xls"
+      });
+
+    });
+  });   
+})
+</script>
       
 </html>
