@@ -56,7 +56,7 @@ if ($evaluate_level<3) {
 }
 
 if ($evaluate_level==2){
-    $risk_level_id=0; 
+    $risk_level_id=99; 
     $auto_cut_status_id=0;
 }else{
     $risk_level_id=$evaluate_level; 
