@@ -55,12 +55,21 @@ if ($evaluate_level<3) {
     }
 }
 
+if ($evaluat_level==2){
+    $risk_level_id=0; 
+    $auto_cut_status_id=0;
+}else{
+    $risk_level_id=$evaluate_status_id; 
+    $auto_cut_status_id=1;
+}
+
 $sql=" insert into covid_register ( ". 
 " fname,lname,cid,tel,occupation_id ".
 " ,tambon_out_code,ampur_out_code,changwat_out_code ". 
 " ,tambon_work_code,ampur_work_code,changwat_work_code ". 
 " ,date_to_sakonnakhon ". 
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
+" ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level ".
 " ) ".
 " value ( ".
@@ -80,6 +89,8 @@ $sql=" insert into covid_register ( ".
 ",'".$_POST['moo_in_code']."' ".
 ",'".$_POST['tambon_in_code']."' ".
 ",'".$_POST['ampur_in_code']."' ".
+",".$risk_level_id.
+",".$auto_cut_status_id.
 ",".$evaluate_level.
 " ) ";
 

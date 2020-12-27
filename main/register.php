@@ -379,11 +379,9 @@ for ($i=0;$i<count($rows);$i++) {
   </div>
   <div style="dupContentRow" style="width: 100%; padding: 10px;">
     <div style="width: 100%; display:flex; flex-direction: row-reverse;">
-      <div class="form-check" style="width: 170px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
-        <input type="checkbox" class="form-check-input" id="choose_dup" style="margin-left: 0px;">
-        <label class="form-check-label" for="choose_dup" style="margin-left: 20px;">
-          เลือกข้อมูลชุดนี้
-        </label>
+      <div style="width: 170px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+        <input class="form-check-input choose_dup_radio" type="radio" name="choose_dup" id="choose_dup" value="" style="margin-left: 10px;">
+        <label class="form-check-label choose_dup_label" for="choose_dup" style="margin-left: 30px;">เลือกข้อมูลชุดนี้</label>
       </div>
     </div>
   </div>
@@ -492,6 +490,9 @@ $("#btnSave").click(function() {
             dup_item.find(".v_address_work").text('ต.'+d.tambon_work_code+' อ.'+d.ampur_work_code+'จ.'+d.changwat_work_code);
             dup_item.find(".v_date_to_sakonnakhon").text(dupData[i].date_to_sakonnakhon);
             dup_item.find(".v_address_sakonnakhon").text(d.house_in_no+' ม.'+d.moo_in_code+' ต.'+d.tambon_in_code+' อ.'+d.ampur_in_code+' จ.สกลนคร');
+            dup_item.find(".choose_dup_radio").attr({'id':'choose_dup_'+i, 'name':'choose_dup'});
+            dup_item.find(".choose_dup_radio").val(i);
+            dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
             $("#modal02_dup_list").append(dup_item);
           }
 
@@ -509,6 +510,14 @@ $("#btnSave").click(function() {
 
   }
 });
+
+
+$('input[name="choose_dup"]').change(function() {
+  console.log('choose_dup-----------');
+  // var t=$(this);
+  // console.log(t.attr('id'));
+});
+
 
 function formatDate(d) {
   var r="";
