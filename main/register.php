@@ -51,8 +51,14 @@ function thaiMonthShort($x) {
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
 
   <style>
+  .modal {
+    overflow-y:auto;
+  }
   .dupContentField {
     display: inline; background-color: #b0e8ff; padding-left: 7px; padding-right: 7px; border-radius: 10px;
+  }
+  .dupContentFieldImportant{
+    display: inline; background-color: #0071ea; padding-left: 7px; padding-right: 7px; border-radius: 10px; color: #FFFFFF;
   }
   .dupContentValue {
     display: inline;
@@ -322,20 +328,23 @@ for ($i=0;$i<count($rows);$i++) {
         <h5 class="modal-title">ตรวจพบข้อมูลลงทะเบียนซ้ำซ้อน</h5>
       </div>
       <div class="modal-body" id="modal02_body">
-        <u>พบข้อมูลซ้ำกัน <span id="modal02_dup_count"></span> ชุด</u>
-        <br>เลือกข้อมูลชุดที่ตรงกับตัวท่านมากที่สุด หากข้อมูลเหมือนกันให้เลือกชุดใดชุดหนึ่ง แล้วกดปุ่มยืนยันค่ะ
+        <u>ท่านทำการลงทะเบียน <span id="modal02_dup_count"></span> ครั้ง</u> โปรดเลือกข้อมูลชุดที่ตรงกับตัวท่านมากที่สุด แล้วกดปุ่มยืนยันค่ะ
         <div id="modal02_dup_list">
         </div>
       </div>
       <div class="modal-footer" id="modal02_action" style="text-align: right;">
-        <button type="button" class="btn btn-secondary" id="btnInsideModal02" data-dismiss="modal">ตกลง</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmDup" data-dismiss="modal" disabled>ยืนยัน</button>
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="dup_item_master" style="display: none; margin-bottom: 10px; border: solid 1px gray; border-radius: 5px; padding: 5px;">
+<div class="dup_item_master" style="display: none; margin-top: 20px; margin-bottom: 20px; border: solid 2px black; border-radius: 5px; padding: 5px; background-color: #eeeeee;">
+  <div style="dupContentRow">
+    <div class="dupContentFieldImportant">วันเวลาลงทะเบียน</div>
+    <div class="dupContentValue v_register_datetime"></div>
+  </div>
   <div style="dupContentRow">
     <div class="dupContentField">ชื่อสกุล</div>
     <div class="dupContentValue v_fname_lname"></div>
@@ -367,6 +376,16 @@ for ($i=0;$i<count($rows);$i++) {
   <div style="dupContentRow">
     <div class="dupContentField">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
     <div class="dupContentValue v_address_sakonnakhon"></div>
+  </div>
+  <div style="dupContentRow" style="width: 100%; padding: 10px;">
+    <div style="width: 100%; display:flex; flex-direction: row-reverse;">
+      <div class="form-check" style="width: 170px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+        <input type="checkbox" class="form-check-input" id="choose_dup" style="margin-left: 0px;">
+        <label class="form-check-label" for="choose_dup" style="margin-left: 20px;">
+          เลือกข้อมูลชุดนี้
+        </label>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -439,17 +458,40 @@ $("#btnSave").click(function() {
           });
         }
         else {
+          $("#modal02_dup_list").empty();
           var dupData=[];
           var newData=data;
           newData['data_entry']='NEW';
+          var s=$("select");
+          for (var sI=0;sI<s.length;sI=sI+1) {
+            var item=$(s[sI]);
+            var key=item.attr('id');
+            var opt=item.find("option:selected");
+            var value=opt.val()==""?" - ":opt.text();
+            newData[key]=value;
+          }
           dupData=r.register_data;
           dupData.push(newData);
           console.log(dupData);
           for (var i=0;i<dupData.length;i=i+1) {
+            var d=dupData[i];
             var dup_item=$(".dup_item_master").clone();
             dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
-            dup_item.find(".v_fname_lname").text(dupData[i].fname+" "+dupData[i].lname);
-            dup_item.find(".v_cid").text(dupData[i].cid);
+            console.log(d.data_entry);
+            if (typeof d.data_entry == 'undefined') {
+              dup_item.find(".v_register_datetime").text(d.register_datetime);
+            }
+            else {
+              dup_item.find(".v_register_datetime").text('เวลาปัจจุบัน');
+            }
+            dup_item.find(".v_fname_lname").text(d.fname+" "+d.lname);
+            dup_item.find(".v_cid").text(d.cid);
+            dup_item.find(".v_tel").text(d.tel);
+            dup_item.find(".v_occupation").text(d.occupation_id);
+            dup_item.find(".v_address_home").text('ต.'+d.tambon_out_code+' อ.'+d.ampur_out_code+' จ.'+d.changwat_out_code);
+            dup_item.find(".v_address_work").text('ต.'+d.tambon_work_code+' อ.'+d.ampur_work_code+'จ.'+d.changwat_work_code);
+            dup_item.find(".v_date_to_sakonnakhon").text(dupData[i].date_to_sakonnakhon);
+            dup_item.find(".v_address_sakonnakhon").text(d.house_in_no+' ม.'+d.moo_in_code+' ต.'+d.tambon_in_code+' อ.'+d.ampur_in_code+' จ.สกลนคร');
             $("#modal02_dup_list").append(dup_item);
           }
 
