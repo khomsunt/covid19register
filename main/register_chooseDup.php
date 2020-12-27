@@ -92,7 +92,9 @@ $(document).ready(function () {
   input_required.forEach(element => {
     $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
   });
+
 });
+
 </script>
 
 <div style="width: 100%; padding-left: 20px; padding-top: 30px;">
@@ -333,7 +335,7 @@ for ($i=0;$i<count($rows);$i++) {
         </div>
       </div>
       <div class="modal-footer" id="modal02_action" style="text-align: right;">
-        <button type="button" class="btn btn-primary" id="btnConfirmDup" data-dismiss="modal" disabled>ยืนยัน</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmDup" disabled>ยืนยัน</button>
       </div>
     </div>
   </div>
@@ -379,7 +381,7 @@ for ($i=0;$i<count($rows);$i++) {
   </div>
   <div style="dupContentRow" style="width: 100%; padding: 10px;">
     <div style="width: 100%; display:flex; flex-direction: row-reverse;">
-      <div style="width: 170px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+      <div style="width: 150px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
         <input class="form-check-input choose_dup_radio" type="radio" name="choose_dup" id="choose_dup" value="" style="margin-left: 10px;">
         <label class="form-check-label choose_dup_label" for="choose_dup" style="margin-left: 30px;">เลือกข้อมูลชุดนี้</label>
       </div>
@@ -393,8 +395,9 @@ for ($i=0;$i<count($rows);$i++) {
 
 <script>
 var evaluate_level=0;
+var dupData=[];
 
-$("#btnSave").click(function() {
+function getInputData () {
   var data= {
     fname : $("#fname").val(),
     lname : $("#lname").val(),
@@ -413,6 +416,28 @@ $("#btnSave").click(function() {
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
   }
+  return data;
+}
+
+function ajaxInsert(data,goSuggestion) {
+  $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+    data: data
+  })
+  .done(function(x) {
+    // console.log(jQuery.parseJSON(x));
+    var r=jQuery.parseJSON(x).data;
+    if (r.status=="success") {
+      if (goSuggestion=='Y') {
+        setTimeout(() => {
+          goPageSuggestion();
+        }, 1000);
+      }
+    }
+  });
+}
+
+$("#btnSave").click(function() {
+  var data=getInputData();
   // console.log(data);
  
   var not_complete=0;
@@ -432,9 +457,13 @@ $("#btnSave").click(function() {
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    var data_cid= { cid: data['cid'] };
+    var 
+    var data_check= { 
+      cid : data['cid'],
+      tel : tel
+    };
     $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-      data: data_cid
+      data: data_check
     })
     .done(function(x) {
       // console.log(jQuery.parseJSON(x));
@@ -442,22 +471,11 @@ $("#btnSave").click(function() {
       if (r.status=="success") {
         if (r.register_data.length==0) {
           // ไม่มีข้อมูลซ้ำ
-          $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-            data: data
-          })
-          .done(function(x) {
-            // console.log(jQuery.parseJSON(x));
-            var r=jQuery.parseJSON(x).data;
-            if (r.status=="success") {
-              setTimeout(() => {
-                goPageSuggestion();
-              }, 1000);
-            }
-          });
+          ajaxInsert(data,'Y');
         }
         else {
           $("#modal02_dup_list").empty();
-          var dupData=[];
+          dupData=[];
           var newData=data;
           newData['data_entry']='NEW';
           var s=$("select");
@@ -493,6 +511,13 @@ $("#btnSave").click(function() {
             dup_item.find(".choose_dup_radio").attr({'id':'choose_dup_'+i, 'name':'choose_dup'});
             dup_item.find(".choose_dup_radio").val(i);
             dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
+            dup_item.find(".choose_dup_radio").bind('change',function() {
+              var dup_value=$('input[name="choose_dup"]:checked').val();
+              // console.log(dup_value);
+              if (dup_value!="" & dup_value!= null & typeof dup_value != "undefined") {
+                $("#btnConfirmDup").prop({'disabled':false});
+              }
+            });
             $("#modal02_dup_list").append(dup_item);
           }
 
@@ -511,13 +536,25 @@ $("#btnSave").click(function() {
   }
 });
 
-
-$('input[name="choose_dup"]').change(function() {
-  console.log('choose_dup-----------');
-  // var t=$(this);
-  // console.log(t.attr('id'));
+$("#btnConfirmDup").click(function() {
+  var dup_value=$('input[name="choose_dup"]:checked').val();
+  // console.log(dup_value);
+  // console.log(dupData[dup_value]);
+  var selected_data=dupData[dup_value];
+  // console.log(selected_data.data_entry);
+  if (typeof selected_data.data_entry != "undefined") {
+    $("#modal02").modal('hide');
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_action").css({'display':'none'});
+    $("#modal01").modal('show');
+    // ajaxInsert(selected_data,'N');
+    for (var i=0;i<dupData.length;i=i+1) {
+      if (i!=dup_value) {
+        console.log(dupData[i]);
+      }
+    }
+  }
 });
-
 
 function formatDate(d) {
   var r="";
