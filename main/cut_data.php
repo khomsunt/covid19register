@@ -99,7 +99,7 @@ include("./header.php");
                 <td><?php echo $value['cut_all']; ?></td>
                 <td><?php echo $value['fname']." ".$value['lname']; ?></td>
                 <td>
-                    <button cut_datetime="<?php echo $value['cut_datetime']; ?> type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+                    <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
                     <button cut_datetime="<?php echo $value['cut_datetime']; ?>" type="button" class="btn btn-info btn_cut_data_detail">รายละเอียด</button>
                 </td>
             </tr>
