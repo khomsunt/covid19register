@@ -137,7 +137,7 @@ $(function(){
       data: {cut_datetime: $(this).attr("cut_datetime") }
     })
     .done(function(x) {
-     console.log(cut_datetime);
+     console.log(x);
       $("#forExcelExport").append(x);
       $("#forExcelExport").table2excel({
         filename: "uuuuuuuu.xls"
