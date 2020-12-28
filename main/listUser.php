@@ -104,7 +104,7 @@ try {
               <td>
                 <a href="../main/userEdit.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">แก้ไข</a>
                 <a href="../main/userDelete.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-danger btn-delete-user">ลบ</a>
-                <a href="../main/userChangePassword.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">เปลี่ยนรหัสผ่าน</a>
+                <a href="../main/changePassword.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">เปลี่ยนรหัสผ่าน</a>
               </td>
             </tr>
           <?php 

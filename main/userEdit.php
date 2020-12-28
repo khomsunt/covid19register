@@ -92,8 +92,8 @@ $(document).ready(function () {
   <div class="form-group">
   <label for="user_login">Username <span class="required"></span></label>
     <input type="user_login" class="form-control" id="user_login" value="<?php echo $rows[0]['user_login']; ?>">
-    <label for="user_password">Password <span class="required"></span></label>
-    <input type="Password" class="form-control" id="user_password" value="<?php echo $rows[0]['user_password']; ?>">
+    <!-- <label for="user_password">Password <span class="required"></span></label>
+    <input type="Password" class="form-control" id="user_password" value="<?php echo $rows[0]['user_password']; ?>"> -->
 
     <label for="prename_id">คำนำหน้าชื่อ <span class="required"></span></label>
     <select class="form-control" id="prename_id" >
