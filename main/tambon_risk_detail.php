@@ -16,7 +16,11 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 <!doctype html>
 <html lang="en">
-  <head>
+  <head><?php
+    header("Cache-Control: private, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+  ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
