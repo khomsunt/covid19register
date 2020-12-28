@@ -128,8 +128,7 @@ include("./footer.php");
 <script src="../js/tableToCards.js"></script>
 <script src='../js/table2excel.js'></script>
 <script>
-$(function(){
-}
+
 </script>
       
 </html>
