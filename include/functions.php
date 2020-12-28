@@ -16,12 +16,13 @@
         global $connect;
         $sql="select ".$returnField." from ".$table." where ".$codeField."='".$value."'";
         $obj=$connect->prepare($sql);
-        $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
+        $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC); 
         $_return="";
         if (count($rows)>0){
             $_return=$rows[0][$returnField];
         }
         return $_return;       
+        //return $sql;
     }
 ?>

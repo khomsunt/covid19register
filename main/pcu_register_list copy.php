@@ -5,8 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br> <br> <br>";
-print_r($_SESSION);
+// echo "<br> <br> <br> <br> <br> <br>";
+// print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 $sql="select c.*,
@@ -21,7 +21,9 @@ $sql="select c.*,
   t47.tambon_name as tambon_name_in,
   o.occupation_name,
   r.risk_level_long_name,
-  r2.risk_level_long_name as evaluate_level_name
+  r2.risk_level_long_name as evaluate_level_name,
+  r.background_color,
+  r.color
   from covid_register c 
   left join changwat cw on c.changwat_out_code=cw.changwat_code 
   left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
@@ -36,7 +38,7 @@ $sql="select c.*,
   left join risk_level r2 on c.evaluate_level=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
-  $sql.=" where c.hospcode='".$_SESSION['office_code']."' ";
+$sql.=" where c.hospcode = :office_code";
 // }else{
 //   $sql.=" where c.risk_level_id=:risk_level_id";
 // }
@@ -44,7 +46,6 @@ if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
 }
 $sql.=" limit 20";
-echo $sql;
 // echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
 // echo "<br>node_id=".$_SESSION['node_id'];
 // echo $sql;
@@ -52,10 +53,9 @@ $obj=$connect->prepare($sql);
 // if ($_SESSION['group_id']==3){
 //   $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
 // }else{
-//   //$obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
-//   $obj->execute([ 'office_code' => $_SESSION['office_code'] ]);
+//   $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
 // }
-$obj->execute();
+$obj->execute([ 'office_code' => $_SESSION['office_code'] ]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
 ?>
@@ -98,8 +98,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <main role="main" style="margin-top:60px;">
       <div class="container">
-                <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้เดินทางเข้า <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
-        </h5>
+        <!-- <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้เดินทางเข้า <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
+        </h5> -->
       </div>
       <table class="table" id="myTable">
         <thead>
