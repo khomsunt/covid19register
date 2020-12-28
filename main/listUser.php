@@ -3,6 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include('../include/config.php');
+include('../include/functions.php');
             
 try {
   $query = 'SELECT * FROM user 
@@ -100,7 +101,7 @@ try {
               <td><?php echo htmlspecialchars($row['line_token']) ?></td>
               <td><?php echo htmlspecialchars($row['group_name']) ?></td>
               <td><?php echo htmlspecialchars($row['status_name']) ?></td>
-              <td><?php echo htmlspecialchars($row['date_register']) ?></td>
+              <td><?php echo htmlspecialchars(thailongdate($row['date_register'])) ?></td>
               <td>
                 <a href="../main/userEdit.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-primary">แก้ไข</a>
                 <a href="../main/userDelete.php?user_id=<?php echo htmlspecialchars($row['user_id']) ?>" class="btn btn-danger btn-delete-user">ลบ</a>
