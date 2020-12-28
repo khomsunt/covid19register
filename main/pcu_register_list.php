@@ -5,7 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br>";
+echo "<br><br><br><br>";
+print_r($_POST);
 // print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
@@ -36,25 +37,9 @@ $sql="select c.*,
   left join risk_level r2 on c.evaluate_level=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
-  $sql.=" where c.hospcode='".$_SESSION['office_code']."' ";
-// }else{
-//   $sql.=" where c.risk_level_id=:risk_level_id";
-// }
-if ($_GET['type']=="new"){
-  $sql.=" and c.cut_status_id=0";
-}
-$sql.=" limit 20";
-// echo $sql;
-// echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
-// echo "<br>node_id=".$_SESSION['node_id'];
+  $sql.=" where c.cid='".$_POST['cid']."' ";
 // echo $sql;
 $obj=$connect->prepare($sql);
-// if ($_SESSION['group_id']==3){
-//   $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
-// }else{
-//   //$obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
-//   $obj->execute([ 'office_code' => $_SESSION['office_code'] ]);
-// }
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
@@ -127,7 +112,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         </h5>
         <div>
           <div class="input-group mb-3">
-            <input id="cid" type="text" class="form-control" placeholder="เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2">
+            <input id="cid" type="text" class="form-control" placeholder="เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2" value="<?php echo $_POST['cid']; ?>">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary btn-info btn-cid-search" type="button" style="color:#000000">ค้นหา</button>
             </div>
@@ -141,6 +126,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <iframe id="register" frameborder="0" src="./register.php" title="" style="width:100%;height:100%"></iframe>
       </div>
+      <div id="divMyTable">
       <table class="table" id="myTable">
         <thead>
           <tr>
@@ -153,6 +139,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <th>มาที่</th>
             <th>วันที่มาถึงสกลนคร</th>  
             <th>ผลการประเมินตนเอง</th>
+            <th>cut_status_id</th>
+            <th>ผลการประเมิน จนท.</th>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
         </thead>
@@ -193,17 +181,51 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               </div></td>
               <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
               <td>
+              <div class="data"><?php echo $value['cut_status_id']; ?></div>
+
+              </td>
+              <td>
+                <div class="data risk_level_id_<?php echo $value['covid_register_id']; ?>" ><?php echo $value['risk_level_long_name']; ?></div>
+
+
+                <div class="btn-group select_risk_level_id_<?php echo $value['covid_register_id']; ?>" style="display:none">
+                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;">
+                    <?php echo $value['risk_level_long_name']; ?>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                    <?php
+                      foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
+                        if ($value_risk_level['risk_level_id']<>$value['risk_level_id']){
+                          ?>
+                          <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
+                            <?php echo $value_risk_level['risk_level_long_name']; ?>
+                          </button>
+                          <?php
+                        }
+                      }
+                    ?>
+                  </div>
+                </div>
+
+
+
+              </td>
+              <td>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-telephone-fill" viewBox="0 0 16 16" stroke="blue" fill="yellow"
         fill-opacity="0.5" stroke-opacity="0.8">
                   <path fill-rule="evenodd" d="M2.267.98a1.636 1.636 0 0 1 2.448.152l1.681 2.162c.309.396.418.913.296 1.4l-.513 2.053a.636.636 0 0 0 .167.604L8.65 9.654a.636.636 0 0 0 .604.167l2.052-.513a1.636 1.636 0 0 1 1.401.296l2.162 1.681c.777.604.849 1.753.153 2.448l-.97.97c-.693.693-1.73.998-2.697.658a17.47 17.47 0 0 1-6.571-4.144A17.47 17.47 0 0 1 .639 4.646c-.34-.967-.035-2.004.658-2.698l.97-.969z"/>
                 </svg>
                 <?php echo $value['tel']; ?>
+                <span class="float-right">
+                  <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-edit'>edit</button>
+                </span>
               </td>
             </tr>
           <?php
           } ?>
         </tbody>
       </table>
+      </div>
     </main>
     <?php
       include("./footer.php");
@@ -213,11 +235,20 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/tableToCards.js"></script>
     <script>
       $body = $("body");
+      function close_iframe(){
+        $("#register_div").hide();
+        $("#register").attr("src","./register.php");
+      }
       $(function(){
         $("#register_div").hide();
+        $(".btn-edit").click(function(){
+          let id=".risk_level_id_"+$(this).attr("covid_register_id");
+          $(id).hide();
+          id = ".select_risk_level_id_"+$(this).attr("covid_register_id");
+          $(id).show();
+        })
         $("#btn-close-register").click(function(){
-          alert('close');
-          $("#register_div").hide();
+          close_iframe();
         })
         $(".btn-cid-search").click(function(){
           $body.addClass("loading");
@@ -233,7 +264,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             let json_data=JSON.parse(msg);
             if (json_data.data.length>0){
               if (json_data.dataSource=='covid'){
-
+                var form = $('<form action="./pcu_register_list.php" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
+                $('body').append(form);
+                $(form).submit();                
               }else{
                 let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
                 if (r==true){
@@ -243,8 +276,10 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             }else{
               let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
               if (r==true){
+                $("#divMyTable").hide();
                 $("#register_div").show();
-                $("#register").attr("src","./register.php");
+                $("#register").contents().find('#cid').val($("#cid").val());
+
               }
             }
           });
@@ -257,12 +292,12 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             data: { covid_register_id: thisObj.attr("covid_register_id"), risk_level_id: thisObj.attr("risk_level_id") }
           })
           .done(function( msg ) {
-            if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
-              thisObj.parent().parent().parent().parent().parent().hide();
-            }else{
-              thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
-            }
-            // console.log(msg)
+            // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+            //   thisObj.parent().parent().parent().parent().parent().hide();
+            // }else{
+            //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
+            // }
+            console.log(msg)
           })
         })
         $(".img-refresh").click(function(){
