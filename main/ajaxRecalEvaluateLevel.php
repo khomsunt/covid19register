@@ -26,8 +26,7 @@ for ($n=0;$n<count($rowsCR);$n=$n+1) {
             break;
         }
         else {
-            $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=3 and tambon_code_full='".$rowsCR[$n]['changwat_out_code'].$rowsCR[$n]['ampur_out_code'].$rowsCR[$n]['tambon_out_code']."' ";
-            error_log(PHP_EOL.$i." sql=".$sql,3,'./testCal.log');
+            $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=".$i." and tambon_code_full='".$rowsCR[$n]['changwat_out_code'].$rowsCR[$n]['ampur_out_code'].$rowsCR[$n]['tambon_out_code']."' ";
             $obj=$connect->prepare($sql);
             $obj->execute();
             $count=$obj->rowCount();
@@ -49,8 +48,7 @@ for ($n=0;$n<count($rowsCR);$n=$n+1) {
             break;
         }
         else {
-            $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=3 and tambon_code_full='".$rowsCR[$n]['changwat_work_code'].$rowsCR[$n]['ampur_work_code'].$rowsCR[$n]['tambon_work_code']."' ";
-            error_log(PHP_EOL.$i." sql=".$sql,3,'./testCal.log');
+            $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=".$i." and tambon_code_full='".$rowsCR[$n]['changwat_work_code'].$rowsCR[$n]['ampur_work_code'].$rowsCR[$n]['tambon_work_code']."' ";
             $obj=$connect->prepare($sql);
             $obj->execute();
             $count=$obj->rowCount();
