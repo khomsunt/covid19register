@@ -52,7 +52,11 @@ try {
 
       th,
       td {
-        max-width: 20px;
+        max-width: 25px;
+      }
+      
+      .phone {
+        width: 9em;
       }
 
       .line-token{
@@ -78,7 +82,7 @@ try {
           <th>คำนำหน้าชื่อ</th>
           <th>ชื่อ</th>
           <th>สกุล</th>
-          <th>เบอร์โทร</th>
+          <th class="phone">เบอร์โทร</th>
           <th>หน่วยงาน</th>
           <th class="line-token">Line_Token</th>
           <th>สิทธิ์การใช้งาน</th>
@@ -101,7 +105,7 @@ try {
               <td><?php echo htmlspecialchars($row['prename_name']) ?></td>
               <td><?php echo htmlspecialchars($row['fname']) ?></td>
               <td><?php echo htmlspecialchars($row['lname']) ?></td>
-              <td><?php echo htmlspecialchars($row['phone']) ?></td>
+              <td class="phone"><?php echo htmlspecialchars($row['phone']) ?></td>
               <td><?php echo htmlspecialchars($row['office_name']) ?></td>
               <td class="line-token"><?php echo htmlspecialchars($row['line_token']) ?></td>
               <td><?php echo htmlspecialchars($row['group_name']) ?></td>
