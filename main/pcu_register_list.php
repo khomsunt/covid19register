@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br> <br> <br>";
+echo "<br>";
 // print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
@@ -90,9 +90,33 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           font-size: 3.5rem;
         }
       }
+
+      .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        top:        0;
+        left:       0;
+        height:     100%;
+        width:      100%;
+        background: rgba( 255, 255, 255, .8 ) 
+                    url('http://i.stack.imgur.com/FhHRx.gif') 
+                    50% 50% 
+                    no-repeat;
+      }
+      body.loading .modal {
+          overflow: hidden;   
+      }
+      body.loading .modal {
+          display: block;
+      }
+      
+
+
     </style>
   </head>
   <body>
+  <div class="modal"></div>
     <?php
       include("./header.php");
     ?>
@@ -109,6 +133,13 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             </div>
           </div>        
         </div>
+
+      </div>
+      <div id="register_div" class="container">
+        <div style="width:100%;text-align:right;">
+          <button style="float-right" id= "btn-close-register">x</button>
+        </div>
+        <iframe id="register" frameborder="0" src="./register.php" title="" style="width:100%;height:100%"></iframe>
       </div>
       <table class="table" id="myTable">
         <thead>
@@ -181,8 +212,15 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/tableToCards.js"></script>
     <script>
+      $body = $("body");
       $(function(){
+        $("#register_div").hide();
+        $("#btn-close-register").click(function(){
+          alert('close');
+          $("#register_div").hide();
+        })
         $(".btn-cid-search").click(function(){
+          $body.addClass("loading");
           var thisObj=$(this);
           $.ajax({
             method: "POST",
@@ -191,6 +229,24 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           })
           .done(function( msg ) {
             console.log(msg);
+            $body.removeClass("loading");
+            let json_data=JSON.parse(msg);
+            if (json_data.data.length>0){
+              if (json_data.dataSource=='covid'){
+
+              }else{
+                let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
+                if (r==true){
+                  window.location = './register.php';
+                }
+              }
+            }else{
+              let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
+              if (r==true){
+                $("#register_div").show();
+                $("#register").attr("src","./register.php");
+              }
+            }
           });
         });
         $(".btn-change-risk-level").click(function(){
