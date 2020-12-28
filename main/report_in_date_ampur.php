@@ -3,26 +3,38 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include('../include/config.php');
+include('../include/functions.php');
 
 $sql_report_risk="SELECT
-a.ampur_code,
+c.date_to_sakonnakhon,
+ a.ampur_code,
 a.ampur_name,
-a.node_id,
-sum(if(c.evaluate_level=0,1,0)) as green,
-sum(if(c.evaluate_level=1,1,0)) as yellow,
-sum(if(c.evaluate_level=2,1,0)) as orange,
-sum(if(c.evaluate_level=3,1,0)) as red,
-sum(if(c.evaluate_level=99,1,0)) as gray,
-count(c.covid_register_id) as all_color
+sum(
+IF
+( c.evaluate_level = 0, 1, 0 )) AS green,
+sum(
+IF
+( c.evaluate_level = 1, 1, 0 )) AS yellow,
+sum(
+IF
+( c.evaluate_level = 2, 1, 0 )) AS orange,
+sum(
+IF
+( c.evaluate_level = 3, 1, 0 )) AS red,
+sum(
+IF
+( c.evaluate_level = 99, 1, 0 )) AS gray,
+count(*) AS count_all 
 FROM
 covid_register c
 left join ampur47 a on c.ampur_in_code = a.ampur_code
+where date_to_sakonnakhon = '".$_POST['date_to_sakonnakhon']."'
 GROUP BY
 a.ampur_code";
 $obj=$connect->prepare($sql_report_risk);
 $obj->execute();
 $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
-// print_r($rows_cut_data);
+//print_r($sql_report_risk);
 ?>
 
 <!doctype html>
@@ -64,20 +76,19 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
     <div class="container">
-        <h5>รายงานข้อมูลกลุ่มเสี่ยงแยกตามอำเภอ</h5>
+        <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร ประจำวันที่ <?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?> แยกตามอำเภอ</h5>
     </div>
     <table class="table" id="myTable">
     <thead>
         <tr>
-        <th>ลำดับที่</th>
+        <th style="text-align: center";>ลำดับที่</th>
         <th>ชื่ออำเภอ</th>
-        <!-- <th>Node </th> -->
-        <th>สีเขียว</th>
-        <th>สีเหลือง</th>
-        <th>สีส้ม</th>      
-        <th>สีแดง</th>  
-        <th>สีเทา</th>  
-        <th>จำนวนทั้งหมด</th>  
+        <th style="text-align: center";>สีเขียว</th>
+        <th style="text-align: center";>สีเหลือง</th>
+        <th style="text-align: center";>สีส้ม</th>      
+        <th style="text-align: center";>สีแดง</th>  
+        <th style="text-align: center";>สีเทา</th>  
+        <th style="text-align: center";>จำนวนทั้งหมด</th>  
        
         </tr>
     </thead>
@@ -88,15 +99,14 @@ include("./header.php");
         {
             ?>
             <tr>
-                <td><?php echo ++$i; ?></td>
+                <td style="text-align: center"; ><?php echo ++$i; ?></td>
                 <td><?php echo $value['ampur_name']; ?></td>
-                <!-- <td><?php echo $value['node_id']; ?></td> -->
-                <td><?php echo $value['green']; ?></td>
-                <td><?php echo $value['yellow']; ?></td>
-                <td><?php echo $value['orange']; ?></td>
-                <td><?php echo $value['red']; ?></td>
-                <td><?php echo $value['gray']; ?></td>
-                <td><?php echo $value['all_color']; ?></td>
+                <td style="text-align: center";><?php echo $value['green']; ?></td>
+                <td style="text-align: center";><?php echo $value['yellow']; ?></td>
+                <td style="text-align: center";><?php echo $value['orange']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; ?></td>
+                <td style="text-align: center";><?php echo $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['count_all']; ?></td>
             </tr>
             <?php
         }?>
