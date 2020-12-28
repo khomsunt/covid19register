@@ -29,6 +29,10 @@ c.cut_datetime";
 $obj=$connect->prepare($sql_cut_data);
 $obj->execute();
 $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+//$phpvariable = "<script>document.write(localStorage.getItem('office_code'))</script>";
+
+//echo $phpvariable;
 // print_r($rows_cut_data);
 ?>
 
