@@ -263,9 +263,25 @@ for ($i=0;$i<count($rows);$i++) {
         </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
           <input type="text" class="form-control" id="moo_in_code">
+        </div> -->
+
+        <div class="form-group">
+        <label for="exampleFormControlSelect1">หมู่ <span class="required"></span></label>
+        <select class="form-control" id="moo_in_code">
+          <option value="">--เลือก--</option>
+<?php
+// $sql="select villno,villname from `village` limit 10 ";
+// $obj=$connect->prepare($sql);
+// $obj->execute();
+// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// for ($i=0;$i<count($rows);$i++) {
+//   echo "<option value='".$rows[$i]["villno"]."'>".$rows[$i]["villname"]."</option>";
+// }
+?>
+        </select>
         </div>
 
         <div class="form-group">
@@ -383,7 +399,7 @@ $("#changwat_out_code").change(function() {
   $("#tambon_out_code").find("option").remove();
   $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxTest.php",
+  $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
@@ -402,7 +418,7 @@ $("#ampur_out_code").change(function() {
   $("#tambon_out_code").find("option").remove();
   $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxTest.php",
+  $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
@@ -423,7 +439,7 @@ $("#changwat_work_code").change(function() {
   $("#tambon_work_code").find("option").remove();
   $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxTest.php",
+  $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_work_code").val()+"'" , 
@@ -442,7 +458,7 @@ $("#ampur_work_code").change(function() {
   $("#tambon_work_code").find("option").remove();
   $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxTest.php",
+  $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='"+$("#changwat_work_code").val()+$("#ampur_work_code").val()+"'" , 
@@ -460,8 +476,10 @@ $("#ampur_work_code").change(function() {
 $("#ampur_in_code").change(function() {
   $("#tambon_in_code").find("option").remove();
   $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
+  $("#moo_in_code").find("option").remove();
+  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxTest.php",
+  $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
@@ -472,6 +490,25 @@ $("#ampur_in_code").change(function() {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
       $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+    }
+  });
+});
+
+$("#tambon_in_code").change(function() {
+  $("#moo_in_code").find("option").remove();
+  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
+
+  $.ajax({method: "POST", url: "ajaxQuery.php",
+    data: {
+      query_table: "village", 
+      query_where: "tambon_code_full='47"+$("#ampur_in_code").val()+$("#tambon_in_code").val()+"'" , 
+      query_order: "villno+0 asc"
+    }
+  })
+  .done(function(x) {
+    var data=jQuery.parseJSON(x).data;
+    for (var i=0;i<data.length;i=i+1) {
+      $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
     }
   });
 });
