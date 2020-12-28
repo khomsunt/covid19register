@@ -2,18 +2,15 @@
 include('../include/config.php');
 
 $sql="update user set ( ". 
-" user_login,user_password,prename_id,fname ".
-" ,lname,phone,office_id,line_token,group_id,status_id ". 
+" user_password". 
 " ) ".
 " value ( ".
-"'".$_POST['user_login']."' ".
 ",'".$_POST['user_password']."' ".
 " WHERE user_id ='".$_POST['user_id']."'";
 
-$sql="update user set ". 
-" user_login='".$_POST['user_login']."' ".
-" ,user_password='".$_POST['user_password']."' ".
-" WHERE user_id ='".$_POST['user_id']."'";
+$sql="update user set user_password=:new_password where user_login=:user_login ". 
+// " user_password='".$_POST['user_password']."' ".
+// " WHERE user_id ='".$_POST['user_id']."'";
 
 $obj=$connect->prepare($sql);
 $execute_status=$obj->execute();

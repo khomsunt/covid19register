@@ -77,6 +77,7 @@ include("./header.php");
 <table class="table" id="myTable">
   <thead>
     <tr>
+      <th data-card-title style="text-align: center;">ลำดับ</th>
       <th data-card-title style="text-align: left;">จังหวัด</th>
       <th style="text-align: center;">อำเภอทั้งหมด</th>
       <th style="text-align: center;">เสี่ยงต่ำมาก</th>
@@ -88,9 +89,11 @@ include("./header.php");
   </thead>
   <tbody>
       <?php
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
         <tr>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td style="text-align: left;"><?php echo $value['changwat_name']; ?></td>
             <td style="text-align: center;"><?php echo $value['ampur_total']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_ampur0']; ?></td>
@@ -102,7 +105,6 @@ include("./header.php");
             </td>
           </tr>
         <?php
-        
     }?>
   </tbody>
     

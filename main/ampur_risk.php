@@ -87,6 +87,7 @@ include("./header.php");
 <table class="table" id="myTable">
   <thead>
     <tr>
+      <th data-card-title style="text-align: center;">ลำดับ</th>
       <th data-card-title style="text-align: left;">ชื่ออำเภอ</th>
       <th style="text-align: center;">ตำบลทั้งหมด</th>
       <th style="text-align: center;">เสี่ยงต่ำมาก</th>
@@ -104,9 +105,11 @@ include("./header.php");
       $obj->execute();
       $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
         <tr>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td style="text-align: left;"><?php echo $value['ampur_name']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_tambon'] ? $value['total_tambon'] :'0' ; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon0'] ? $value['total_risk_tambon0'] :'0' ; ?></td>

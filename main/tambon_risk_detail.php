@@ -59,13 +59,14 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
 <br>
-<h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
 <!-- <h5 style="text-align:center;">รหัส<?php echo $_POST['changwat_code']; ?></h5> -->
+<h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
 <h5 style="text-align:center;">อำเภอ<?php echo $_POST['ampur_name']; ?></h5>
 <!-- <h5 style="text-align:center;">รหัส<?php echo $_POST['ampur_code_full']; ?></h5> -->
 <table class="table" id="myTable">
   <thead>
     <tr>
+      <th data-card-title style="width: 10px">ลำดับ</th>
       <th data-card-title>ชื่อตำบล</th>
       <th>สถานะ</th>
 
@@ -79,9 +80,11 @@ include("./header.php");
       $obj->execute();
       $rows_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
             <tr>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td><?php echo $value['tambon_name']; ?></td>
             <td>
             <div class="btn-group">
