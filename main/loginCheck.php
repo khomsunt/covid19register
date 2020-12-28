@@ -10,10 +10,14 @@ if (count($rows)==1){
     $_SESSION["user_id"] = $rows[0]['user_id'];
     $_SESSION["node_id"] = $rows[0]['node_id'];
     $_SESSION["group_id"] = $rows[0]['group_id'];
+    $_SESSION["office_id"] = $rows[0]['office_id'];
+    $_SESSION["office_code"] = $rows[0]['office_code'];
 }else{
     $_SESSION["user_id"] = "";
     $_SESSION["node_id"] = "";
     $_SESSION["group_id"] = "";
+    $_SESSION["office_id"] = "";
+    $_SESSION["office_code"] = "";
 }
 
 echo json_encode($rows, JSON_UNESCAPED_UNICODE);
