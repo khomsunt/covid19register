@@ -6,7 +6,6 @@ $evaluate_level_home=0;
 $evaluate_level_work=0;
 for ($i=3;$i>=1;$i=$i-1) {
     $sql=" select ampur_code_full from ampur a where a.risk_status_id=".$i." and ampur_code_full='".$_POST['changwat_out_code'].$_POST['ampur_out_code']."' ";
-    file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
     $obj=$connect->prepare($sql);
     $obj->execute();
     $count=$obj->rowCount();
@@ -15,8 +14,7 @@ for ($i=3;$i>=1;$i=$i-1) {
         break;
     }
     else {
-        $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=".$i." and tambon_code_full='".$_POST['changwat_out_code'].$_POST['ampur_out_code'].$_POST['tambon_out_code']."' ";
-        file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
+        $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=3 and tambon_code_full='".$_POST['changwat_out_code'].$_POST['ampur_out_code'].$_POST['tambon_out_code']."' ";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $count=$obj->rowCount();
@@ -27,7 +25,6 @@ for ($i=3;$i>=1;$i=$i-1) {
     }
 
     $sql=" select ampur_code_full from ampur a where a.risk_status_id=".$i." and ampur_code_full='".$_POST['changwat_work_code'].$_POST['ampur_work_code']."' ";
-    file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
     $obj=$connect->prepare($sql);
     $obj->execute();
     $count=$obj->rowCount();
@@ -36,8 +33,7 @@ for ($i=3;$i>=1;$i=$i-1) {
         break;
     }
     else {
-        $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=".$i." and tambon_code_full='".$_POST['changwat_work_code'].$_POST['ampur_work_code'].$_POST['tambon_work_code']."' ";
-        file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
+        $sql=" select tambon_code_full from ampur a left join tambon t on a.ampur_code_full=t.ampur_code_full where t.risk_status_id=3 and tambon_code_full='".$_POST['changwat_work_code'].$_POST['ampur_work_code'].$_POST['tambon_work_code']."' ";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $count=$obj->rowCount();
@@ -97,7 +93,6 @@ $sql=" insert into covid_register ( ".
 ",".$auto_cut_status_id.
 ",".$evaluate_level.
 " ) ";
-file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
 
 $obj=$connect->prepare($sql);
 $execute_status=$obj->execute();
