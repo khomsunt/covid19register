@@ -6,7 +6,7 @@ if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
 echo "<br> <br> <br>";
-print_r($_SESSION);
+// print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 $sql="select c.*,
@@ -44,7 +44,7 @@ if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
 }
 $sql.=" limit 20";
-echo $sql;
+// echo $sql;
 // echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
 // echo "<br>node_id=".$_SESSION['node_id'];
 // echo $sql;
@@ -98,8 +98,17 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <main role="main" style="margin-top:60px;">
       <div class="container">
-                <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้เดินทางเข้า <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
+        <h5>
+          <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้เดินทางเข้า <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
         </h5>
+        <div>
+          <div class="input-group mb-3">
+            <input id="cid" type="text" class="form-control" placeholder="เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary btn-info btn-cid-search" type="button" style="color:#000000">ค้นหา</button>
+            </div>
+          </div>        
+        </div>
       </div>
       <table class="table" id="myTable">
         <thead>
@@ -112,12 +121,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <th>ที่ทำงาน</th>
             <th>มาที่</th>
             <th>วันที่มาถึงสกลนคร</th>  
-            <?php
-              if ($_GET['type']=='new'){
-            ?>    
             <th>ผลการประเมินตนเอง</th>
-            <!-- <th>ผลการประเมิน (จนท)</th> -->
-            <?php } ?>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
         </thead>
@@ -157,33 +161,6 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 <?php echo $value['date_to_sakonnakhon']; ?>
               </div></td>
               <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
-              <!-- <?php
-                if ($_GET['type']=='new'){
-                  ?>    
-                  <td>
-                    <span class="float-right">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;">
-                          <?php echo $value['risk_level_long_name']; ?>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                          <?php
-                            foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
-                              if ($value_risk_level['risk_level_id']<>$value['risk_level_id']){
-                                ?>
-                                <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
-                                  <?php echo $value_risk_level['risk_level_long_name']; ?>
-                                </button>
-                                <?php
-                              }
-                            }
-                          ?>
-                        </div>
-                      </div>
-                    </span>
-                  </td>
-                  <?php 
-                } ?> -->
               <td>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-telephone-fill" viewBox="0 0 16 16" stroke="blue" fill="yellow"
         fill-opacity="0.5" stroke-opacity="0.8">
@@ -205,6 +182,17 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/tableToCards.js"></script>
     <script>
       $(function(){
+        $(".btn-cid-search").click(function(){
+          var thisObj=$(this);
+          $.ajax({
+            method: "POST",
+            url: "./pcu_cid_search.php",
+            data: { cid: $("#cid").val() }
+          })
+          .done(function( msg ) {
+            console.log(msg);
+          });
+        });
         $(".btn-change-risk-level").click(function(){
           var thisObj=$(this);
           $.ajax({
