@@ -4,13 +4,34 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 
-$sql_current_cut=" select a.ampur_code, a.ampur_name, a.ampur_code_full,
-a.risk_status_id, r.risk_level_long_name, count(tambon_code) as total_tambon 
+
+$sql_current_cut="select ampur_name, a.ampur_code_full,
+a.risk_status_id, r.risk_level_long_name, 
+sum(t.total_tambon) total_tambon,
+sum(t.total_risk_tambon0) as total_risk_tambon0,
+sum(t.total_risk_tambon1) as total_risk_tambon1,
+sum(t.total_risk_tambon2) as total_risk_tambon2,
+sum(t.total_risk_tambon3) as total_risk_tambon3
 from ampur a
-LEFT JOIN tambon t on a.ampur_code_full = t.ampur_code_full
+LEFT JOIN 
+(SELECT ampur_code_full,
+count(tambon_code) as total_tambon ,
+sum(if(risk_status_id='0',1,0)) as total_risk_tambon0,
+sum(if(risk_status_id='1',1,0)) as total_risk_tambon1,
+sum(if(risk_status_id='2',1,0)) as total_risk_tambon2,
+sum(if(risk_status_id='3',1,0)) as total_risk_tambon3 
+FROM tambon WHERE changwat_code = :changwat_code GROUP BY ampur_code_full) t on a.ampur_code_full = t.ampur_code_full
 LEFT JOIN risk_level r on a.risk_status_id = r.risk_level_id
 where a.changwat_code = :changwat_code
-GROUP BY a.ampur_code";
+GROUP BY a.ampur_code_full";
+
+// $sql_current_cut=" select a.ampur_code, a.ampur_name, a.ampur_code_full,
+// a.risk_status_id, r.risk_level_long_name, count(tambon_code) as total_tambon 
+// from ampur a
+// LEFT JOIN tambon t on a.ampur_code_full = t.ampur_code_full
+// LEFT JOIN risk_level r on a.risk_status_id = r.risk_level_id
+// where a.changwat_code = :changwat_code
+// GROUP BY a.ampur_code";
 $obj=$connect->prepare($sql_current_cut);
 $obj->execute(["changwat_code"=>$_POST['changwat_code']]);
 $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -20,6 +41,11 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 <!doctype html>
 <html lang="en">
   <head>
+  <?php
+    header("Cache-Control: private, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+  ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -61,9 +87,14 @@ include("./header.php");
 <table class="table" id="myTable">
   <thead>
     <tr>
-      <th data-card-title>ชื่ออำเภอ</th>
-      <th>รวมตำบล</th>
-      <th data-card-footer>รายละเอียด</th>
+      <th data-card-title style="text-align: center;">ลำดับ</th>
+      <th data-card-title style="text-align: left;">ชื่ออำเภอ</th>
+      <th style="text-align: center;">ตำบลทั้งหมด</th>
+      <th style="text-align: center;">เสี่ยงต่ำมาก</th>
+      <th style="text-align: center;">เสี่ยงต่ำ</th>
+      <th style="text-align: center;">เสี่ยงปานกลาง</th>
+      <th style="text-align: center;">เสี่ยงสูง</th>
+      <th data-card-footer style="text-align: center;">รายละเอียด</th>
     </tr>
   </thead>
   <tbody>
@@ -74,16 +105,32 @@ include("./header.php");
       $obj->execute();
       $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
         <tr>
-            <td><?php echo $value['ampur_name']; ?></td>
-            <td><?php echo $value['total_tambon']; ?></td>
-            <!-- <td><?php echo $value['total_tambon']; ?></td> -->
-            <td>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
+            <td style="text-align: left;"><?php echo $value['ampur_name']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_tambon'] ? $value['total_tambon'] :'0' ; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon0'] ? $value['total_risk_tambon0'] :'0' ; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon1'] ? $value['total_risk_tambon1'] :'0' ;  ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon2'] ? $value['total_risk_tambon2'] :'0' ;  ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon3'] ? $value['total_risk_tambon3'] :'0' ;  ?></td>
+            <td style="text-align: center;">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_level_long_name']; ?>
+                    <button type="button" 
+                      <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
+                          class="btn dropdown-toggle" style="background-color:#00FF00; " 
+                      <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
+                          class="btn dropdown-toggle" style="background-color:#FFFF00; "
+                      <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
+                          class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
+                      <?php } else {  //เสี่ยงสูง ?>
+                        class="btn dropdown-toggle" style="background-color:#FF0000; color:#FFFFFF"
+                      <?php } ?>
+                        data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                      <?php echo $value['risk_level_long_name']; ?>
+
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php

@@ -16,7 +16,11 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 <!doctype html>
 <html lang="en">
-  <head>
+  <head><?php
+    header("Cache-Control: private, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+  ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -55,13 +59,14 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
 <br>
-<h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
 <!-- <h5 style="text-align:center;">รหัส<?php echo $_POST['changwat_code']; ?></h5> -->
+<h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
 <h5 style="text-align:center;">อำเภอ<?php echo $_POST['ampur_name']; ?></h5>
 <!-- <h5 style="text-align:center;">รหัส<?php echo $_POST['ampur_code_full']; ?></h5> -->
 <table class="table" id="myTable">
   <thead>
     <tr>
+      <th data-card-title style="width: 10px">ลำดับ</th>
       <th data-card-title>ชื่อตำบล</th>
       <th>สถานะ</th>
 
@@ -75,14 +80,27 @@ include("./header.php");
       $obj->execute();
       $rows_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
             <tr>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td><?php echo $value['tambon_name']; ?></td>
             <td>
             <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $value['risk_level_long_name']; ?>
+                    <button type="button" 
+                    <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
+                          class="btn dropdown-toggle" style="background-color:#00FF00; " 
+                      <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
+                          class="btn dropdown-toggle" style="background-color:#FFFF00; "
+                      <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
+                          class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
+                      <?php } else {  //เสี่ยงสูง ?>
+                        class="btn dropdown-toggle" style="background-color:#FF0000; color:#FFFFFF"
+                      <?php } ?>
+                        data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                      <?php echo $value['risk_level_long_name']; ?>
+                      
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php

@@ -4,33 +4,26 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 
-// $sql_cut_data="SELECT
-// c.cut_datetime,
-// count(*) AS cut_all,
-// sum(
-// IF
-// ( c.risk_level_id = 1, 1, 0 )) AS risk_level_1,
-// sum(
-// IF
-// ( c.risk_level_id = 2, 1, 0 )) AS risk_level_2,
-// sum(
-// IF
-// ( c.risk_level_id = 3, 1, 0 )) AS risk_level_3,
-// sum(
-// IF
-// ( c.risk_level_id = 4, 1, 0 )) AS risk_level_4 
-// FROM
-// covid_register_cut c 
-// GROUP BY
-// c.cut_datetime";
-// $obj=$connect->prepare($sql_cut_data);
-// $obj->execute();
-// $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
-// print_r($rows_cut_data);
 
-$sql_current_cut=" select c.*, count(a.ampur_code) as ampur_total from changwat c
-LEFT JOIN ampur a on c.changwat_code = a.changwat_code
-GROUP BY a.changwat_code";
+// $sql_current_cut=" select c.*, count(a.ampur_code) as ampur_total from changwat c
+// LEFT JOIN ampur a on c.changwat_code = a.changwat_code
+// GROUP BY a.changwat_code";
+$sql_current_cut="select c.*, 
+sum(a.ampur_total) as ampur_total,
+sum(a.total_risk_ampur0) as total_risk_ampur0,
+sum(a.total_risk_ampur1) as total_risk_ampur1,
+sum(a.total_risk_ampur2) as total_risk_ampur2,
+sum(a.total_risk_ampur3) as total_risk_ampur3
+from changwat c
+LEFT JOIN 
+(SELECT changwat_code,
+count(ampur_code) as ampur_total,
+sum(if(risk_status_id='0',1,0)) as total_risk_ampur0,
+sum(if(risk_status_id='1',1,0)) as total_risk_ampur1,
+sum(if(risk_status_id='2',1,0)) as total_risk_ampur2,
+sum(if(risk_status_id='3',1,0)) as total_risk_ampur3 
+FROM ampur  GROUP BY changwat_code) a on c.changwat_code = a.changwat_code
+GROUP BY c.changwat_code";
 $obj=$connect->prepare($sql_current_cut);
 $obj->execute();
 $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -40,6 +33,11 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 <!doctype html>
 <html lang="en">
   <head>
+  <?php
+    header("Cache-Control: private, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+  ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -79,25 +77,34 @@ include("./header.php");
 <table class="table" id="myTable">
   <thead>
     <tr>
-      <th data-card-title>จังหวัด</th>  
-      <!-- <th>รวม</th> -->
-      <th>รวมอำเภอ</th>
-      <th data-card-footer>รายละเอียด</th>
+      <th data-card-title style="text-align: center;">ลำดับ</th>
+      <th data-card-title style="text-align: left;">จังหวัด</th>
+      <th style="text-align: center;">อำเภอทั้งหมด</th>
+      <th style="text-align: center;">เสี่ยงต่ำมาก</th>
+      <th style="text-align: center;">เสี่ยงต่ำ</th>
+      <th style="text-align: center;">เสี่ยงปานกลาง</th>
+      <th style="text-align: center;">เสี่ยงสูง</th>
+      <th style="text-align: center;">รายละเอียด</th>
     </tr>
   </thead>
   <tbody>
       <?php
+      $i = 0;
       foreach ($rows_current_cut as $key => $value) {
           ?>
         <tr>
-            <td><?php echo $value['changwat_name']; ?></td>
-            <td><?php echo $value['ampur_total']; ?></td>
-            <td>
+            <td style="text-align: center;"><?php echo ++$i; ?></td>
+            <td style="text-align: left;"><?php echo $value['changwat_name']; ?></td>
+            <td style="text-align: center;"><?php echo $value['ampur_total']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_ampur0']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_ampur1']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_ampur2']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_ampur3']; ?></td>
+            <td style="text-align: center;">
               <button changwat_code = "<?php echo $value['changwat_code']; ?>" changwat_name = "<?php echo $value['changwat_name']; ?>"  type="button" class="btn btn-info tag-link">รายละเอียด</button>
             </td>
           </tr>
         <?php
-        
     }?>
   </tbody>
     

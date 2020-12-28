@@ -49,15 +49,33 @@ function thaiMonthShort($x) {
   <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+
+  <style>
+  .modal {
+    overflow-y:auto;
+  }
+  .dupContentField {
+    display: inline; background-color: #b0e8ff; padding-left: 7px; padding-right: 7px; border-radius: 10px;
+  }
+  .dupContentFieldImportant{
+    display: inline; background-color: #0071ea; padding-left: 7px; padding-right: 7px; border-radius: 10px; color: #FFFFFF;
+  }
+  .dupContentValue {
+    display: inline;
+  }
+  .dupContentRow {
+    padding: 7px;
+  }
+  </style>
 </head>
 
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+// var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+var input_required=['cid'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
-      startDate: '+0d',
       format: 'dd/mm/yyyy',
       todayBtn: true,
       language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
@@ -74,7 +92,9 @@ $(document).ready(function () {
   input_required.forEach(element => {
     $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
   });
+
 });
+
 </script>
 
 <div style="width: 100%; padding-left: 20px; padding-top: 30px;">
@@ -263,25 +283,9 @@ for ($i=0;$i<count($rows);$i++) {
         </select>
         </div>
 
-        <!-- <div class="form-group">
+        <div class="form-group">
           <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
           <input type="text" class="form-control" id="moo_in_code">
-        </div> -->
-
-        <div class="form-group">
-        <label for="exampleFormControlSelect1">หมู่ <span class="required"></span></label>
-        <select class="form-control" id="moo_in_code">
-          <option value="">--เลือก--</option>
-<?php
-// $sql="select villno,villname from `village` limit 10 ";
-// $obj=$connect->prepare($sql);
-// $obj->execute();
-// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// for ($i=0;$i<count($rows);$i++) {
-//   echo "<option value='".$rows[$i]["villno"]."'>".$rows[$i]["villname"]."</option>";
-// }
-?>
-        </select>
         </div>
 
         <div class="form-group">
@@ -319,13 +323,99 @@ for ($i=0;$i<count($rows);$i++) {
 </div>
 
 
+<div class="modal fade" id="modal02" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ตรวจพบการลงทะเบียนหลายครั้ง</h5>
+      </div>
+      <div class="modal-body" id="modal02_body">
+        ท่านทำการลงทะเบียน <span id="modal02_dup_count"></span> ครั้ง กรุณาตรวจสอบข้อมูลต่อไปนี้ หากมีข้อมูลที่ซ้ำกัน โปรดลบข้อมูลที่ซ้ำซ้อนออก แล้วกดปุ่มยืนยันค่ะ <br>
+        <u>หมายเหตุ</u> หากท่านมีการเดินทางเข้าสู่จังหวัดสกลนครหลายครั้ง ก็ควรลงทะเบียนตามจำนวนการเดินทางค่ะ
+
+        <!-- <div style="dupContentRow">
+          <div class="dupContentFieldImportant">เลขบัตรประจำตัวประชาชน</div>
+          <div class="dupContentValue v_cid"></div>
+        </div>
+        <div style="dupContentRow">
+          <div class="dupContentFieldImportant">เบอร์โทรศัพท์</div>
+          <div class="dupContentValue v_tel"></div>
+        </div> -->
+
+        <div id="modal02_dup_list">
+        </div>
+      </div>
+      <div class="modal-footer" id="modal02_action" style="text-align: right;">
+        <button type="button" class="btn btn-primary" id="btnConfirmDup">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="dup_item_master" style="display: none; margin-top: 20px; margin-bottom: 20px; border: solid 2px black; border-radius: 5px; padding: 5px; background-color: #eeeeee;">
+  <div style="dupContentRow">
+    <div class="dupContentField">วันเวลาลงทะเบียน</div>
+    <div class="dupContentValue v_register_datetime"></div>
+  </div>
+  <!-- <div style="dupContentRow">
+    <div class="dupContentField">ชื่อสกุล</div>
+    <div class="dupContentValue v_fname_lname"></div>
+  </div> -->
+  <!-- <div style="dupContentRow">
+    <div class="dupContentField">เลขบัตรประจำตัวประชาชน</div>
+    <div class="dupContentValue v_cid"></div>
+  </div>
+  <div style="dupContentRow">
+    <div class="dupContentField">เบอร์โทรศัพท์</div>
+    <div class="dupContentValue v_tel"></div>
+  </div> -->
+  <!-- <div style="dupContentRow">
+    <div class="dupContentField">อาชีพ</div>
+    <div class="dupContentValue v_occupation"></div>
+  </div>
+  <div style="dupContentRow">
+    <div class="dupContentField">ที่พักอาศัยก่อนเดินทางเข้าสกลนคร</div>
+    <div class="dupContentValue v_address_home"></div>
+  </div>
+  <div style="dupContentRow">
+    <div class="dupContentField">ที่ทำงาน</div>
+    <div class="dupContentValue v_address_work"></div>
+  </div> -->
+  <div style="dupContentRow">
+    <div class="dupContentField">วันที่เดินทางเข้าถึงสกลนคร</div>
+    <div class="dupContentValue v_date_to_sakonnakhon"></div>
+  </div>
+  <!-- <div style="dupContentRow">
+    <div class="dupContentField">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
+    <div class="dupContentValue v_address_sakonnakhon"></div>
+  </div> -->
+  <div style="dupContentRow" style="width: 100%; padding: 10px;">
+    <div style="width: 100%; display:flex; flex-direction: row-reverse;">
+
+      <div style="width: 100px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+        <input class="form-check-input choose_dup_checkbox" id="choose_dup" name="choose_dup" type="checkbox" value="" style="margin-left: 10px;">
+        <label class="form-check-label choose_dup_label" for="choose_dup" style="margin-left: 30px;">ลบข้อมูล</label>
+      </div>
+
+      <!-- <div style="width: 150px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+        <input class="form-check-input choose_dup_radio" type="radio" name="choose_dup" id="choose_dup" value="" style="margin-left: 10px;">
+        <label class="form-check-label choose_dup_label" for="choose_dup" style="margin-left: 30px;">เลือกข้อมูลชุดนี้</label>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
 
 <script>
 var evaluate_level=0;
+var dupData=[];
 
-$("#btnSave").click(function() {
+function getInputData () {
   var data= {
     fname : $("#fname").val(),
     lname : $("#lname").val(),
@@ -344,6 +434,28 @@ $("#btnSave").click(function() {
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
   }
+  return data;
+}
+
+function ajaxInsert(data,goSuggestion) {
+  $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+    data: data
+  })
+  .done(function(x) {
+    // console.log(jQuery.parseJSON(x));
+    var r=jQuery.parseJSON(x).data;
+    if (r.status=="success") {
+      if (goSuggestion=='Y') {
+        setTimeout(() => {
+          goPageSuggestion();
+        }, 1000);
+      }
+    }
+  });
+}
+
+$("#btnSave").click(function() {
+  var data=getInputData();
   // console.log(data);
  
   var not_complete=0;
@@ -363,18 +475,112 @@ $("#btnSave").click(function() {
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-      data: data
+    var data_check= { 
+      cid : cleanNumber(data['cid']),
+      tel : cleanNumber(data['tel']),
+    };
+    $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
+      data: data_check
     })
     .done(function(x) {
-      // console.log(jQuery.parseJSON(x));
+      console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        setTimeout(() => {
-          goPageSuggestion();
-        }, 1500);
+        if (r.register_data.length==0) {
+          // ไม่มีข้อมูลซ้ำ
+          ajaxInsert(data,'Y');
+        }
+        else {
+          $("#modal02_dup_list").empty();
+          dupData=[];
+          var newData=data;
+          newData['data_entry']='NEW';
+          var s=$("select");
+          for (var sI=0;sI<s.length;sI=sI+1) {
+            var item=$(s[sI]);
+            var key=item.attr('id');
+            var opt=item.find("option:selected");
+            var value=opt.val()==""?" - ":opt.text();
+            newData[key]=value;
+          }
+          dupData=r.register_data;
+          dupData.push(newData);
+          console.log(dupData);
+          for (var i=0;i<dupData.length;i=i+1) {
+            var d=dupData[i];
+            var dup_item=$(".dup_item_master").clone();
+            dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
+            console.log(d.data_entry);
+            if (typeof d.data_entry == 'undefined') {
+              dup_item.find(".v_register_datetime").text(d.register_datetime);
+            }
+            else {
+              dup_item.find(".v_register_datetime").text('เวลาปัจจุบัน(ลงทะเบียนครั้งนี้)');
+            }
+            // dup_item.find(".v_fname_lname").text(d.fname+" "+d.lname);
+            dup_item.find(".v_cid").text(d.cid);
+            dup_item.find(".v_tel").text(d.tel);
+            // dup_item.find(".v_occupation").text(d.occupation_id);
+            // dup_item.find(".v_address_home").text('ต.'+d.tambon_out_code+' อ.'+d.ampur_out_code+' จ.'+d.changwat_out_code);
+            // dup_item.find(".v_address_work").text('ต.'+d.tambon_work_code+' อ.'+d.ampur_work_code+'จ.'+d.changwat_work_code);
+            dup_item.find(".v_date_to_sakonnakhon").text(dupData[i].date_to_sakonnakhon);
+            // dup_item.find(".v_address_sakonnakhon").text(d.house_in_no+' ม.'+d.moo_in_code+' ต.'+d.tambon_in_code+' อ.'+d.ampur_in_code+' จ.สกลนคร');
+            dup_item.find(".choose_dup_checkbox").attr({'id':'choose_dup_'+i, 'name':'choose_dup_'+i});
+            dup_item.find(".choose_dup_checkbox").val(i);
+            dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
+            // dup_item.find(".choose_dup_radio").bind('change',function() {
+            //   var dup_value=$('input[name="choose_dup"]:checked').val();
+            //   // console.log(dup_value);
+            //   if (dup_value!="" & dup_value!= null & typeof dup_value != "undefined") {
+            //     $("#btnConfirmDup").prop({'disabled':false});
+            //   }
+            // });
+            $("#modal02_dup_list").append(dup_item);
+          }
+
+          setTimeout(() => {
+            $("#modal01").modal('hide');
+            $("#modal02_dup_count").text(dupData.length);
+            // $(".v-fname-lname").text(dupData[0].fname+" "+dupData[0].lname);
+            // $(".v-cid").text(dupData[0].cid);
+            // $("#modal02_dup_list").text(JSON.stringify(dupData));
+            $("#modal02").modal('show');            
+          }, 1000);
+        }
       }
     });
+
+  }
+});
+
+function cleanNumber(x) {
+  var r=x.trim();
+  r=r.replaceAll(' ','');
+  r=r.replaceAll('-','');
+  r=r.replaceAll(',','');
+  r=r.replaceAll('/','');
+  r=r.replaceAll(':','');
+  return r;
+}
+
+$("#btnConfirmDup").click(function() {
+  // var dup_value=$('input[name^="choose_dup_"]:checked').val();
+  var dup_value=$('input[name^="choose_dup_"]:checked').val();
+  // console.log(dup_value);
+  // console.log(dupData[dup_value]);
+  var selected_data=dupData[dup_value];
+  // console.log(selected_data.data_entry);
+  if (typeof selected_data.data_entry != "undefined") {
+    $("#modal02").modal('hide');
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_action").css({'display':'none'});
+    $("#modal01").modal('show');
+    // ajaxInsert(selected_data,'N');
+    for (var i=0;i<dupData.length;i=i+1) {
+      if (i!=dup_value) {
+        console.log(dupData[i]);
+      }
+    }
   }
 });
 
@@ -399,7 +605,7 @@ $("#changwat_out_code").change(function() {
   $("#tambon_out_code").find("option").remove();
   $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxQuery.php",
+  $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
@@ -418,7 +624,7 @@ $("#ampur_out_code").change(function() {
   $("#tambon_out_code").find("option").remove();
   $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxQuery.php",
+  $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
@@ -439,7 +645,7 @@ $("#changwat_work_code").change(function() {
   $("#tambon_work_code").find("option").remove();
   $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxQuery.php",
+  $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "ampur", 
       query_where: "changwat_code='"+$("#changwat_work_code").val()+"'" , 
@@ -458,7 +664,7 @@ $("#ampur_work_code").change(function() {
   $("#tambon_work_code").find("option").remove();
   $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxQuery.php",
+  $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='"+$("#changwat_work_code").val()+$("#ampur_work_code").val()+"'" , 
@@ -476,10 +682,8 @@ $("#ampur_work_code").change(function() {
 $("#ampur_in_code").change(function() {
   $("#tambon_in_code").find("option").remove();
   $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
-  $("#moo_in_code").find("option").remove();
-  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
 
-  $.ajax({method: "POST", url: "ajaxQuery.php",
+  $.ajax({method: "POST", url: "ajaxTest.php",
     data: { 
       query_table: "tambon", 
       query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
@@ -490,25 +694,6 @@ $("#ampur_in_code").change(function() {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
       $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
-    }
-  });
-});
-
-$("#tambon_in_code").change(function() {
-  $("#moo_in_code").find("option").remove();
-  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
-
-  $.ajax({method: "POST", url: "ajaxQuery.php",
-    data: {
-      query_table: "village", 
-      query_where: "tambon_code_full='47"+$("#ampur_in_code").val()+$("#tambon_in_code").val()+"'" , 
-      query_order: "villno+0 asc"
-    }
-  })
-  .done(function(x) {
-    var data=jQuery.parseJSON(x).data;
-    for (var i=0;i<data.length;i=i+1) {
-      $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
     }
   });
 });

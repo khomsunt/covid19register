@@ -3,9 +3,12 @@ include('../include/config.php');
 
 $status="";
 
-$sql=" select * from covid_register where cid=:cid ";
+$sql=" select * from covid_register where cid=:cid and tel=:tel ".
+" and cut_status_id = 0 ". 
+" and (date_arrived_sakonnakhon is null or date_arrived_sakonnakhon='') ".
+" and date_to_sakonnakhon > left(now(),10) ";
 $obj=$connect->prepare($sql);
-$execute_status=$obj->execute([ 'cid' => $_POST['cid'] ]);
+$execute_status=$obj->execute([ 'cid' => $_POST['cid'],'tel' => $_POST['tel'] ]);
 // $execute_status=$obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
