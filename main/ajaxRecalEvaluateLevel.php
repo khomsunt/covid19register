@@ -3,9 +3,9 @@ include('../include/config.php');
 
 $status="";
 
-$sql=" select * from covid_register ";
+$sql=" select * from covid_register limit 2000,1000 ";
 $obj=$connect->prepare($sql);
-// $obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]);
+////// $obj->execute([ 'cut_datetime' => $_POST['cut_datetime'] ]); 
 $obj->execute();
 $rowsCR=$obj->fetchAll(PDO::FETCH_ASSOC);
 

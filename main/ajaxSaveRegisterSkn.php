@@ -102,7 +102,7 @@ file_put_contents('sql_log.txt', date("Y-m-d H:i:s").$sql."\n", FILE_APPEND);
 $obj=$connect->prepare($sql);
 $execute_status=$obj->execute();
 $registerLastInsertId=$connect->lastInsertId();
-// $registerLastInsertId="";
+///// $registerLastInsertId="";
 $status="";
 if ($execute_status==true) {
     $status="success";
