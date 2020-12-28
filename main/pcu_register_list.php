@@ -218,6 +218,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         $("#btn-close-register").click(function(){
           alert('close');
           $("#register_div").hide();
+          $("#register").attr("src","./register.php");
         })
         $(".btn-cid-search").click(function(){
           $body.addClass("loading");
@@ -244,7 +245,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
               if (r==true){
                 $("#register_div").show();
-                $("#register").attr("src","./register.php");
+                $("#register").contents().find('#cid').val($("#cid").val());
+
               }
             }
           });
