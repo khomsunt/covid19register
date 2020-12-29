@@ -98,7 +98,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
-  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง?></h4></th>
+  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง</h4></th>
   <!-- <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h4></th> -->
   </tr>
   <tr>
@@ -159,7 +159,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <th>3</th>
       <th>4</th>
       <th>5</th>
-      <th>6</th>
+      <!-- <th>6</th> -->
       <th>วันที่เก็บ</th>
       <th>วันที่ส่ง</th>
       <th>neg</th>
@@ -214,7 +214,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
             <td>
               <?php  
-                switch ($value['risk_level_id']) {
+                switch ($value['occupation_id']='99' and ($value['changwat_in_code']<>'74' or $value['changwat_work_code']<>'74')) {
 														case "1":
 														echo "/";
                             break;} 
@@ -222,7 +222,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             </td>
             <td>
               <?php  
-                switch ($value['risk_level_id']) {
+                switch ($value['occupation_id']<>'99' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "2":
 														echo "/";
                             break;} 
@@ -230,7 +230,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             </td>
             <td>
               <?php  
-                switch ($value['risk_level_id']) {
+                switch ($value['occupation_id']='1' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "3":
 														echo "/";
                             break;} 
@@ -238,7 +238,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             </td>
             <td>
               <?php  
-                switch ($value['risk_level_id']) {
+                switch ($value['occupation_id']='2' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "4":
 														echo "/";
                             break;} 
@@ -246,20 +246,20 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             </td>
             <td>
               <?php  
-                switch ($value['risk_level_id']) {
+                switch ($value['occupation_id']<>'99' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "5":
 														echo "/";
                             break;} 
               ?>
             </td>
-            <td>
+            <!-- <td>
               <?php  
                 switch ($value['risk_level_id']) {
 														case "6":
 														echo "/";
                             break;} 
               ?>
-            </td>
+            </td> -->
             <td></td>
             <td></td>
             <td></td>
@@ -313,21 +313,21 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     </script>
     <script type="text/javascript">
             var $btnDLtoExcel = $('.btn_cut_print');
-            // var file_name="<?php echo $_POST['cut_datetime']?>";
-            // file_name=file_name.replaceAll('-','');
-            // file_name=file_name.replaceAll(' ','');
-            // file_name=file_name.replaceAll(':','');
+            var file_name=date('Y-m-d H:i:s');
+            file_name=file_name.replaceAll('-','');
+            file_name=file_name.replaceAll(' ','');
+            file_name=file_name.replaceAll(':','');
             $btnDLtoExcel.on('click', function Export() {
             $("#myTable").table2excel({
-                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด.xls'
+                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
             });
-            $.ajax({method: "POST", url: "cut_data_execute.php",
-             data: {risk_level_id: $(this).attr("risk_level_id"),type_cut: $(this).attr("type_cut"),office_code:$(this).attr("office_code")}
-              })
-              .done(function(x) {
-               console.log(x);
+            // $.ajax({method: "POST", url: "cut_data_execute.php",
+            //  data: {risk_level_id: $(this).attr("risk_level_id"),type_cut: $(this).attr("type_cut"),office_code:$(this).attr("office_code")}
+            //   })
+            //   .done(function(x) {
+            //    console.log(x);
 
-                });
+            //     });
             });
 
 

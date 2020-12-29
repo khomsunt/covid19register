@@ -80,6 +80,7 @@ include("./header.php");
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร ประจำวันที่ <?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?> แยกตามอำเภอ</h5>
     </div>
+    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
     <table class="table" id="myTable">
     <thead>
         <tr>
@@ -114,6 +115,7 @@ include("./header.php");
         }?>
     </tbody>
     </table>
+    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
 </main>
 
 <div id="forExcelExport" style="display: none;"></div>
@@ -132,5 +134,20 @@ include("./footer.php");
 <script>
 
 </script>
+<script type="text/javascript">
+            var $btnDLtoExcel = $('.btn_cut_print');
+                    var file_name="<?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?>";
+            file_name=file_name.replaceAll('-','');
+            file_name=file_name.replaceAll(' ','');
+            file_name=file_name.replaceAll(':','');
+            $btnDLtoExcel.on('click', function Export() {
+            $("#myTable").table2excel({
+                filename: 'รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนครประจำวันที่'+file_name+'.xls'
+            });
+            });
+
+
+
+        </script>
       
 </html>
