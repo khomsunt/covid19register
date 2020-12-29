@@ -34,7 +34,7 @@ left join prename p on c.prename_id=p.prename_id";
 if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9){
   $sql_report_risk.=" where c.hospcode='".$_SESSION['office_code']."' and c.date_to_sakonnakhon='".$_POST['date_to_sakonnakhon']."'"; 
 } else{
-    $sql_report_risk.=" c.date_to_sakonnakhon='".$_POST['date_to_sakonnakhon']."'"; 
+    $sql_report_risk.=" where c.date_to_sakonnakhon='".$_POST['date_to_sakonnakhon']."'"; 
 }
 // $sql_report_risk.=" GROUP BY
 // date_to_sakonnakhon";
