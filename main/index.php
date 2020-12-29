@@ -340,7 +340,9 @@ include("./header.php");
             $count_rows_risk_level+=$value['count_risk_level'];
           }
         ?>
-        <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
+        <div class="risk-evaluate">
+          <h5>ข้อมูลใหม่. <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
+        </div>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
@@ -356,7 +358,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-bak" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
@@ -386,7 +388,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
@@ -456,7 +458,9 @@ include("./header.php");
       <script src="../js/tableToCards.js"></script>
       <script>
         $(function(){
-
+          $(".risk-evaluate").click(function(){
+            window.location = './pcu_register_list.php';
+          })
           $(".btn-new").click(function(){
             window.location = './MyCovid19register.php?type=new&risk_level_id=-1';
           })
