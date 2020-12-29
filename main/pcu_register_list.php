@@ -335,7 +335,21 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               }else{
                 let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
                 if (r==true){
-                  window.location = './register.php';
+                  let thisData=json_data.data[0];
+                  console.log(thisData['HOUSE']);
+                  $("#divMyTable").hide();
+                  $("#register_div").show();
+                  $("#register").contents().find('#cid').val(thisData['CID']);
+                  $("#register").contents().find('#fname').val(thisData['NAME']);
+                  $("#register").contents().find('#lname').val(thisData['LNAME']);
+                  $("#register").contents().find('#tel').val(thisData['MOBILE']);
+                  $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
+                  // document.getElementById("register").contentWindow.change_ampur();
+                  
+                  // $("#register").contents().alertk();
+                  // $("#register").contents().find('#tambon_in_code').val(thisData['TAMBON']);
+                  // $("#register").contents().find('#moo_in_code').val(thisData['VILLAGE']);
+                  $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
                 }
               }
             }else{
