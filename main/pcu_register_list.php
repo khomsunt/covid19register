@@ -344,8 +344,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                   $("#register").contents().find('#lname').val(thisData['LNAME']);
                   $("#register").contents().find('#tel').val(thisData['MOBILE']);
                   $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
-                  document.getElementById("register").contentWindow.ampurInCodeChange(thisData['TAMBON']);
-                  document.getElementById("register").contentWindow.tambonInCodeChange(thisData['VILLAGE']);
+                  document.getElementById("register").contentWindow.ampurInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON'],thisData['TAMBON']);
+                  document.getElementById("register").contentWindow.tambonInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON']+thisData['VILLAGE'],thisData['VILLAGE']);
                   $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
                 }
               }
