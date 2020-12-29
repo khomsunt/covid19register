@@ -55,7 +55,7 @@ if ($_GET['type']=="new"){
 // echo "<br>node_id=".$_SESSION['node_id'];
 // echo "<br><br><br>";
 // print_r($_SESSION);
-// echo $sql;
+ echo $sql;
 $obj=$connect->prepare($sql);
 if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9){
   $obj->execute();

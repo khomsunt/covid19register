@@ -45,7 +45,7 @@ function thaiMonthShort($x) {
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-
+  
   <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
@@ -57,12 +57,12 @@ function thaiMonthShort($x) {
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
-      startDate: '+0d',
+      // startDate: '+0d',
       format: 'dd/mm/yyyy',
-      todayBtn: true,
+      todayBtn: false,
       language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
       thaiyear: true, //Set เป็นปี พ.ศ.
-      autoclose: true
+      autoclose: true,
   });
   // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
 
@@ -232,7 +232,7 @@ for ($i=0;$i<count($rows);$i++) {
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
     <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
+      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" />
     </div>
 
     <div class="card">
@@ -339,6 +339,7 @@ $("#btnSave").click(function() {
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
@@ -352,6 +353,10 @@ $("#btnSave").click(function() {
       not_complete=not_complete+1;
     }
   });
+
+  if ($("#date_to_sakonnakhon").val()=='' | $("#date_to_sakonnakhon").val().indexOf('0000')>-1) {
+    not_complete=not_complete+1;
+  }
 
   if (not_complete>0) {
     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
@@ -375,12 +380,13 @@ $("#btnSave").click(function() {
         }, 1500);
       }
     });
+
   }
 });
 
 function formatDate(d) {
   var r="";
-  if (typeof d !='indefined') {
+  if (typeof d !='undefined') {
     if (d.length>0) {
       var x=d.split("/");
       r=x[2]+"-"+x[1]+"-"+x[0];
@@ -473,7 +479,8 @@ $("#ampur_work_code").change(function() {
   });
 });
 
-$("#ampur_in_code").change(function() {
+function ampurInCodeChange(default_tambon) {
+  // default_tambon รหัสตำบล สองหลัก
   $("#tambon_in_code").find("option").remove();
   $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
   $("#moo_in_code").find("option").remove();
@@ -491,10 +498,18 @@ $("#ampur_in_code").change(function() {
     for (var i=0;i<data.length;i=i+1) {
       $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
     }
+    if (typeof default_tambon != 'undefined' & default_tambon != null) {
+      $("#tambon_in_code").val(default_tambon);
+    }
   });
+}
+
+$("#ampur_in_code").change(function() {
+  ampurInCodeChange();
 });
 
-$("#tambon_in_code").change(function() {
+function tambonInCodeChange(default_village) {
+  // default_village รหัสหมู่ สองหลัก
   $("#moo_in_code").find("option").remove();
   $("#moo_in_code").append("<option value=''>--เลือก--</option>");
 
@@ -510,7 +525,14 @@ $("#tambon_in_code").change(function() {
     for (var i=0;i<data.length;i=i+1) {
       $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
     }
+    if (typeof default_village != 'undefined' & default_village != null) {
+      $("#moo_in_code").val(default_village);
+    }
   });
+}
+
+$("#tambon_in_code").change(function() {
+  tambonInCodeChange();
 });
 
 $("#address_work").click(function() {
