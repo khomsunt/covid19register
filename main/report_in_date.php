@@ -96,6 +96,7 @@ include("./header.php");
     </thead>
     <tbody>
         <?php
+        if ($_SESSION['group_id']>0){
         $i = 0;
         foreach ($rows_report_risk as $key => $value) 
         {
@@ -125,9 +126,13 @@ include("./header.php");
                 </td>
                 </div>
                 <?php } ?>
-            </tr>
+              </tr>
             <?php
-        }?>
+          }
+        ?>
+      <?php 
+    } 
+  ?>
     </tbody>
     </table>
 </main>
