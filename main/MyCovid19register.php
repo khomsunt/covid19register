@@ -270,7 +270,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <?php
       $i++;
     if($_GET['type']=='new'){
-      $sql_update="update covid_register set cut_status_id=1,cut_datetime='".$now_date_time."' where covid_register_id=".$value['covid_register_id']." and cut_status_id=0;";    
+      $sql_update="update covid_register set cut_status_id=1,cut_datetime='".$now_date_time."' where covid_register_id=".$value['covid_register_id']." and cut_status_id=0";    
       //echo "<br>sql_update=".$sql_update;
       $obj=$connect->prepare($sql_update);
       $obj->execute();
