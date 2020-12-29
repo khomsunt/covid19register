@@ -27,10 +27,11 @@ IF
 count(*) AS count_all 
 FROM
 covid_register c
-left join ampur47 a on c.ampur_in_code = a.ampur_code
-where date_to_sakonnakhon = '".$_POST['date_to_sakonnakhon']."'
-GROUP BY
-a.ampur_code";
+left join ampur47 a on c.ampur_in_code = a.ampur_code";
+$sql_report_risk.=" where date_to_sakonnakhon = '".$_POST['date_to_sakonnakhon']."'"; 
+
+$sql_report_risk.=" GROUP BY
+ampur_code";
 $obj=$connect->prepare($sql_report_risk);
 $obj->execute();
 $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -75,6 +76,7 @@ $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
+<!-- <?php print_r($sql_report_risk);?> -->
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร ประจำวันที่ <?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?> แยกตามอำเภอ</h5>
     </div>
