@@ -12,7 +12,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 $_return["dataSource"]="covid";
 $_return["data"]=$rows;
 if (count($rows)==0){
-    $sql="SELECT * from person where replace(replace(cid,'-',''),' ','') =:cid";
+    $sql="select p.CID,p.NAME,p.LNAME,p.MOBILE,h.CHANGWAT,h.AMPUR,h.TAMBON,h.VILLAGE,h.HOUSE from person p left join home h on p.hid=h.hid where replace(replace(p.cid,'-',''),' ','') =:cid order by p.typearea limit 1";
     $obj=$hdc_connect->prepare($sql);
     $obj->execute(['cid' => $_POST['cid']]);
     $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
