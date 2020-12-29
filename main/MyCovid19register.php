@@ -35,23 +35,32 @@ $sql="select c.*,
   left join risk_level r on c.risk_level_id=r.risk_level_id
   left join risk_level r2 on c.evaluate_level=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
-// if ($_SESSION['group_id']==3){
-$sql.=" where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
+if ($_GET['risk_level_id']>=0){  
+  $sql.=" where c.hospcode='".$_SESSION['office_code']."' and c.evaluate_level=".$_GET['risk_level_id'];
+}else{
+  $sql.=" where c.hospcode='".$_SESSION['office_code']."' ";
+}
 // }else{
 //   $sql.=" where c.risk_level_id=:risk_level_id";
 // }
 if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
+}else{
+  if ($_GET['type']=='cutted'){
+    $sql.=" and c.cut_status_id=1";
+  }
 }
-$sql.=" limit 20";
+// $sql.=" limit 20";
 // echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
 // echo "<br>node_id=".$_SESSION['node_id'];
+// echo "<br><br><br>";
+// print_r($_SESSION);
 // echo $sql;
 $obj=$connect->prepare($sql);
-if ($_SESSION['group_id']==3){
-  $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
-}else{
-  $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
+if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9){
+  $obj->execute();
+// }else{
+//   $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
 }
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
