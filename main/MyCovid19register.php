@@ -111,6 +111,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <table class="table" id="myTable">
         <thead>
           <tr>
+           <th>ลำดับ</th>
             <th data-card-title>ชื่อ นามสกุล</th>
             <th>CID</th>
             <th>วันที่บันทึก</th>
@@ -137,6 +138,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           foreach ($rows as $key => $value) {
             ?>
             <tr id="<?php echo $value['covid_register_id'] ?>">
+            <td><?php echo $key+1; ?></td>
               <td>
                 <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $key+1; ?></span>
                 <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
