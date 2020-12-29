@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
 include('../include/config.php');
 include('../include/functions.php');
 
@@ -134,3 +135,4 @@ include("./footer.php");
 </script>
       
 </html>
+<?php } ?>
