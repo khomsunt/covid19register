@@ -131,8 +131,8 @@ include("./header.php");
           }
         ?>
       <?php 
-    } 
-  ?>
+      } 
+    ?>
     </tbody>
     </table>
 </main>
