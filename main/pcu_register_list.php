@@ -5,9 +5,9 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br>";
-// print_r($_POST);
-// print_r($_SESSION);
+echo "<br><br><br>";
+print_r($_POST);
+print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 $sql="select c.*,
@@ -37,8 +37,12 @@ $sql="select c.*,
   left join risk_level r2 on c.evaluate_level=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
-  $sql.=" where c.cid='".$_POST['cid']."' ";
-// echo $sql;
+  if (isset($_POST['cid'])){
+    $sql.=" where c.cid='".$_POST['cid']."' ";
+  }else{
+    $sql.=" where c.hospcode='".$_SESSION['office_code']."'";
+  }
+echo $sql;
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -110,7 +114,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <main role="main" style="margin-top:60px;">
       <div class="container">
         <h5>
-          <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้เดินทางเข้า <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
+          <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> 
+          รายชื่อผู้เดินทางเข้า 
+          <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
         </h5>
         <div>
           <div class="input-group mb-3">
@@ -329,7 +335,21 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               }else{
                 let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
                 if (r==true){
-                  window.location = './register.php';
+                  let thisData=json_data.data[0];
+                  console.log(thisData['HOUSE']);
+                  $("#divMyTable").hide();
+                  $("#register_div").show();
+                  $("#register").contents().find('#cid').val(thisData['CID']);
+                  $("#register").contents().find('#fname').val(thisData['NAME']);
+                  $("#register").contents().find('#lname').val(thisData['LNAME']);
+                  $("#register").contents().find('#tel').val(thisData['MOBILE']);
+                  $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
+                  // document.getElementById("register").contentWindow.change_ampur();
+                  
+                  // $("#register").contents().alertk();
+                  // $("#register").contents().find('#tambon_in_code').val(thisData['TAMBON']);
+                  // $("#register").contents().find('#moo_in_code').val(thisData['VILLAGE']);
+                  $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
                 }
               }
             }else{

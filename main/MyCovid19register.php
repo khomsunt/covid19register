@@ -35,23 +35,32 @@ $sql="select c.*,
   left join risk_level r on c.risk_level_id=r.risk_level_id
   left join risk_level r2 on c.evaluate_level=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
-// if ($_SESSION['group_id']==3){
-$sql.=" where a47.node_id=:user_node_id and c.risk_level_id=:risk_level_id";
+if ($_GET['risk_level_id']>=0){  
+  $sql.=" where c.hospcode='".$_SESSION['office_code']."' and c.evaluate_level=".$_GET['risk_level_id'];
+}else{
+  $sql.=" where c.hospcode='".$_SESSION['office_code']."' ";
+}
 // }else{
 //   $sql.=" where c.risk_level_id=:risk_level_id";
 // }
 if ($_GET['type']=="new"){
   $sql.=" and c.cut_status_id=0";
+}else{
+  if ($_GET['type']=='cutted'){
+    $sql.=" and c.cut_status_id=1";
+  }
 }
-$sql.=" limit 20";
+// $sql.=" limit 20";
 // echo "<br><br><br><br>_SESSION['node_id']=".$_SESSION['node_id'];
 // echo "<br>node_id=".$_SESSION['node_id'];
-// echo $sql;
+// echo "<br><br><br>";
+// print_r($_SESSION);
+ echo $sql;
 $obj=$connect->prepare($sql);
-if ($_SESSION['group_id']==3){
-  $obj->execute([ 'user_node_id' => $_SESSION['node_id'], 'risk_level_id' => $_GET['risk_level_id'] ]);
-}else{
-  $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
+if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9){
+  $obj->execute();
+// }else{
+//   $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
 }
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
@@ -98,9 +107,11 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?>
         </h5>
       </div>
+      <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
       <table class="table" id="myTable">
         <thead>
           <tr>
+           <th>ลำดับ</th>
             <th data-card-title>ชื่อ นามสกุล</th>
             <th>CID</th>
             <th>วันที่บันทึก</th>
@@ -127,6 +138,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           foreach ($rows as $key => $value) {
             ?>
             <tr id="<?php echo $value['covid_register_id'] ?>">
+            <td><?php echo $key+1; ?></td>
               <td>
                 <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $key+1; ?></span>
                 <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
@@ -193,6 +205,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           } ?>
         </tbody>
       </table>
+      <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
     </main>
     <?php
       include("./footer.php");
@@ -200,6 +213,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/jquery-3.2.1.min.js" ></script>
     <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/tableToCards.js"></script>
+    <script src='../js/table2excel.js'></script>
     <script>
       $(function(){
         $(".btn-change-risk-level").click(function(){
@@ -223,5 +237,19 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         })
       })
     </script>
+    <script type="text/javascript">
+            var $btnDLtoExcel = $('.btn_cut_print');
+            var file_name="<?php echo $_POST['cut_datetime']?>";
+            file_name=file_name.replaceAll('-','');
+            file_name=file_name.replaceAll(' ','');
+            file_name=file_name.replaceAll(':','');
+            $btnDLtoExcel.on('click', function Export() {
+            $("#myTable").table2excel({
+                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด.xls'
+            });
+            });
+            
+
+        </script>
   </body>
 </html>
