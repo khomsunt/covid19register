@@ -63,6 +63,19 @@ if ($evaluate_level<3) {
 //     $auto_cut_status_id=1;
 // }
 
+$villcode="47".$_POST['ampur_in_code'].$_POST['tambon_in_code'].$_POST['moo_in_code'];
+$sqlV="select * from village where status_id=1 and villcode=:villcode order by id limit 1 ";
+// $sqlV="select * from village where status_id=1 and villcode='".$villcode."' order by id limit 1 ";
+$objV=$connect->prepare($sqlV);
+$objV->execute([ 'villcode' => $villcode ]);
+// $objV->execute();
+$count_village=$objV->rowCount();
+$rows_village=$objV->fetchAll(PDO::FETCH_ASSOC);
+$hospcode="";
+if ($count_village>0) {
+    $hospcode=$rows_village[0]['pcucode'];
+}
+
 $sql=" insert into covid_register ( ". 
 " fname,lname,cid,tel,occupation_id ".
 " ,tambon_out_code,ampur_out_code,changwat_out_code ". 
@@ -71,7 +84,7 @@ $sql=" insert into covid_register ( ".
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
 // " ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level ".
-" ,date_to_sakonnakhon_text,note ".
+" ,date_to_sakonnakhon_text,note,hospcode ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -95,6 +108,7 @@ $sql=" insert into covid_register ( ".
 ",".$evaluate_level.
 ",'".$_POST['date_to_sakonnakhon_text']."' ".
 ",'".$_POST['note']."' ".
+",'".$hospcode."'".
 " ) ";
 
 $obj=$connect->prepare($sql);
@@ -111,6 +125,6 @@ else {
 
 // $s=$sql;
 $s="";
-$x=array("sql"=>$s,"data"=>array("status"=>$status,"registerLastInsertId"=>$registerLastInsertId));
+$x=array("sql"=>$s, "data"=>array("status"=>$status,"registerLastInsertId"=>$registerLastInsertId));
 echo json_encode($x, JSON_UNESCAPED_UNICODE);
 ?>

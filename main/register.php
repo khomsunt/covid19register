@@ -378,7 +378,7 @@ $("#btnSave").click(function() {
       data: data
     })
     .done(function(x) {
-      console.log(jQuery.parseJSON(x));
+      // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
         setTimeout(() => {
