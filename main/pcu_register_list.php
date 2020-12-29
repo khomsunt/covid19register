@@ -5,9 +5,9 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br><br><br>";
-print_r($_POST);
-print_r($_SESSION);
+echo "<br>";
+// print_r($_POST);
+// print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 $sql="select c.*,
@@ -42,7 +42,7 @@ $sql="select c.*,
   }else{
     $sql.=" where c.hospcode='".$_SESSION['office_code']."'";
   }
-echo $sql;
+// echo $sql;
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -195,7 +195,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                   <?php echo $value['date_arrived_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
-                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon" />
+                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate($value['date_arrived_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -226,7 +226,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 </svg>
                 <?php echo $value['tel']; ?>
                 <span class="float-right">
-                  <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-secondary btn-edit btn_edit_<?php echo $value['covid_register_id']; ?>'>แก้ไข</button>
+                  <button risk_level_id="<?php echo $value['risk_level_id']; ?>" covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-secondary btn-edit btn_edit_<?php echo $value['covid_register_id']; ?>'>ประเมิน</button>
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-save btn_save_<?php echo $value['covid_register_id']; ?>' style="display:none;">บันทึก</button>
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-danger btn-cancel btn_cancel_<?php echo $value['covid_register_id']; ?>' style="display:none;">ยกเลิก</button>
                 </span>
@@ -246,22 +246,45 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/tableToCards.js"></script>
     <script>
       $body = $("body");
+      var risk_level_id_default=0;
       function close_iframe(){
         $("#register_div").hide();
         $("#register").attr("src","./register.php");
       }
+      function formatDate(d) {
+        var r="";
+        if (typeof d !='undefined') {
+          if (d.length>0) {
+            var x=d.split("/");
+            r=x[2]+"-"+x[1]+"-"+x[0];
+          }
+        }
+        return r;
+      }
+      function deFormatDate(d) {
+        var r="";
+        if (typeof d !='undefined') {
+          if (d.length>0) {
+            var x=d.split("-");
+            r=x[0]+"/"+x[1]+"/"+x[2];
+          }
+        }
+        return r;
+      }
+
       $(function(){
         $("#register_div").hide();
         $('.datepicker').datepicker({
-          startDate: '+0d',
+          // startDate: '+0d',
           format: 'dd/mm/yyyy',
           todayBtn: false,
           language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
-          thaiyear: true, //Set เป็นปี พ.ศ.
+          // thaiyear: true, //Set เป็นปี พ.ศ.
           autoclose: true
         });
 
         $(".btn-edit").click(function(){
+          risk_level_id_default=$(this).attr("risk_level_id");
           let thisId=$(this).attr("covid_register_id");
           $(this).parent().find(".btn-edit").hide();
           $(this).parent().find(".btn-save").show();
@@ -277,21 +300,27 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(this).parent().find(".btn-edit").show();
           $(this).parent().find(".btn-save").hide();
           $(this).parent().find(".btn-cancel").hide();
-          console.log($(".select_date_arrived_sakonnakhon_"+thisId).find("#date_arrived_sakonnakhon").val());
-          console.log($("#date_arrived_sakonnakhon").val());
-          // $.ajax({
-          //   method: "POST",
-          //   url: "./pcu_changeRiskLevel.php",
-          //   data: { covid_register_id: thisObj.attr("covid_register_id"), risk_level_id: thisObj.attr("risk_level_id") }
-          // })
-          // .done(function( msg ) {
-          //   // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
-          //   //   thisObj.parent().parent().parent().parent().parent().hide();
-          //   // }else{
-          //   //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
-          //   // }
-          //   console.log(msg)
-          // })
+          if ($(".btn-change-risk-level").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
+          }else{
+            $("#date_arrived_sakonnakhon_"+thisId).remove();
+          }
+          console.log($("#date_arrived_sakonnakhon_"+thisId).val());
+          console.log({ covid_register_id: thisId, risk_level_id: risk_level_id_default });
+
+          $.ajax({
+            method: "POST",
+            url: "./pcu_changeRiskLevel.php",
+            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()), covid_register_id: thisId, risk_level_id: risk_level_id_default }
+          })
+          .done(function( msg ) {
+            // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+            //   thisObj.parent().parent().parent().parent().parent().hide();
+            // }else{
+            //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
+            // }
+            // console.log(msg);
+            location.reload();
+          })
 
 
 
@@ -335,8 +364,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               }else{
                 let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
                 if (r==true){
+                  $("#register").contents().find("input").val("");
+                  $("#register").contents().find("select").val("");
                   let thisData=json_data.data[0];
-                  console.log(thisData['HOUSE']);
                   $("#divMyTable").hide();
                   $("#register_div").show();
                   $("#register").contents().find('#cid').val(thisData['CID']);
@@ -344,14 +374,16 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                   $("#register").contents().find('#lname').val(thisData['LNAME']);
                   $("#register").contents().find('#tel').val(thisData['MOBILE']);
                   $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
-                  document.getElementById("register").contentWindow.ampurInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON'],thisData['TAMBON']);
-                  document.getElementById("register").contentWindow.tambonInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON']+thisData['VILLAGE'],thisData['VILLAGE']);
+                  document.getElementById("register").contentWindow.ampurInCodeChange('47'+thisData['AMPUR'],thisData['TAMBON']);
+                  document.getElementById("register").contentWindow.tambonInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON'],thisData['VILLAGE']);
                   $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
                 }
               }
             }else{
               let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
               if (r==true){
+                $("#register").contents().find("input").val("");
+                $("#register").contents().find("select").val("");
                 $("#divMyTable").hide();
                 $("#register_div").show();
                 $("#register").contents().find('#cid').val($("#cid").val());
@@ -362,6 +394,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         });
         $(".btn-change-risk-level").click(function(){
           var thisObj=$(this);
+          risk_level_id_default=thisObj.attr("risk_level_id");
           console.log(thisObj.parent().parent().children().first());
           thisObj.parent().parent().children().first().html(thisObj.html());
           // $.ajax({
@@ -370,7 +403,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           //   data: { covid_register_id: thisObj.attr("covid_register_id"), risk_level_id: thisObj.attr("risk_level_id") }
           // })
           // .done(function( msg ) {
-          //   // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+          //   // if ($(".btn-change-risk-level").parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
           //   //   thisObj.parent().parent().parent().parent().parent().hide();
           //   // }else{
           //   //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
@@ -388,3 +421,14 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
   </body>
 </html>
+
+<?php 
+function deFormatDate($d){
+  $_return="";
+  if ($d<>""){
+    $a_d=explode("-",$d);
+    $_return=$a_d[2]."/".$a_d[1]."/".$a_d[0];
+  }
+  return $_return;
+}
+?>
