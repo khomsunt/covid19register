@@ -289,6 +289,11 @@ for ($i=0;$i<count($rows);$i++) {
           <input type="text" class="form-control" id="house_in_no">
         </div>
 
+        <div class="form-group">
+          <label for="exampleFormControlInput1">หมายเหตุ <span class="required"></span></label>
+          <textarea class="form-control" id="note"></textarea>
+        </div>
+
       </div>
     </div>
   </div>
@@ -344,6 +349,7 @@ $("#btnSave").click(function() {
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
+    note : $("#note").val(),
   }
   // console.log(data);
  
@@ -372,7 +378,7 @@ $("#btnSave").click(function() {
       data: data
     })
     .done(function(x) {
-      // console.log(jQuery.parseJSON(x));
+      console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
         setTimeout(() => {
