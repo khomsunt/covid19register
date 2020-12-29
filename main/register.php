@@ -57,7 +57,7 @@ function thaiMonthShort($x) {
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
-      startDate: '+0d',
+      // startDate: '+0d',
       format: 'dd/mm/yyyy',
       todayBtn: false,
       language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
