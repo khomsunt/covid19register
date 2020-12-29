@@ -34,15 +34,15 @@ include('../include/config.php');
             <a class="nav-link" href="./changwat_risk.php">พื้นที่เสี่ยง</a>
           </li>
           <li class="nav-item active">
-              <a class="nav-link" href="./report_in_date.php">แยกรายวัน</a>
+            <a class="nav-link" href="./report_risk_ampur.php">กลุ่มเสี่ยงรายอำเภอ</a>
             </li>
-          <?php if ($_SESSION['group_id']=='8' or $_SESSION['group_id']=='9'){  ?>
-            <li class="nav-item active">
-              <a class="nav-link" href="./report_risk_ampur.php">กลุ่มเสี่ยงรายอำเภอ</a>
-            </li>
-          <?php  } ?>
+            
           <?php
         } ?>
+        <li class="nav-item active">
+            <a class="nav-link" href="./report_in_date.php">แยกรายวัน</a>
+              
+            </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item active">

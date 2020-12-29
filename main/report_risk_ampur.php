@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include('../include/config.php');
-
+if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
 $sql_report_risk="SELECT
 a.ampur_code,
 a.ampur_name,
@@ -121,3 +121,4 @@ include("./footer.php");
 </script>
       
 </html>
+<?php } ?>
