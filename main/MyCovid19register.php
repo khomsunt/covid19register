@@ -7,6 +7,7 @@ if ($_SESSION['group_id']<=0){
 }
 include('../include/config.php');
 include('../include/functions.php');
+$now_date_time=date('Y-m-d H:i:s');
 
 $sql="select c.*, p.prename_name, cw.changwat_name as changwat_name_out, a.ampur_name as ampur_name_out, t.tambon_name as tambon_name_out, cw2.changwat_name as changwat_work_name_out, 
 a2.ampur_name as ampur_work_name_out, t2.tambon_name as tambon_work_name_out, a47.ampur_name as ampur_name_in, t47.tambon_name as tambon_name_in,v.villname,o.occupation_name, 
@@ -269,7 +270,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <?php
       $i++;
     if($_GET['type']=='new'){
-      $sql_update="update covid_register_copy3 set cut_status_id=1,cut_datetime=".$now_date_time."where covid_register_id=".$value['covid_register_id'];    
+      $sql_update="update covid_register_copy3 set cut_status_id=1,cut_datetime='".$now_date_time."' where covid_register_id=".$value['covid_register_id']." and cut_status_id=0;";    
       //echo "<br>sql_update=".$sql_update;
       $obj=$connect->prepare($sql_update);
       $obj->execute();
