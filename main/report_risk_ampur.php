@@ -88,18 +88,27 @@ include("./header.php");
         {
             ?>
             <tr>
-                <td><?php echo ++$i; ?></td>
+                <td style="text-align: center";><?php echo ++$i; ?></td>
                 <td><?php echo $value['ampur_name']; ?></td>
                 <!-- <td><?php echo $value['node_id']; ?></td> -->
-                <td><?php echo $value['green']; ?></td>
-                <td><?php echo $value['yellow']; ?></td>
-                <td><?php echo $value['orange']; ?></td>
-                <td><?php echo $value['red']; ?></td>
-                <td><?php echo $value['gray']; ?></td>
-                <td><?php echo $value['all_color']; ?></td>
+                <td style="text-align: center";><?php echo $value['green']; ?></td>
+                <td style="text-align: center";><?php echo $value['yellow']; ?></td>
+                <td style="text-align: center";><?php echo $value['orange']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; ?></td>
+                <td style="text-align: center";><?php echo $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['all_color']; ?></td>
             </tr>
             <?php
         }?>
+        <td><div></div></td>
+        <td><div style="text-align: left";>รวม</div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
+
     </tbody>
     </table>
 </main>
