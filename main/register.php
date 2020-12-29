@@ -231,7 +231,7 @@ for ($i=0;$i<count($rows);$i++) {
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
-    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
       <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" />
     </div>
 
@@ -354,7 +354,7 @@ $("#btnSave").click(function() {
     }
   });
 
-  if ($("#date_to_sakonnakhon").val()=='' | $("#date_to_sakonnakhon").val().indexOf('0000')>-1) {
+  if ($("#date_to_sakonnakhon").val().trim()=='' | $("#date_to_sakonnakhon").val().indexOf('0000')>-1) {
     not_complete=not_complete+1;
   }
 
@@ -479,7 +479,7 @@ $("#ampur_work_code").change(function() {
   });
 });
 
-function ampurInCodeChange(default_tambon) {
+function ampurInCodeChange(ampur_code_full,default_tambon) {
   // default_tambon รหัสตำบล สองหลัก
   $("#tambon_in_code").find("option").remove();
   $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
@@ -489,7 +489,7 @@ function ampurInCodeChange(default_tambon) {
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
-      query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
+      query_where: "ampur_code_full='"+ampur_code_full+"'" , 
       query_order: "tambon_name asc"
     }
   })
@@ -505,10 +505,10 @@ function ampurInCodeChange(default_tambon) {
 }
 
 $("#ampur_in_code").change(function() {
-  ampurInCodeChange();
+  ampurInCodeChange('47'+$("#ampur_in_code").val(),null);
 });
 
-function tambonInCodeChange(default_village) {
+function tambonInCodeChange(tambon_code_full,default_village) {
   // default_village รหัสหมู่ สองหลัก
   $("#moo_in_code").find("option").remove();
   $("#moo_in_code").append("<option value=''>--เลือก--</option>");
@@ -516,7 +516,7 @@ function tambonInCodeChange(default_village) {
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: {
       query_table: "village", 
-      query_where: "tambon_code_full='47"+$("#ampur_in_code").val()+$("#tambon_in_code").val()+"'" , 
+      query_where: "tambon_code_full='"+tambon_code_full+"'" , 
       query_order: "villno+0 asc"
     }
   })
@@ -532,7 +532,7 @@ function tambonInCodeChange(default_village) {
 }
 
 $("#tambon_in_code").change(function() {
-  tambonInCodeChange();
+  tambonInCodeChange('47'+$("#ampur_in_code").val()+$("#tambon_in_code").val(),null);
 });
 
 $("#address_work").click(function() {
