@@ -63,7 +63,7 @@ include('../include/config.php');
 
     $sql_update="update covid_register_copy3 set cut_status_id=1,cut_datetime=".$now_date_time;
     
-    echo "<br>sql_update=".$sql_update;
+    //echo "<br>sql_update=".$sql_update;
     // $obj=$connect->prepare($sql_update);
     // $obj->execute();
     //header("Location: ./cut_data.php");
