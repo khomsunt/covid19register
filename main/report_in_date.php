@@ -130,6 +130,15 @@ include("./header.php");
             <?php
           }
         ?>
+        <td><div></div></td>
+        <td><div class="data" style="text-align: center";>รวม</div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+
       <?php 
       } 
     ?>
