@@ -64,7 +64,7 @@ $(document).ready(function () {
       thaiyear: true, //Set เป็นปี พ.ศ.
       autoclose: true
   });
-  // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+  //// }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
 
   $(".required").css({
     'color':'red',

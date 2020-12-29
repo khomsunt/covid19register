@@ -55,29 +55,13 @@ if ($evaluate_level<3) {
     }
 }
 
-// if ($evaluate_level==2){
+// if ($evaluate_level==2){ //
 //     $risk_level_id=99; 
 //     $auto_cut_status_id=0;
 // }else{
 //     $risk_level_id=$evaluate_level; 
 //     $auto_cut_status_id=1;
 // }
-
-$sql=" select * from covid_register where cid=:cid and tel=:tel ".
-" and cut_status_id = 0 ". 
-" and (date_arrived_sakonnakhon is null or date_arrived_sakonnakhon='') ".
-" and date_to_sakonnakhon > left(now(),10) ";
-$obj=$connect->prepare($sql);
-$execute_status=$obj->execute([ 'cid' => $_POST['cid'],'tel' => $_POST['tel'] ]);
-// $execute_status=$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-
-
-
-
-
-
-
 
 $sql=" insert into covid_register ( ". 
 " fname,lname,cid,tel,occupation_id ".
@@ -87,6 +71,7 @@ $sql=" insert into covid_register ( ".
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
 // " ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level ".
+" ,date_to_sakonnakhon_text ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -108,6 +93,7 @@ $sql=" insert into covid_register ( ".
 // ",".$risk_level_id.
 // ",".$auto_cut_status_id.
 ",".$evaluate_level.
+",'".$_POST['date_to_sakonnakhon_text']."' ".
 " ) ";
 
 $obj=$connect->prepare($sql);

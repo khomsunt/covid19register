@@ -24,14 +24,16 @@ IF
 ( c.evaluate_level = 99, 1, 0 )) AS gray,
 count(*) AS count_all 
 FROM
-covid_register c
-where date_to_sakonnakhon >= NOW() - INTERVAL 1 DAY
-GROUP BY
+covid_register c";
+if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9){
+  $sql_report_risk.=" where c.hospcode='".$_SESSION['office_code']."'"; 
+}
+$sql_report_risk.=" GROUP BY
 date_to_sakonnakhon";
 $obj=$connect->prepare($sql_report_risk);
 $obj->execute();
 $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
-// print_r($rows_cut_data);
+//print_r($sql_report_risk);
 ?>
 
 <!doctype html>
@@ -72,6 +74,7 @@ $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 <main role="main" style="margin-top:60px;">
+
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร แยกวันตามวันที่</h5>
     </div>
@@ -86,8 +89,9 @@ include("./header.php");
         <th style="text-align: center";>สีแดง</th>  
         <th style="text-align: center";>สีเทา</th>  
         <th style="text-align: center";>จำนวนทั้งหมด</th>
+        <?php if($_SESSION['group_id']!=8 || $_SESSION['group_id']==9 ) { ?>
         <th style="text-align: center";>รายอำเภอ</th>  
-       
+       <?php  } ?>
         </tr>
     </thead>
     <tbody>
@@ -98,17 +102,29 @@ include("./header.php");
             ?>
             <tr>
                 <td style="text-align: center";><?php echo ++$i; ?></td>
-                <td style="text-align: center";><?php echo thailongdate($value['date_to_sakonnakhon']); ?></td>
-                <!-- <td><?php echo $value['node_id']; ?></td> -->
+                <td  style="text-align: center";>
+                  <div class="tag-list"  date_to_sakonnakhon = "<?php echo $value['date_to_sakonnakhon']; ?>" office_code ="<?php echo $_SESSION['office_code']; ?>">
+                <?php if($value['date_to_sakonnakhon'] == "0000-00-00") { ?>
+                  ไม่ทราบวันที่มาถึง
+                <?php  } ?>
+                <?php if($value['date_to_sakonnakhon'] != "0000-00-00") { ?>
+                  <?php echo thailongdate($value['date_to_sakonnakhon']);?>
+                <?php  } ?>
+                </div>
+                </td>
                 <td style="text-align: center";><?php echo $value['green']; ?></td>
                 <td style="text-align: center";><?php echo $value['yellow']; ?></td>
                 <td style="text-align: center";><?php echo $value['orange']; ?></td>
                 <td style="text-align: center";><?php echo $value['red']; ?></td>
                 <td style="text-align: center";><?php echo $value['gray']; ?></td>
                 <td style="text-align: center";><?php echo $value['count_all']; ?></td>
-                <td style="text-align: center;">
+                <?php if($_SESSION['group_id']!=8 || $_SESSION['group_id']==9 ) { ?>
+                <div>
+                  <td style="text-align: center;">
                     <button date_to_sakonnakhon = "<?php echo $value['date_to_sakonnakhon']; ?>" type="button" class="btn btn-info tag-link">รายละเอียด</button>
                 </td>
+                </div>
+                <?php } ?>
             </tr>
             <?php
         }?>
@@ -134,6 +150,13 @@ $(function(){
   $(".tag-link").click(function(){
       console.log($(this).attr("date_to_sakonnakhon"));
       var form = $('<form action="./report_in_date_ampur.php" method="post"><input type="hidden" name="date_to_sakonnakhon" value="' + $(this).attr("date_to_sakonnakhon") + '"></input>' + '</form>');
+      $('body').append(form);
+      $(form).submit();                
+  });
+
+  $(".tag-list").click(function(){
+      console.log($(this).attr("date_to_sakonnakhon"));
+      var form = $('<form action="./report_in_date_list.php" method="post"><input type="hidden" name="date_to_sakonnakhon" value="' + $(this).attr("date_to_sakonnakhon") + '"></input><input type="hidden" name="hospcode" value="' + $(this).attr("hospcode") + '"></input>' + '</form>');
       $('body').append(form);
       $(form).submit();                
   });
