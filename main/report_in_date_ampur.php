@@ -98,6 +98,7 @@ include("./header.php");
     </thead>
     <tbody>
         <?php
+        if ($_SESSION['group_id']>0){
         $i = 0;
         foreach ($rows_report_risk as $key => $value) 
         {
@@ -113,9 +114,21 @@ include("./header.php");
                 <td style="text-align: center";><?php echo $value['count_all']; ?></td>
             </tr>
             <?php
-        }?>
+        }
+      ?>
+      <td><div></div></td>
+        <td><div class="data" style="text-align: center";>รวม</div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+
+      <?php } ?> 
     </tbody>
     </table>
+    
     <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
 </main>
 
@@ -150,6 +163,6 @@ include("./footer.php");
 
 
         </script>
-      
+     
 </html>
 <?php } ?>
