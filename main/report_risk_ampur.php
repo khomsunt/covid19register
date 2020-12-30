@@ -84,18 +84,24 @@ include("./header.php");
         <?php
          if ($_SESSION['group_id']>0){
         $i = 0;
+        $rowTotal1 = 0;
+        $rowTotal2 = 0;
+        $rowTotal3 = 0;
+        $rowTotal4 = 0;
+        $rowTotal5 = 0;
+        $rowTotal6 = 0;
         foreach ($rows_report_risk as $key => $value) {
             ?>
             <tr>
                 <td style="text-align: center";><?php echo ++$i; ?></td>
                 <td><?php echo $value['ampur_name']; ?></td>
                 <!-- <td><?php echo $value['node_id']; ?></td> -->
-                <td style="text-align: center";><?php echo $value['green']; ?></td>
-                <td style="text-align: center";><?php echo $value['yellow']; ?></td>
-                <td style="text-align: center";><?php echo $value['orange']; ?></td>
-                <td style="text-align: center";><?php echo $value['red']; ?></td>
-                <td style="text-align: center";><?php echo $value['gray']; ?></td>
-                <td style="text-align: center";><?php echo $value['all_color']; ?></td>
+                <td style="text-align: center";><?php echo $value['green']; $rowTotal1 += $value['green']; ?></td>
+                <td style="text-align: center";><?php echo $value['yellow']; $rowTotal2 += $value['yellow']; ?></td>
+                <td style="text-align: center";><?php echo $value['orange']; $rowTotal3 += $value['orange']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; $rowTotal4 += $value['red']; ?></td>
+                <td style="text-align: center";><?php echo $value['gray']; $rowTotal5 += $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['all_color']; $rowTotal6 += $value['all_color']; ?></td>
             </tr>
         
     </tbody>
@@ -103,12 +109,12 @@ include("./header.php");
         } ?>
         <td><div></div></td>
         <td><div style="text-align: left";>รวม</div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td>
-        <td><div style="text-align: center";><?php echo $value['all_color']; ?></div></td> 
+        <td><div style="text-align: center";><?php echo $rowTotal1 ; ?></div></td>
+        <td><div style="text-align: center";><?php echo $rowTotal2 ; ?></div></td>
+        <td><div style="text-align: center";><?php echo $rowTotal3 ; ?></div></td>
+        <td><div style="text-align: center";><?php echo $rowTotal4 ; ?></div></td>
+        <td><div style="text-align: center";><?php echo $rowTotal5 ; ?></div></td>
+        <td><div style="text-align: center";><?php echo $rowTotal6 ; ?></div></td> 
     </table>
 </main>
 
