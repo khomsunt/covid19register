@@ -114,13 +114,13 @@ $(document).ready(function () {
     </select>
     
     <label for="fname">ชื่อ <span class="required"></span></label>
-    <input type="fname" class="form-control" id="fname" value="<?php echo $rows[0]['fname']; ?>">
+    <input type="fname" class="form-control" id="fname" value="">
     
     <label for="lname">สกุล <span class="required"></span></label>
-    <input type="lname" class="form-control" id="lname" value="<?php echo $rows[0]['lname']; ?>">
+    <input type="lname" class="form-control" id="lname" value="">
     
     <label for="phone">เบอร์โทร <span class="required"></span></label>
-    <input type="phone" class="form-control" id="phone" value="<?php echo $rows[0]['phone']; ?>">
+    <input type="phone" class="form-control" id="phone" value="">
 
     <label for="office_id">หน่วยงาน <span class="required"></span></label>
     <select class="form-control" id="office_id">
