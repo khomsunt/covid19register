@@ -134,7 +134,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <th rowspan="2">สาเหตุที่เดินทางไป</th>
     <th rowspan="2">พาหนะที่ใช้เดินทาง</th>
     <th colspan="2">อาการ</th>
-    <th colspan="6">ประเภท</th>
+    <th colspan="5">ประเภท</th>
     <th colspan="2">lab</th>
     <th colspan="2">ผล</th>
     <th rowspan="2">หน่วยบริการรับผิดชอบ</th>
@@ -216,7 +216,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               <?php  
                 switch ($value['occupation_id']='99' and ($value['changwat_in_code']<>'74' or $value['changwat_work_code']<>'74')) {
 														case "1":
-														echo "/";
+														echo "";
                             break;} 
               ?>
             </td>
@@ -224,7 +224,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               <?php  
                 switch ($value['occupation_id']<>'99' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "2":
-														echo "/";
+														echo "";
                             break;} 
               ?>
             </td>
@@ -232,7 +232,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               <?php  
                 switch ($value['occupation_id']='1' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "3":
-														echo "/";
+														echo "";
                             break;} 
               ?>
             </td>
@@ -240,7 +240,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               <?php  
                 switch ($value['occupation_id']='2' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "4":
-														echo "/";
+														echo "";
                             break;} 
               ?>
             </td>
@@ -248,7 +248,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               <?php  
                 switch ($value['occupation_id']<>'99' and ($value['changwat_in_code']='74' or $value['changwat_work_code']='74')) {
 														case "5":
-														echo "/";
+														echo "";
                             break;} 
               ?>
             </td>
