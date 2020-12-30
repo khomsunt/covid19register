@@ -429,10 +429,12 @@ function getInputData () {
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
+    note : '',
   }
   return data;
 }
