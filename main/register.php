@@ -505,20 +505,27 @@ $("#btnConfirmDup").click(function() {
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    var covid_register_id_list_string=covid_register_id_list.join(',');
-    $.ajax({method: "POST", url: "ajaxRegisterMarkAsDelete.php",
-      data: { 
-        covid_register_id_list_string: covid_register_id_list_string,
-      }
-    })
-    .done(function(x) {
-      var r=jQuery.parseJSON(x).data;
-      if (r.status=="success") {
-        setTimeout(() => {
-          goPageSuggestion();
-        }, 1000);
-      }
-    });
+    if (covid_register_id_list.length>0) {
+      var covid_register_id_list_string=covid_register_id_list.join(',');
+      $.ajax({method: "POST", url: "ajaxRegisterMarkAsDelete.php",
+        data: { 
+          covid_register_id_list_string: covid_register_id_list_string,
+        }
+      })
+      .done(function(x) {
+        var r=jQuery.parseJSON(x).data;
+        if (r.status=="success") {
+          setTimeout(() => {
+            goPageSuggestion();
+          }, 1000);
+        }
+      });
+    }
+    else {
+      setTimeout(() => {
+        goPageSuggestion();
+      }, 1000);
+    }
   }
 });
 
