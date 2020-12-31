@@ -7,7 +7,7 @@ $sql=" insert into user ( ".
 " ) ".
 " value ( ".
 "'".$_POST['user_login']."' ".
-",'md5(".$_POST['user_password'].")' ".
+",md5('".$_POST['user_password']."') ".
 ",'".$_POST['prename_id']."' ".
 ",'".$_POST['fname']."' ".
 ",'".$_POST['lname']."' ".

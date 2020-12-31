@@ -5,7 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 // if ($_SESSION['group_id']<=0){
 //   header("Location: ./login.php");
 // }
-// print_r($_SESSION);
+echo "<br><br><br>";
+print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 
@@ -89,7 +90,7 @@ switch ($_SESSION['group_id']) {
   case 9:
       $sql=$sql_common."
       where 
-      cut_status_id=0 
+      cut_status_id=1 
       and c.hospcode=:hospcode 
       group by 
       c.risk_level_id";
@@ -115,36 +116,69 @@ switch ($_SESSION['group_id']) {
       c.hospcode=:hospcode 
       group by 
       c.evaluate_level";
+    $params=[ 'hospcode' => $_SESSION['office_code'] ];
     break;
 
+  case 10:
+      $sql=$sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.risk_level_id";
+    $sql_all=$sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.risk_level_id";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.evaluate_level";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.evaluate_level";
+    $sql_e_all=$sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.evaluate_level";
+
+    $params=['ampur_code'=>$_SESSION['ampur_code']];
+    break;
   default:
     # code...
     break;
 }
 // echo "<br>sql=".$sql;
 $obj=$connect->prepare($sql);
-$obj->execute([ 'hospcode' => $_SESSION['office_code'] ]);
+$obj->execute($params);
 $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows_risk_level);
 // echo "<br>sql_all=".$sql_all;
 $obj=$connect->prepare($sql_all);
-$obj->execute([ 'hospcode' => $_SESSION['office_code'] ]);
+$obj->execute($params);
 $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows_risk_level_all);
 
 // echo "<br>sql_e_pending=".$sql_e_pending;
 $obj=$connect->prepare($sql_e_pending);
-$obj->execute([ 'hospcode' => $_SESSION['office_code'] ]);
+$obj->execute($params);
 $rows_e_pending=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 // echo "<br>sql_e_cutted=".$sql_e_cutted;
 $obj=$connect->prepare($sql_e_cutted);
-$obj->execute([ 'hospcode' => $_SESSION['office_code'] ]);
+$obj->execute($params);
 $rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 // echo "<br>sql_e_all=".$sql_e_all;
 $obj=$connect->prepare($sql_e_all);
-$obj->execute([ 'hospcode' => $_SESSION['office_code'] ]);
+$obj->execute($params);
 $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -340,8 +374,13 @@ include("./header.php");
             $count_rows_risk_level+=$value['count_risk_level'];
           }
         ?>
-        <div class="risk-evaluate">
-          <h5>ข้อมูลใหม่. <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
+        <div class="risk-evaluate" style="cursor:pointer;">
+          <h5>
+            ข้อมูลใหม่. 
+            <span class="badge badge-primary">
+              <?php echo $count_rows_risk_level; ?>
+            </span>
+          </h5>
         </div>
         <?php
         $sql="select * from risk_level order by risk_level_id desc";
