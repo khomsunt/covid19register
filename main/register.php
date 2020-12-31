@@ -1,35 +1,8 @@
 <?php 
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 include('../include/config.php');
-
-$changwat_code_samut_sakhon='74';
-
-function thaiDateShort($d) {
-  $r=$d;
-  if (strlen($r)==10) {
-    $x=explode("-",$r);
-    $r=$x[2]." ".thaiMonthShort($x[1])." ".($x[0]+543);
-  }
-  return $r;
-}
-
-function thaiMonthShort($x) {
-  $r=$x;
-  switch ($x+0) {
-    case 1:$r="ม.ค."; break;
-    case 2:$r="ก.พ."; break;
-    case 3:$r="มี.ค."; break;
-    case 4:$r="เม.ย."; break;
-    case 5:$r="พ.ค."; break;
-    case 6:$r="มิ.ย."; break;
-    case 7:$r="ก.ค."; break;
-    case 8:$r="ส.ค."; break;
-    case 9:$r="ก.ย."; break;
-    case 10:$r="ต.ค."; break;
-    case 11:$r="พ.ย."; break;
-    case 12:$r="ธ.ค."; break;
-  }
-  return $r;
-}
 ?>
 
 <!doctype html>
@@ -45,10 +18,28 @@ function thaiMonthShort($x) {
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-
+  
   <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+
+  <style>
+  .modal {
+    overflow-y:auto;
+  }
+  .dupContentField {
+    display: inline; background-color: #b0e8ff; padding-left: 7px; padding-right: 7px; border-radius: 10px;
+  }
+  .dupContentFieldImportant{
+    display: inline; background-color: #0071ea; padding-left: 7px; padding-right: 7px; border-radius: 10px; color: #FFFFFF;
+  }
+  .dupContentValue {
+    display: inline;
+  }
+  .dupContentRow {
+    padding: 7px;
+  }
+  </style>
 </head>
 
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
@@ -57,14 +48,16 @@ function thaiMonthShort($x) {
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $('.datepicker').datepicker({
-      startDate: '+0d',
+      <?php 
+        // if ($_SESSION['user_id']!="") { echo "startDate: '+0d',"; } 
+      ?>
       format: 'dd/mm/yyyy',
-      todayBtn: true,
+      todayBtn: false,
       language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
       thaiyear: true, //Set เป็นปี พ.ศ.
-      autoclose: true
+      autoclose: true,
   });
-  //// }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+  // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
 
   $(".required").css({
     'color':'red',
@@ -231,8 +224,8 @@ for ($i=0;$i<count($rows);$i++) {
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
-    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon"/>
+    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
+      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" />
     </div>
 
     <div class="card">
@@ -263,30 +256,21 @@ for ($i=0;$i<count($rows);$i++) {
         </select>
         </div>
 
-        <!-- <div class="form-group">
-          <label for="exampleFormControlInput1">หมู่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="moo_in_code">
-        </div> -->
-
         <div class="form-group">
         <label for="exampleFormControlSelect1">หมู่ <span class="required"></span></label>
         <select class="form-control" id="moo_in_code">
           <option value="">--เลือก--</option>
-<?php
-// $sql="select villno,villname from `village` limit 10 ";
-// $obj=$connect->prepare($sql);
-// $obj->execute();
-// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// for ($i=0;$i<count($rows);$i++) {
-//   echo "<option value='".$rows[$i]["villno"]."'>".$rows[$i]["villname"]."</option>";
-// }
-?>
         </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
           <input type="text" class="form-control" id="house_in_no">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">หมายเหตุ <span class="required"></span></label>
+          <textarea class="form-control" id="note"></textarea>
         </div>
 
       </div>
@@ -298,7 +282,6 @@ for ($i=0;$i<count($rows);$i++) {
 <div style="width: 100%; padding: 20px;">
   <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
     <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave">บันทึก</button>
-    <!-- <button type="button" class="btn btn-secondary" style="width: 48%" id="btnClose">ปิด</button> -->
   </div>
 </div>
 
@@ -319,13 +302,69 @@ for ($i=0;$i<count($rows);$i++) {
 </div>
 
 
+<div class="modal fade" id="modal02" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ตรวจพบการลงทะเบียนหลายครั้ง</h5>
+      </div>
+      <div class="modal-body" id="modal02_body">
+        ท่านทำการลงทะเบียน <span id="modal02_dup_count"></span> ครั้ง กรุณาตรวจสอบข้อมูลต่อไปนี้ หากมีข้อมูลที่ซ้ำกัน โปรดลบข้อมูลที่ซ้ำซ้อนออก แล้วกดปุ่มยืนยันค่ะ <br>
+        <u>หมายเหตุ</u> หากท่านมีการเดินทางเข้าสู่จังหวัดสกลนครหลายครั้ง ก็ควรลงทะเบียนตามจำนวนการเดินทางค่ะ
+
+        <div id="modal02_dup_list">
+        </div>
+      </div>
+      <div class="modal-footer" id="modal02_action" style="text-align: right;">
+        <button type="button" class="btn btn-primary" id="btnConfirmDup">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal03" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="modal03_body" style="margin-top:30px; margin-bottom: 30px;">
+        ขออภัยค่ะ ท่านไม่สามารถลบข้อมูลทั้งหมดได้ กรุณาคงเหลือข้อมูลไว้อย่างน้อย 1 ชุดค่ะ
+      </div>
+      <div class="modal-footer" id="modal03_action" style="text-align: right;">
+        <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dup_item_master" style="display: none; margin-top: 20px; margin-bottom: 20px; border: solid 2px black; border-radius: 5px; padding: 5px; background-color: #eeeeee;">
+<div class="v_last_id_data" style="padding-left: 5px; color: red"></div>
+  <div style="dupContentRow">
+    <div class="dupContentField">วันเวลาลงทะเบียน</div>
+    <div class="dupContentValue v_register_datetime"></div>
+  </div>
+  <div style="dupContentRow">
+    <div class="dupContentField">วันที่เดินทางเข้าถึงสกลนคร</div>
+    <div class="dupContentValue v_date_to_sakonnakhon"></div>
+  </div>
+  <div style="dupContentRow" style="width: 100%; padding: 10px;">
+    <div style="width: 100%; display:flex; flex-direction: row-reverse;">
+
+      <div style="width: 100px; background-color: #FFFFFF; border: solid 1px #999999; border-radius: 10px;">
+        <input class="form-check-input choose_dup_checkbox" id="choose_dup" name="choose_dup" type="checkbox" value="" style="margin-left: 10px;">
+        <label class="form-check-label choose_dup_label" for="choose_dup" style="margin-left: 20px;"> &nbsp; ลบข้อมูล</label>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
 
 <script>
-var evaluate_level=0;
+var registerLastInsertId;
 
-$("#btnSave").click(function() {
+function getInputData () {
   var data= {
     fname : $("#fname").val(),
     lname : $("#lname").val(),
@@ -339,11 +378,18 @@ $("#btnSave").click(function() {
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
+    note : $("#note").val(),
   }
+  return data;
+}
+
+$("#btnSave").click(function() {
+  var data=getInputData();
   // console.log(data);
  
   var not_complete=0;
@@ -370,17 +416,153 @@ $("#btnSave").click(function() {
       // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        setTimeout(() => {
-          goPageSuggestion();
-        }, 1500);
+        registerLastInsertId=r.registerLastInsertId;
+        var data_check= { 
+          cid : cleanNumber(data['cid']),
+          tel : cleanNumber(data['tel']),
+        };
+        $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
+          data: data_check
+        })
+        .done(function(x) {
+          // console.log(jQuery.parseJSON(x));
+          var r=jQuery.parseJSON(x).data;
+          if (r.status=="success") {
+            if (r.register_data.length>1) {
+              clearDuplicatedData(r.register_data);
+            }
+            else {
+              // ไม่มีข้อมูลซ้ำ
+              setTimeout(() => {
+                goPageSuggestion();
+              }, 1000);
+            }
+          }
+        });
       }
     });
   }
 });
 
+function clearDuplicatedData(dupData) {
+  $("#modal02_dup_list").empty();
+  for (var i=0;i<dupData.length;i=i+1) {
+    var d=dupData[i];
+    var dup_item=$(".dup_item_master").clone();
+    dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
+    if (parseInt(registerLastInsertId)==parseInt(d.covid_register_id)) {
+      dup_item.find(".v_last_id_data").text("ข้อมูลล่าสุด");
+    }
+    dup_item.find(".v_register_datetime").text(thaiDateTimeShort(dupData[i].register_datetime));
+    dup_item.find(".v_date_to_sakonnakhon").text(thaiDateShort(dupData[i].date_to_sakonnakhon));
+    dup_item.find(".choose_dup_checkbox").attr({'id':'choose_dup_'+i, 'name':'choose_dup_'+i, 'covid_register_id':d.covid_register_id});
+    dup_item.find(".choose_dup_checkbox").val(i);
+    dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
+    $("#modal02_dup_list").append(dup_item);
+  }
+
+  setTimeout(() => {
+    $("#modal01").modal('hide');
+    $("#modal02_dup_count").text(dupData.length);
+    $("#modal02").modal('show');            
+  }, 1000);
+
+}
+
+function cleanNumber(x) {
+  var r=x.trim();
+  r=r.replaceAll(' ','');
+  r=r.replaceAll('-','');
+  r=r.replaceAll(',','');
+  r=r.replaceAll('/','');
+  r=r.replaceAll(':','');
+  return r;
+}
+
+$('#modal03').on('hidden.bs.modal', function () {
+  console.log('ssssssssssssssssss');
+  $("#modal02").modal('show');
+});
+
+$("#btnConfirmDup").click(function() {
+  var dup_checkbox=$('input[name^="choose_dup_"]');
+  var covid_register_id_list=[];
+  var count_delete=0;
+  for (var i=0;i<dup_checkbox.length;i=i+1) {
+    if ($(dup_checkbox[i]).prop('checked')==true) {
+      covid_register_id_list.push($(dup_checkbox[i]).attr('covid_register_id'));
+      count_delete=count_delete+1;
+    }
+  }
+
+  if (count_delete==dup_checkbox.length) {
+    $("#modal02").modal('hide');
+    $("#modal03").modal('show');
+  }
+  else {
+    $("#modal02").modal('hide');
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_action").css({'display':'none'});
+    $("#modal01").modal('show');
+
+    var covid_register_id_list_string=covid_register_id_list.join(',');
+    $.ajax({method: "POST", url: "ajaxRegisterMarkAsDelete.php",
+      data: { 
+        covid_register_id_list_string: covid_register_id_list_string,
+      }
+    })
+    .done(function(x) {
+      var r=jQuery.parseJSON(x).data;
+      if (r.status=="success") {
+        setTimeout(() => {
+          goPageSuggestion();
+        }, 1000);
+      }
+    });
+  }
+});
+
+function thaiDateShort(d) {
+  var r=d;
+  if (r.length==10) {
+    x=r.split('-');
+    r=parseInt(x[2])+""+thaiMonthShort(x[1])+""+(parseInt(x[0])+543);
+  }
+  return r;
+}
+
+function thaiDateTimeShort(d) {
+  var r=d;
+  if (d.length==19) {
+    var s=d.split(' ');
+    var x=s[0].split('-');
+    r=parseInt(x[2])+""+thaiMonthShort(x[1])+""+(parseInt(x[0])+543)+"  "+s[1].substr(0,5).replace(':','.')+"น.";
+  }
+  return r;
+}
+
+function thaiMonthShort(x) {
+  r=x;
+  switch (parseInt(x)) {
+    case 1:r="ม.ค."; break;
+    case 2:r="ก.พ."; break;
+    case 3:r="มี.ค."; break;
+    case 4:r="เม.ย."; break;
+    case 5:r="พ.ค."; break;
+    case 6:r="มิ.ย."; break;
+    case 7:r="ก.ค."; break;
+    case 8:r="ส.ค."; break;
+    case 9:r="ก.ย."; break;
+    case 10:r="ต.ค."; break;
+    case 11:r="พ.ย."; break;
+    case 12:r="ธ.ค."; break;
+  }
+  return r;
+}
+
 function formatDate(d) {
   var r="";
-  if (typeof d !='indefined') {
+  if (typeof d !='undefined') {
     if (d.length>0) {
       var x=d.split("/");
       r=x[2]+"-"+x[1]+"-"+x[0];
@@ -473,7 +655,8 @@ $("#ampur_work_code").change(function() {
   });
 });
 
-$("#ampur_in_code").change(function() {
+function ampurInCodeChange(ampur_code_full,default_tambon) {
+  // default_tambon รหัสตำบล สองหลัก
   $("#tambon_in_code").find("option").remove();
   $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
   $("#moo_in_code").find("option").remove();
@@ -482,7 +665,7 @@ $("#ampur_in_code").change(function() {
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
-      query_where: "ampur_code_full='47"+$("#ampur_in_code").val()+"'" , 
+      query_where: "ampur_code_full='"+ampur_code_full+"'" , 
       query_order: "tambon_name asc"
     }
   })
@@ -491,17 +674,25 @@ $("#ampur_in_code").change(function() {
     for (var i=0;i<data.length;i=i+1) {
       $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
     }
+    if (typeof default_tambon != 'undefined' & default_tambon != null) {
+      $("#tambon_in_code").val(default_tambon);
+    }
   });
+}
+
+$("#ampur_in_code").change(function() {
+  ampurInCodeChange('47'+$("#ampur_in_code").val(),null);
 });
 
-$("#tambon_in_code").change(function() {
+function tambonInCodeChange(tambon_code_full,default_village) {
+  // default_village รหัสหมู่ สองหลัก
   $("#moo_in_code").find("option").remove();
   $("#moo_in_code").append("<option value=''>--เลือก--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: {
       query_table: "village", 
-      query_where: "tambon_code_full='47"+$("#ampur_in_code").val()+$("#tambon_in_code").val()+"'" , 
+      query_where: "tambon_code_full='"+tambon_code_full+"'" , 
       query_order: "villno+0 asc"
     }
   })
@@ -510,7 +701,14 @@ $("#tambon_in_code").change(function() {
     for (var i=0;i<data.length;i=i+1) {
       $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
     }
+    if (typeof default_village != 'undefined' & default_village != null) {
+      $("#moo_in_code").val(default_village);
+    }
   });
+}
+
+$("#tambon_in_code").change(function() {
+  tambonInCodeChange('47'+$("#ampur_in_code").val()+$("#tambon_in_code").val(),null);
 });
 
 $("#address_work").click(function() {

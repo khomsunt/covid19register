@@ -413,7 +413,6 @@ for ($i=0;$i<count($rows);$i++) {
 
 <script>
 var evaluate_level=0;
-var dupData=[];
 
 function getInputData () {
   var data= {
@@ -429,29 +428,14 @@ function getInputData () {
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
+    note : '',
   }
   return data;
-}
-
-function ajaxInsert(data,goSuggestion) {
-  $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-    data: data
-  })
-  .done(function(x) {
-    // console.log(jQuery.parseJSON(x));
-    var r=jQuery.parseJSON(x).data;
-    if (r.status=="success") {
-      if (goSuggestion=='Y') {
-        setTimeout(() => {
-          goPageSuggestion();
-        }, 1000);
-      }
-    }
-  });
 }
 
 $("#btnSave").click(function() {
@@ -475,83 +459,64 @@ $("#btnSave").click(function() {
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    var data_check= { 
-      cid : cleanNumber(data['cid']),
-      tel : cleanNumber(data['tel']),
-    };
-    $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-      data: data_check
+    $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+      data: data
     })
     .done(function(x) {
-      console.log(jQuery.parseJSON(x));
+      // console.log(jQuery.parseJSON(x));
       var r=jQuery.parseJSON(x).data;
       if (r.status=="success") {
-        if (r.register_data.length==0) {
-          // ไม่มีข้อมูลซ้ำ
-          ajaxInsert(data,'Y');
-        }
-        else {
-          $("#modal02_dup_list").empty();
-          dupData=[];
-          var newData=data;
-          newData['data_entry']='NEW';
-          var s=$("select");
-          for (var sI=0;sI<s.length;sI=sI+1) {
-            var item=$(s[sI]);
-            var key=item.attr('id');
-            var opt=item.find("option:selected");
-            var value=opt.val()==""?" - ":opt.text();
-            newData[key]=value;
-          }
-          dupData=r.register_data;
-          dupData.push(newData);
-          console.log(dupData);
-          for (var i=0;i<dupData.length;i=i+1) {
-            var d=dupData[i];
-            var dup_item=$(".dup_item_master").clone();
-            dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
-            console.log(d.data_entry);
-            if (typeof d.data_entry == 'undefined') {
-              dup_item.find(".v_register_datetime").text(d.register_datetime);
+
+        var data_check= { 
+          cid : cleanNumber(data['cid']),
+          tel : cleanNumber(data['tel']),
+        };
+        $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
+          data: data_check
+        })
+        .done(function(x) {
+          // console.log(jQuery.parseJSON(x));
+          var r=jQuery.parseJSON(x).data;
+          if (r.status=="success") {
+            if (r.register_data.length>1) {
+              clearDuplicatedData(r.register_data);
             }
             else {
-              dup_item.find(".v_register_datetime").text('เวลาปัจจุบัน(ลงทะเบียนครั้งนี้)');
+              // ไม่มีข้อมูลซ้ำ
+              setTimeout(() => {
+                goPageSuggestion();
+              }, 1000);
             }
-            // dup_item.find(".v_fname_lname").text(d.fname+" "+d.lname);
-            dup_item.find(".v_cid").text(d.cid);
-            dup_item.find(".v_tel").text(d.tel);
-            // dup_item.find(".v_occupation").text(d.occupation_id);
-            // dup_item.find(".v_address_home").text('ต.'+d.tambon_out_code+' อ.'+d.ampur_out_code+' จ.'+d.changwat_out_code);
-            // dup_item.find(".v_address_work").text('ต.'+d.tambon_work_code+' อ.'+d.ampur_work_code+'จ.'+d.changwat_work_code);
-            dup_item.find(".v_date_to_sakonnakhon").text(dupData[i].date_to_sakonnakhon);
-            // dup_item.find(".v_address_sakonnakhon").text(d.house_in_no+' ม.'+d.moo_in_code+' ต.'+d.tambon_in_code+' อ.'+d.ampur_in_code+' จ.สกลนคร');
-            dup_item.find(".choose_dup_checkbox").attr({'id':'choose_dup_'+i, 'name':'choose_dup_'+i});
-            dup_item.find(".choose_dup_checkbox").val(i);
-            dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
-            // dup_item.find(".choose_dup_radio").bind('change',function() {
-            //   var dup_value=$('input[name="choose_dup"]:checked').val();
-            //   // console.log(dup_value);
-            //   if (dup_value!="" & dup_value!= null & typeof dup_value != "undefined") {
-            //     $("#btnConfirmDup").prop({'disabled':false});
-            //   }
-            // });
-            $("#modal02_dup_list").append(dup_item);
           }
-
-          setTimeout(() => {
-            $("#modal01").modal('hide');
-            $("#modal02_dup_count").text(dupData.length);
-            // $(".v-fname-lname").text(dupData[0].fname+" "+dupData[0].lname);
-            // $(".v-cid").text(dupData[0].cid);
-            // $("#modal02_dup_list").text(JSON.stringify(dupData));
-            $("#modal02").modal('show');            
-          }, 1000);
-        }
+        });
       }
     });
-
   }
 });
+
+function clearDuplicatedData(dupData) {
+  $("#modal02_dup_list").empty();
+  for (var i=0;i<dupData.length;i=i+1) {
+    var d=dupData[i];
+    var dup_item=$(".dup_item_master").clone();
+    dup_item.removeClass('dup_item_master').addClass('dup_item').css({'display':'block'});
+    // dup_item.find(".v_cid").text(d.cid);
+    // dup_item.find(".v_tel").text(d.tel);
+    dup_item.find(".v_register_datetime").text(thaiDateTimeShort(dupData[i].register_datetime));
+    dup_item.find(".v_date_to_sakonnakhon").text(thaiDateShort(dupData[i].date_to_sakonnakhon));
+    dup_item.find(".choose_dup_checkbox").attr({'id':'choose_dup_'+i, 'name':'choose_dup_'+i, 'covid_register_id':d.covid_register_id});
+    dup_item.find(".choose_dup_checkbox").val(i);
+    dup_item.find(".choose_dup_label").attr({'for':'choose_dup_'+i});
+    $("#modal02_dup_list").append(dup_item);
+  }
+
+  setTimeout(() => {
+    $("#modal01").modal('hide');
+    $("#modal02_dup_count").text(dupData.length);
+    $("#modal02").modal('show');            
+  }, 1000);
+
+}
 
 function cleanNumber(x) {
   var r=x.trim();
@@ -564,25 +529,71 @@ function cleanNumber(x) {
 }
 
 $("#btnConfirmDup").click(function() {
-  // var dup_value=$('input[name^="choose_dup_"]:checked').val();
-  var dup_value=$('input[name^="choose_dup_"]:checked').val();
-  // console.log(dup_value);
-  // console.log(dupData[dup_value]);
-  var selected_data=dupData[dup_value];
-  // console.log(selected_data.data_entry);
-  if (typeof selected_data.data_entry != "undefined") {
-    $("#modal02").modal('hide');
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
-    $("#modal01_action").css({'display':'none'});
-    $("#modal01").modal('show');
-    // ajaxInsert(selected_data,'N');
-    for (var i=0;i<dupData.length;i=i+1) {
-      if (i!=dup_value) {
-        console.log(dupData[i]);
-      }
+  $("#modal02").modal('hide');
+  $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+  $("#modal01_action").css({'display':'none'});
+  $("#modal01").modal('show');
+
+  var dup_checkbox=$('input[name^="choose_dup_"]');
+  var covid_register_id_list=[];
+  for (var i=0;i<dup_checkbox.length;i=i+1) {
+    if ($(dup_checkbox[i]).prop('checked')==true) {
+      covid_register_id_list.push($(dup_checkbox[i]).attr('covid_register_id'));
     }
   }
+  var covid_register_id_list_string=covid_register_id_list.join(',');
+  $.ajax({method: "POST", url: "ajaxRegisterMarkAsDelete.php",
+    data: { 
+      covid_register_id_list_string: covid_register_id_list_string,
+    }
+  })
+  .done(function(x) {
+    var r=jQuery.parseJSON(x).data;
+    if (r.status=="success") {
+      setTimeout(() => {
+        goPageSuggestion();
+      }, 1000);
+    }
+  });
 });
+
+function thaiDateShort(d) {
+  var r=d;
+  if (r.length==10) {
+    x=r.split('-');
+    r=parseInt(x[2])+""+thaiMonthShort(x[1])+""+(parseInt(x[0])+543);
+  }
+  return r;
+}
+
+function thaiDateTimeShort(d) {
+  var r=d;
+  if (d.length==19) {
+    var s=d.split(' ');
+    var x=s[0].split('-');
+    r=parseInt(x[2])+""+thaiMonthShort(x[1])+""+(parseInt(x[0])+543)+"  "+s[1].substr(0,5).replace(':','.')+"น.";
+  }
+  return r;
+}
+
+function thaiMonthShort(x) {
+  r=x;
+  switch (parseInt(x)) {
+    case 1:r="ม.ค."; break;
+    case 2:r="ก.พ."; break;
+    case 3:r="มี.ค."; break;
+    case 4:r="เม.ย."; break;
+    case 5:r="พ.ค."; break;
+    case 6:r="มิ.ย."; break;
+    case 7:r="ก.ค."; break;
+    case 8:r="ส.ค."; break;
+    case 9:r="ก.ย."; break;
+    case 10:r="ต.ค."; break;
+    case 11:r="พ.ย."; break;
+    case 12:r="ธ.ค."; break;
+  }
+  return r;
+}
 
 function formatDate(d) {
   var r="";
@@ -719,5 +730,6 @@ $("#address_work").click(function() {
     $("#tambon_work_code").val('');
   }
 });
+
 
 </script>

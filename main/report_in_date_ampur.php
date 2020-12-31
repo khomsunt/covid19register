@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
 include('../include/config.php');
 include('../include/functions.php');
 
@@ -80,6 +81,7 @@ include("./header.php");
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร ประจำวันที่ <?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?> แยกตามอำเภอ</h5>
     </div>
+    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
     <table class="table" id="myTable">
     <thead>
         <tr>
@@ -96,24 +98,44 @@ include("./header.php");
     </thead>
     <tbody>
         <?php
+        if ($_SESSION['group_id']>0){
         $i = 0;
+        $rowTotal1 = 0;
+        $rowTotal2 = 0;
+        $rowTotal3 = 0;
+        $rowTotal4 = 0;
+        $rowTotal5 = 0;
+        $rowTotal6 = 0;
         foreach ($rows_report_risk as $key => $value) 
         {
             ?>
             <tr>
                 <td style="text-align: center"; ><?php echo ++$i; ?></td>
                 <td><?php echo $value['ampur_name']; ?></td>
-                <td style="text-align: center";><?php echo $value['green']; ?></td>
-                <td style="text-align: center";><?php echo $value['yellow']; ?></td>
-                <td style="text-align: center";><?php echo $value['orange']; ?></td>
-                <td style="text-align: center";><?php echo $value['red']; ?></td>
-                <td style="text-align: center";><?php echo $value['gray']; ?></td>
-                <td style="text-align: center";><?php echo $value['count_all']; ?></td>
+                <td style="text-align: center";><?php echo $value['green']; $rowTotal1 += $value['green']; ?></td>
+                <td style="text-align: center";><?php echo $value['yellow']; $rowTotal2 += $value['yellow']; ?></td>
+                <td style="text-align: center";><?php echo $value['orange']; $rowTotal3 += $value['orange']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; $rowTotal4 += $value['red']; ?></td>
+                <td style="text-align: center";><?php echo $value['gray']; $rowTotal5 += $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['count_all']; $rowTotal6 += $value['count_all']; ?></td>
             </tr>
             <?php
-        }?>
+        }
+      ?>
+      <td><div></div></td>
+        <td><div class="data" style="text-align: center";>รวม</div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal1; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal2; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal3; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal4; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal5; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal6; ?></div></td>
+
+      <?php } ?> 
     </tbody>
     </table>
+    
+    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
 </main>
 
 <div id="forExcelExport" style="display: none;"></div>
@@ -132,5 +154,21 @@ include("./footer.php");
 <script>
 
 </script>
-      
+<script type="text/javascript">
+            var $btnDLtoExcel = $('.btn_cut_print');
+                    var file_name="<?php echo thailongdate($_POST[('date_to_sakonnakhon')]) ?>";
+            file_name=file_name.replaceAll('-','');
+            file_name=file_name.replaceAll(' ','');
+            file_name=file_name.replaceAll(':','');
+            $btnDLtoExcel.on('click', function Export() {
+            $("#myTable").table2excel({
+                filename: 'รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนครประจำวันที่'+file_name+'.xls'
+            });
+            });
+
+
+
+        </script>
+     
 </html>
+<?php } ?>
