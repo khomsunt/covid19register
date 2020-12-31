@@ -59,91 +59,94 @@ include("./header.php");
   <main role="main" style="margin-top:60px;">
 
     <div class="container">
-        <h5>รายงานจำนวนผู้เดินทางเข้าจังหวัดสกลนคร ณ วันเวลา <?php echo $datetime_now; ?> แยกตามอำเภอ</h5>
-คำอธิบาย: รายใหม่ หมายถึง รายใหม่ในวันที่ประมวลผลรายงาน
+      <h5>รายงานจำนวนผู้เดินทางเข้าจังหวัดสกลนคร ณ วันเวลา <?php echo $datetime_now; ?> แยกตามอำเภอ</h5>
+      คำอธิบาย: รายใหม่ หมายถึง รายใหม่ในวันที่ประมวลผลรายงาน
     </div>
     <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
     <table class="table" id="myTable">
     <thead>
-        <tr>
-        <th style="text-align: center;" rowspan=2>ลำดับที่</th>
-        <th rowspan=2>ชื่ออำเภอ</th>
-        <th style="text-align: center;" colspan=2>สมุทรสาคร</th>
-        <th style="text-align: center;" colspan=2>ระยอง</th>
-        <th style="text-align: center;" colspan=2>นครปฐม</th>
-        <th style="text-align: center;" colspan=2>ชลบุรี</th>
-        <th style="text-align: center;" colspan=2>กทม.</th>
-        <th style="text-align: center;" colspan=2>พื้นที่ควบคุม</th>
-        <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวังสูงสุด</th>  
-        <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวัง</th>  
-        <th style="text-align: center;" colspan=2>ลงทะเบียนเข้าสกลนคร</th>  
-        <th style="text-align: center;" colspan=2>เข้าถึงพื้นที่สกลนครแล้ว</th>
-        <th style="text-align: center;" colspan=3>ผลตรวจ</th>
-        </tr>
+      <tr>
+      <th style="text-align: center;" rowspan=3>ลำดับที่</th>
+      <th rowspan=3>ชื่ออำเภอ</th>
+      <th style="text-align: center;" colspan=2 rowspan=2>ลงทะเบียนเข้าสกลนคร</th>  
+      <th style="text-align: center;" colspan=2 rowspan=2>เข้าถึงพื้นที่สกลนครแล้ว</th>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=10>แบ่งพื้นที่เสี่ยงตามประกาศ จังหวัดสกลนคร<br>(พื้นที่<span style="color: red;">สีแดง</span>)</th>
+      <th style="text-align: center;" colspan=6>แบ่งพื้นที่เสี่ยงตามประกาศ ศบค.<br>(พื้นที่ <span style="color: #EB921B;">สีส้ม</span>, <span style="background: yellow; color: black;">สีเหลือง</span>, <span style="color: #20BD04;">สีเขียว</span>)</th>
+      </tr>
 
-        <tr>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ใหม่</th>
-        <th style="text-align: center;">สะสม</th>
-        <th style="text-align: center;">ไม่พบเชื้อ</th>
-        <th style="text-align: center;">พบเชื้อ</th>
-        <th style="text-align: center;">รอผล</th>
-        </tr>
+      <tr>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=2>สมุทรสาคร</th>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=2>ระยอง</th>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=2>นครปฐม</th>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=2>ชลบุรี</th>
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=2>กทม.</th>
+      <th style="text-align: center;" colspan=2>พื้นที่ควบคุม</th>
+      <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวังสูงสุด</th>  
+      <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวัง</th>  
+      <!-- <th style="text-align: center;" colspan=3>ผลตรวจ</th> -->
+      </tr>
+
+      <tr>
+      <th style="text-align: center;">ใหม่</th>
+      <th style="text-align: center;">สะสม</th>
+      <th style="text-align: center;">ใหม่</th>
+      <th style="text-align: center;">สะสม</th>
+      <th style="text-align: center; background-color: #e9e9e9;">ใหม่</th>
+      <th style="text-align: center; background-color: #e9e9e9;">สะสม</th>
+      <th style="text-align: center; background-color: #e9e9e9;">ใหม่</th>
+      <th style="text-align: center; background-color: #e9e9e9;">สะสม</th>
+      <th style="text-align: center; background-color: #e9e9e9;">ใหม่</th>
+      <th style="text-align: center; background-color: #e9e9e9;">สะสม</th>
+      <th style="text-align: center; background-color: #e9e9e9;">ใหม่</th>
+      <th style="text-align: center; background-color: #e9e9e9;">สะสม</th>
+      <th style="text-align: center; background-color: #e9e9e9;">ใหม่</th>
+      <th style="text-align: center; background-color: #e9e9e9;">สะสม</th>
+      <th style="text-align: center;">ใหม่</th>
+      <th style="text-align: center;">สะสม</th>
+      <th style="text-align: center;">ใหม่</th>
+      <th style="text-align: center;">สะสม</th>
+      <th style="text-align: center;">ใหม่</th>
+      <th style="text-align: center;">สะสม</th>
+      <!-- <th style="text-align: center;">ไม่พบเชื้อ</th>
+      <th style="text-align: center;">พบเชื้อ</th>
+      <th style="text-align: center;">รอผล</th> -->
+      </tr>
     </thead>
     <tbody>
 <?php
 $sql=" 
 select a.ampur_code_full,a.ampur_name
-,sum(if ((changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
-,sum(if (changwat_out_code='74' or changwat_work_code='74',1,0)) 'col_cw74_total' 
-,sum(if ((changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
-,sum(if (changwat_out_code='21' or changwat_work_code='21',1,0)) 'col_cw21_total' 
-,sum(if ((changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
-,sum(if (changwat_out_code='73' or changwat_work_code='73',1,0)) 'col_cw73_total' 
 
-,sum(if ((changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
-,sum(if (changwat_out_code='20' or changwat_work_code='20',1,0)) 'col_cw20_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74'),1,0)) 'col_cw74_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21'),1,0)) 'col_cw21_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73'),1,0)) 'col_cw73_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20'),1,0)) 'col_cw20_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10'),1,0)) 'col_cw10_total' 
 
-,sum(if ((changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
-,sum(if (changwat_out_code='10' or changwat_work_code='10',1,0)) 'col_cw10_total' 
 ,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_newinday' 
 ,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
-
 ,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_newinday' 
 ,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
-
 ,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_newinday' 
 ,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
 
 ,count(distinct c.covid_register_id) 'col_register_all_newinday' 
 ,count(distinct c.covid_register_id) 'col_register_all_total' 
-
 ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
 ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
 
 from covid_register c
+inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
+left join ampur ao on ao.ampur_code_full=concat(c.changwat_out_code,c.ampur_out_code)
+left join ampur aw on aw.ampur_code_full=concat(c.changwat_work_code,c.ampur_work_code)
 left join changwat_control co on co.changwat_code=c.changwat_out_code
 left join changwat_control cw on cw.changwat_code=c.changwat_work_code
-left join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
-where cut_status_id!=2 and register_datetime<='".$datetime_now."' 
-and a.ampur_code_full is not null 
+where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
 group by a.ampur_code_full
 order by a.ampur_code_full
 ";
@@ -180,26 +183,26 @@ if (1===1) {
             <tr class="data_tr">
                 <td style="text-align: center"; ><?php echo ++$i; ?></td>
                 <td><?php echo $value['ampur_name']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw74_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw74_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw21_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw21_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw73_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw73_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw20_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw20_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw10_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_cw10_total']; ?></td>
+                <td class="data_td" style="text-align: center;"><?php echo $value['col_register_all_newinday']; ?></td>
+                <td class="data_td" style="text-align: center;"><?php echo $value['col_register_all_total']; ?></td>
+                <td class="data_td" style="text-align: center;"><?php echo $value['col_arrived_sakonnakhon_newinday']; ?></td>
+                <td class="data_td" style="text-align: center;"><?php echo $value['col_arrived_sakonnakhon_total']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw74_newinday']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw74_total']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw21_newinday']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw21_total']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw73_newinday']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw73_total']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw20_newinday']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw20_total']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw10_newinday']; ?></td>
+                <td class="data_td" style="text-align: center; background-color: #e9e9e9;"><?php echo $value['col_cw10_total']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control3_newinday']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control3_total']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control2_newinday']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control2_total']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control1_newinday']; ?></td>
                 <td class="data_td" style="text-align: center;"><?php echo $value['col_control1_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_register_all_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_register_all_total']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_arrived_sakonnakhon_newinday']; ?></td>
-                <td class="data_td" style="text-align: center;"><?php echo $value['col_arrived_sakonnakhon_total']; ?></td>
             </tr>
 <?php
     $s_col_cw74_newinday += $value['col_cw74_newinday'];
@@ -226,8 +229,12 @@ if (1===1) {
 ?>
 <!-- <tr class="data_tr_sum"></tr> -->
       <tr>
-      <td><div></div></td>
+        <td><div></div></td>
         <td><div class="data" style="text-align: center;">รวม</div></td>
+        <td><div class="data" style="text-align: center;"><?php echo $s_col_register_all_newinday; ?></div></td>
+        <td><div class="data" style="text-align: center;"><?php echo $s_col_register_all_total; ?></div></td>
+        <td><div class="data" style="text-align: center;"><?php echo $s_col_arrived_sakonnakhon_newinday; ?></div></td>
+        <td><div class="data" style="text-align: center;"><?php echo $s_col_arrived_sakonnakhon_total; ?></div></td>
         <td><div class="data" style="text-align: center;"><?php echo $s_col_cw74_newinday; ?></div></td>
         <td><div class="data" style="text-align: center;"><?php echo $s_col_cw74_total; ?></div></td>
         <td><div class="data" style="text-align: center;"><?php echo $s_col_cw21_newinday; ?></div></td>
@@ -244,12 +251,7 @@ if (1===1) {
         <td><div class="data" style="text-align: center;"><?php echo $s_col_control2_total; ?></div></td>
         <td><div class="data" style="text-align: center;"><?php echo $s_col_control1_newinday; ?></div></td>
         <td><div class="data" style="text-align: center;"><?php echo $s_col_control1_total; ?></div></td>
-        <td><div class="data" style="text-align: center;"><?php echo $s_col_register_all_newinday; ?></div></td>
-        <td><div class="data" style="text-align: center;"><?php echo $s_col_register_all_total; ?></div></td>
-        <td><div class="data" style="text-align: center;"><?php echo $s_col_arrived_sakonnakhon_newinday; ?></div></td>
-        <td><div class="data" style="text-align: center;"><?php echo $s_col_arrived_sakonnakhon_total; ?></div></td>
-
-        </tr>
+      </tr>
 <?php 
 } 
 ?> 
