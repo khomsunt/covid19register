@@ -73,7 +73,7 @@ $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:90px;">
 
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร แยกวันตามวันที่</h5>
@@ -98,6 +98,12 @@ include("./header.php");
         <?php
         if ($_SESSION['group_id']>0){
         $i = 0;
+        $rowTotal1 = 0;
+        $rowTotal2 = 0;
+        $rowTotal3 = 0;
+        $rowTotal4 = 0;
+        $rowTotal5 = 0;
+        $rowTotal6 = 0;
         foreach ($rows_report_risk as $key => $value) 
         {
             ?>
@@ -113,12 +119,12 @@ include("./header.php");
                 <?php  } ?>
                 </div>
                 </td>
-                <td style="text-align: center";><?php echo $value['green']; ?></td>
-                <td style="text-align: center";><?php echo $value['yellow']; ?></td>
-                <td style="text-align: center";><?php echo $value['orange']; ?></td>
-                <td style="text-align: center";><?php echo $value['red']; ?></td>
-                <td style="text-align: center";><?php echo $value['gray']; ?></td>
-                <td style="text-align: center";><?php echo $value['count_all']; ?></td>
+                <td style="text-align: center";><?php echo $value['green']; $rowTotal1 += $value['green']; ?></td>
+                <td style="text-align: center";><?php echo $value['yellow']; $rowTota2 += $value['yellow']; ?></td>
+                <td style="text-align: center";><?php echo $value['orange']; $rowTotal3 += $value['orange']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; $rowTotal4 += $value['red']; ?></td>
+                <td style="text-align: center";><?php echo $value['gray']; $rowTotal5 += $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['count_all']; $rowTotal6 += $value['count_all']; ?></td>
                 <?php if($_SESSION['group_id']!=8 || $_SESSION['group_id']==9 ) { ?>
                 <div>
                   <td style="text-align: center;">
@@ -132,12 +138,12 @@ include("./header.php");
         ?>
         <td><div></div></td>
         <td><div class="data" style="text-align: center";>รวม</div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
-        <td><div class="data" style="text-align: center";><?php echo $value['count_all']; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal1; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal2; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal3; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal4; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal5; ?></div></td>
+        <td><div class="data" style="text-align: center";><?php echo $rowTotal6; ?></div></td>
 
       <?php 
       } 

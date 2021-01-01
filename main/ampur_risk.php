@@ -81,7 +81,7 @@ $rows_current_cut=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:90px;">
 <h5 style="text-align:center;">จังหวัด<?php echo $_POST['changwat_name']; ?></h5>
 <br>
 <table class="table" id="myTable">

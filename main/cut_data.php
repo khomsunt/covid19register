@@ -73,7 +73,7 @@ $rows_cut_data=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:90px;">
     <div class="container">
         <h5>ประวัติการตัดข้อมูล</h5>
     </div>

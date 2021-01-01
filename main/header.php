@@ -12,11 +12,14 @@ include('../include/config.php');
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <!-- <li class="nav-item active">
           <a class="nav-link" href="./index.php">หน้าแรก<span class="sr-only">(current)</span></a>
-        </li>
+        </li> -->
         <li class="nav-item active">
           <a class="nav-link" href="./register.php">แจ้งเข้าพื้นที่<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./evaluation_risk.php">เกณฑ์การประเมิน<span class="sr-only">(current)</span></a>
         </li>
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
@@ -41,6 +44,11 @@ include('../include/config.php');
         } ?>
         <li class="nav-item active">
             <a class="nav-link" href="./report_in_date.php">แยกรายวัน</a>
+              
+            </li>
+
+            <li class="nav-item active">
+            <a class="nav-link" href="./report_risk_area.php">จำนวนผู้เดินทางเข้าสกล</a>
               
             </li>
       </ul>
