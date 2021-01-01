@@ -18,6 +18,9 @@ include('../include/config.php');
         <li class="nav-item active">
           <a class="nav-link" href="./register.php">แจ้งเข้าพื้นที่<span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./ampur_red.php">อำเภอเสี่ยงสูง<span class="sr-only">(current)</span></a>
+        </li>
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
           ?>
