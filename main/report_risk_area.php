@@ -204,7 +204,7 @@ select a.ampur_code_full,a.ampur_name
 ,count(distinct c.covid_register_id and left(register_datetime,10)='".$date_now."') 'col_register_all_newinday' 
 ,count(distinct c.covid_register_id) 'col_register_all_total' 
 ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
-,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null,1,0)) 'col_arrived_sakonnakhon_total'
+,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
 
 from covid_register c
 inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
