@@ -85,7 +85,7 @@ $rows_report_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:90px;">
 <!-- <?php print_r($sql_report_risk); ?> -->
     <div class="container">
         <h5>รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร แยกวันตามวันที่ <?php echo thailongdate($_POST['date_to_sakonnakhon'])  ?></h5>
