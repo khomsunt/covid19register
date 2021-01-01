@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='2'){
 if (1==1) {
-  if ($_SESSION['group_id']>0){
+  
 include('../include/config.php');
 include('../include/functions.php');
 
@@ -155,7 +155,7 @@ order by a.ampur_code_full
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-
+if ($_SESSION['group_id']>0){
 // if ($_SESSION['group_id']>0){
 if (1===1) {
   $i = 0;
