@@ -21,6 +21,21 @@ include('../include/config.php');
         <li class="nav-item active">
           <a class="nav-link" href="./ampur_red.php">อำเภอเสี่ยงสูง<span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./ampur_orange.php">อำเภอเสี่ยงปานกลาง<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./ampur_yellow.php">อำเภอเสี่ยงต่ำ<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./ampur_green.php">อำเภอเสี่ยงต่ำมาก<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./occupation_orange.php">อาชีพเสี่ยง<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./evaluation_risk.php">เกณฑ์ความเสี่ยง<span class="sr-only">(current)</span></a>
+        </li>
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
           ?>
