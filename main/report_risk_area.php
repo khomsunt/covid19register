@@ -194,17 +194,17 @@ select a.ampur_code_full,a.ampur_name
 ,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
 ,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12'),1,0)) 'col_cw12_total' 
 
-,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_newinday' 
+,sum(if ((co.control_id=3 or cw.control_id=3) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control3_newinday' 
 ,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
-,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_newinday' 
+,sum(if ((co.control_id=2 or cw.control_id=2) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control2_newinday' 
 ,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
-,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_newinday' 
+,sum(if ((co.control_id=1 or cw.control_id=1) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control1_newinday' 
 ,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
 
-,count(distinct c.covid_register_id) 'col_register_all_newinday' 
+,count(distinct c.covid_register_id and left(register_datetime,10)='".$date_now."') 'col_register_all_newinday' 
 ,count(distinct c.covid_register_id) 'col_register_all_total' 
 ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
-,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
+,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null,1,0)) 'col_arrived_sakonnakhon_total'
 
 from covid_register c
 inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
