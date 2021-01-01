@@ -5,6 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='2'){
 if (1==1) {
+  if ($_SESSION['group_id']>0){
 include('../include/config.php');
 include('../include/functions.php');
 
@@ -56,7 +57,7 @@ $date_now=substr($datetime_now,0,10);
 <?php
 include("./header.php");
 ?>
-  <main role="main" style="margin-top:60px;">
+  <main role="main" style="margin-top:90px;">
 
     <div class="container">
       <h5>รายงานจำนวนผู้เดินทางเข้าจังหวัดสกลนคร ณ วันเวลา <?php echo $datetime_now; ?> แยกตามอำเภอ</h5>
@@ -253,7 +254,8 @@ if (1===1) {
         <td><div class="data" style="text-align: center;"><?php echo $s_col_control1_total; ?></div></td>
       </tr>
 <?php 
-} 
+}
+}
 ?> 
     </tbody>
     </table>

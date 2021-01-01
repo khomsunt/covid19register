@@ -61,7 +61,7 @@ echo $sql_ampur_in;
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:60px;">
+<main role="main" style="margin-top:90px;">
     <div class="container">
         <h5>รายชื่ออำเภอเสี่ยงสูง</h5>
     </div>

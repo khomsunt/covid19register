@@ -46,6 +46,11 @@ include('../include/config.php');
             <a class="nav-link" href="./report_in_date.php">แยกรายวัน</a>
               
             </li>
+
+            <li class="nav-item active">
+            <a class="nav-link" href="./report_risk_area.php">จำนวนผู้เดินทางเข้าสกล</a>
+              
+            </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item active">
