@@ -177,49 +177,7 @@ $("#filter_status").click(function() {
   }
 });
 </script>
-<?php
-$sql=" 
-select a.ampur_code_full,a.ampur_name
 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74'),1,0)) 'col_cw74_total' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21'),1,0)) 'col_cw21_total' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73'),1,0)) 'col_cw73_total' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20'),1,0)) 'col_cw20_total' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10'),1,0)) 'col_cw10_total' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
-,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3 or zo.risk_status_id=3 or zw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12'),1,0)) 'col_cw12_total' 
-
-,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_newinday' 
-,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
-,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_newinday' 
-,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
-,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_newinday' 
-,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
-
-,count(distinct c.covid_register_id) 'col_register_all_newinday' 
-,count(distinct c.covid_register_id) 'col_register_all_total' 
-,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
-,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
-
-from covid_register c
-inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
-left join ampur ao on ao.ampur_code_full=concat(c.changwat_out_code,c.ampur_out_code)
-left join ampur aw on aw.ampur_code_full=concat(c.changwat_work_code,c.ampur_work_code)
-left join (select * from tambon where risk_status_id=3) zo on zo.tambon_code_full=concat(c.changwat_out_code,c.ampur_out_code,c.tambon_out_code)
-left join (select * from tambon where risk_status_id=3) zw on zw.tambon_code_full=concat(c.changwat_work_code,c.ampur_work_code,c.tambon_work_code)
-left join changwat_control co on co.changwat_code=c.changwat_out_code
-left join changwat_control cw on cw.changwat_code=c.changwat_work_code
-where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
-group by a.ampur_code_full
-order by a.ampur_code_full
-";
-// echo $sql;
-?>
     <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
     <table class="table" id="myTable">
     <thead>
@@ -275,6 +233,45 @@ order by a.ampur_code_full
     </thead>
     <tbody>
 <?php
+$sql=" 
+select a.ampur_code_full,a.ampur_name
+
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='74' or changwat_work_code='74'),1,0)) 'col_cw74_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='21' or changwat_work_code='21'),1,0)) 'col_cw21_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='73' or changwat_work_code='73'),1,0)) 'col_cw73_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='20' or changwat_work_code='20'),1,0)) 'col_cw20_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='10' or changwat_work_code='10'),1,0)) 'col_cw10_total' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
+,sum(if ((ao.risk_status_id=3 or aw.risk_status_id=3) and (changwat_out_code='12' or changwat_work_code='12'),1,0)) 'col_cw12_total' 
+
+,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_newinday' 
+,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
+,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_newinday' 
+,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
+,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_newinday' 
+,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
+
+,count(distinct c.covid_register_id) 'col_register_all_newinday' 
+,count(distinct c.covid_register_id) 'col_register_all_total' 
+,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
+,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
+
+from covid_register c
+inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
+left join ampur ao on ao.ampur_code_full=concat(c.changwat_out_code,c.ampur_out_code)
+left join ampur aw on aw.ampur_code_full=concat(c.changwat_work_code,c.ampur_work_code)
+left join changwat_control co on co.changwat_code=c.changwat_out_code
+left join changwat_control cw on cw.changwat_code=c.changwat_work_code
+where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
+group by a.ampur_code_full
+order by a.ampur_code_full
+";
+// echo "<tr><td colspan=50>".$sql."</td></tr>";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
