@@ -178,96 +178,17 @@ $("#filter_status").click(function() {
 });
 </script>
 <?php
-// $sql=" 
-// select a.ampur_code_full,a.ampur_name
+// $sql=" select group_concat('|',tambon_code_full,'|') c from tambon where risk_status_id=3 ";
+// $obj=$connect->prepare($sql);
+// $obj->execute();
+// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// $red_tambon=$rows[0]['c'];
 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='74' or changwat_work_code='74'),1,0)) 'col_cw74_total' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='21' or changwat_work_code='21'),1,0)) 'col_cw21_total' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='73' or changwat_work_code='73'),1,0)) 'col_cw73_total' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='20' or changwat_work_code='20'),1,0)) 'col_cw20_total' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='10' or changwat_work_code='10'),1,0)) 'col_cw10_total' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='12' or changwat_work_code='12') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
-// ,sum(if((position(concat('|',changwat_out_code,ampur_out_code,tambon_out_code,'|') in x.red_t)>0 or position(concat('|',changwat_out_code,ampur_out_code,'|') in x.red_a)>0) and (changwat_out_code='12' or changwat_work_code='12'),1,0)) 'col_cw12_total' 
-
-// ,sum(if ((co.control_id=3 or cw.control_id=3) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control3_newinday' 
-// ,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
-// ,sum(if ((co.control_id=2 or cw.control_id=2) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control2_newinday' 
-// ,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
-// ,sum(if ((co.control_id=1 or cw.control_id=1) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control1_newinday' 
-// ,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
-
-// ,sum(if(left(register_datetime,10)='".$date_now."',1,0)) 'col_register_all_newinday' 
-// ,count(distinct c.covid_register_id) 'col_register_all_total' 
-// ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
-// ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
-
-// from covid_register c
-// inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
-// join (select '".$red_tambon."' red_t , '".$red_ampur."' red_a) x
-// left join changwat_control co on co.changwat_code=c.changwat_out_code
-// left join changwat_control cw on cw.changwat_code=c.changwat_work_code
-// where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
-// group by a.ampur_code_full
-// order by a.ampur_code_full
-// ";
-
-$sql=" select group_concat('|',tambon_code_full,'|') c from tambon where risk_status_id=3 ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-$red_tambon=$rows[0]['c'];
-
-$sql=" select group_concat('|',ampur_code_full,'|') c from ampur where risk_status_id=3 ";
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-$red_ampur=$rows[0]['c'];
-
-// echo "<br>-- ".$red_tambon."<br>";
-// echo "<br>-- ".$red_ampur."<br>";
-
-// $sql=" 
-// select a.ampur_code_full,a.ampur_name
-
-// ,sum(if((changwat_out_code='74' or changwat_work_code='74') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
-// ,sum(if((changwat_out_code='74' or changwat_work_code='74'),1,0)) 'col_cw74_total' 
-// ,sum(if((changwat_out_code='21' or changwat_work_code='21') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
-// ,sum(if((changwat_out_code='21' or changwat_work_code='21'),1,0)) 'col_cw21_total' 
-// ,sum(if((changwat_out_code='73' or changwat_work_code='73') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
-// ,sum(if((changwat_out_code='73' or changwat_work_code='73'),1,0)) 'col_cw73_total' 
-// ,sum(if((changwat_out_code='20' or changwat_work_code='20') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
-// ,sum(if((changwat_out_code='20' or changwat_work_code='20'),1,0)) 'col_cw20_total' 
-// ,sum(if((changwat_out_code='10' or changwat_work_code='10') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
-// ,sum(if((changwat_out_code='10' or changwat_work_code='10'),1,0)) 'col_cw10_total' 
-// ,sum(if((changwat_out_code='12' or changwat_work_code='12') and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
-// ,sum(if((changwat_out_code='12' or changwat_work_code='12'),1,0)) 'col_cw12_total' 
-
-// ,sum(if ((co.control_id=3 or cw.control_id=3) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control3_newinday' 
-// ,sum(if (co.control_id=3 or cw.control_id=3,1,0)) 'col_control3_total' 
-// ,sum(if ((co.control_id=2 or cw.control_id=2) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control2_newinday' 
-// ,sum(if (co.control_id=2 or cw.control_id=2,1,0)) 'col_control2_total' 
-// ,sum(if ((co.control_id=1 or cw.control_id=1) and left(register_datetime,10)='".$date_now."',1,0)) 'col_control1_newinday' 
-// ,sum(if (co.control_id=1 or cw.control_id=1,1,0)) 'col_control1_total' 
-
-// ,sum(if(left(register_datetime,10)='".$date_now."',1,0)) 'col_register_all_newinday' 
-// ,count(distinct c.covid_register_id) 'col_register_all_total' 
-// ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."' and left(risk_level_datetime,10)='".$date_now."',1,0)) 'col_arrived_sakonnakhon_newinday'
-// ,sum(if(risk_level_user_id is not null and risk_level_user_id!='' and risk_level_user_id>0 and date_arrived_sakonnakhon is not null and date_arrived_sakonnakhon<='".$date_now."',1,0)) 'col_arrived_sakonnakhon_total'
-
-// from covid_register c
-// inner join ampur47 a on a.ampur_code_full=concat(c.changwat_in_code,c.ampur_in_code)
-// join (select '".$red_tambon."' red_t , '".$red_ampur."' red_a) x
-// left join changwat_control co on co.changwat_code=c.changwat_out_code
-// left join changwat_control cw on cw.changwat_code=c.changwat_work_code
-// where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
-// group by a.ampur_code_full
-// order by a.ampur_code_full
-// ";
+// $sql=" select group_concat('|',ampur_code_full,'|') c from ampur where risk_status_id=3 ";
+// $obj=$connect->prepare($sql);
+// $obj->execute();
+// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// $red_ampur=$rows[0]['c'];
 
 $sql=" 
 select a.ampur_code_full,a.ampur_name
@@ -315,8 +236,12 @@ order by a.ampur_code_full
       <th rowspan=3>ชื่ออำเภอ</th>
       <th style="text-align: center;" colspan=2 rowspan=2>ลงทะเบียนเข้าสกลนคร</th>  
       <!-- <th style="text-align: center;" colspan=2 rowspan=2>เข้าถึงพื้นที่สกลนครแล้ว</th> -->
+<!-- 
       <th style="text-align: center; background-color: #e9e9e9;" colspan=16>แบ่งพื้นที่เสี่ยงตามประกาศ จังหวัดสกลนคร<br>(พื้นที่<span style="color: red;">สีแดง</span>)</th>
       <th style="text-align: center;" colspan=6>แบ่งพื้นที่เสี่ยงตามประกาศ ศบค.<br>(พื้นที่ <span style="color: #EB921B;">สีส้ม</span>, <span style="background: yellow; color: black;">สีเหลือง</span>, <span style="color: #20BD04;">สีเขียว</span>)</th>
+ -->
+      <th style="text-align: center; background-color: #e9e9e9;" colspan=16>พื้นที่ควบคุมสูงสุด แบ่งตามจังหวัด</th>
+      <th style="text-align: center;" colspan=6>พื้นที่ควบคุมสูงสุด/พื้นที่เฝ้าระวัง/พื้นที่เฝ้าระวังสูงสุด</th>
       </tr>
 
       <tr>
@@ -328,9 +253,9 @@ order by a.ampur_code_full
       <th style="text-align: center; background-color: #e9e9e9;" colspan=2>นนทบุรี</th>
       <th style="text-align: center; background-color: #e9e9e9;" colspan=2>สมุทรปรากร</th>
       <th style="text-align: center; background-color: #e9e9e9;" colspan=2>จันทบุรี</th>
-      <th style="text-align: center;" colspan=2>พื้นที่ควบคุม</th>
+      <th style="text-align: center;" colspan=2>พื้นที่ควบคุมสูงสุด</th>
+      <th style="text-align: center;" colspan=2>พื้นที่ควบคุม</th>  
       <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวังสูงสุด</th>  
-      <th style="text-align: center;" colspan=2>พื้นที่เฝ้าระวัง</th>  
       <!-- <th style="text-align: center;" colspan=3>ผลตรวจ</th> -->
       </tr>
 
