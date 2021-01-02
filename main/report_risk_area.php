@@ -371,7 +371,6 @@ order by a.ampur_code_full
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-if ($_SESSION['group_id']>0){
 // if ($_SESSION['group_id']>0){
 if (1===1) {
   $i = 0;
@@ -498,7 +497,7 @@ if (1===1) {
       </tr>
 <?php 
 }
-}
+
 ?> 
     </tbody>
     </table>
