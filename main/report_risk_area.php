@@ -178,18 +178,6 @@ $("#filter_status").click(function() {
 });
 </script>
 <?php
-// $sql=" select group_concat('|',tambon_code_full,'|') c from tambon where risk_status_id=3 ";
-// $obj=$connect->prepare($sql);
-// $obj->execute();
-// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// $red_tambon=$rows[0]['c'];
-
-// $sql=" select group_concat('|',ampur_code_full,'|') c from ampur where risk_status_id=3 ";
-// $obj=$connect->prepare($sql);
-// $obj->execute();
-// $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-// $red_ampur=$rows[0]['c'];
-
 $sql=" 
 select a.ampur_code_full,a.ampur_name
 
@@ -228,7 +216,9 @@ order by a.ampur_code_full
 ";
 // echo $sql;
 ?>
-    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+    <div style="text-align: right; padding: 20px; padding-right: 50px;">
+      <button  type="button" class="btn btn-primary btn_cut_print"> ส่งออก EXCEL </button>
+    </div>
     <table class="table" id="myTable">
     <thead>
       <tr>
@@ -426,11 +416,48 @@ if (1===1) {
 ?> 
     </tbody>
     </table>
-<script>
+<?php
+$sql=" 
+select risk_level,group_concat(concat(changwat_name,' ') order by CONVERT (changwat_name USING tis620) asc) c_name,count(*) c_count from (
+  select c.changwat_code,c.changwat_name,max(a.risk_status_id) risk_level from changwat c
+  inner join ampur a on a.changwat_code=c.changwat_code
+  where c.changwat_code<>'99'
+  group by c.changwat_code
+) x group by risk_level
+";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+$c_red_count="";
+$c_red_list="";
+$c_orange_count="";
+$c_orange_list="";
+$c_yellow_count="";
+$c_yellow_list="";
+for ($i=0;$i<count($rows);$i=$i+1) {
+  if ($rows[$i]['risk_level']==3) {
+    $c_red_count=$rows[$i]['c_count'];
+    $c_red_list=$rows[$i]['c_name'];
+  }
+  if ($rows[$i]['risk_level']==2) {
+    $c_orange_count=$rows[$i]['c_count'];
+    $c_orange_list=$rows[$i]['c_name'];
+  }
+  if ($rows[$i]['risk_level']==1) {
+    $c_yellow_count=$rows[$i]['c_count'];
+    $c_yellow_list=$rows[$i]['c_name'];
+  }
+}
 
-</script>
+?>
+<div style="padding: 20px;">
+<b>หมายเหตุ</b>
+<br><b>พื้นที่ควบคุมสูงสุด</b> จำนวน <?php echo $c_red_count; ?> จังหวัด ได้แก่ <?php echo $c_red_list; ?>
+<br><b>พื้นที่ควบคุม</b> จำนวน <?php echo $c_orange_count; ?> จังหวัด ได้แก่ <?php echo $c_orange_list; ?>
+<br><b>พื้นที่เฝ้าระวังสูงสุด</b> จำนวน <?php echo $c_yellow_count; ?> จังหวัด ได้แก่ <?php echo $c_yellow_list; ?>
+</div>
 
-    <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+<!-- <button  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button> -->
 </main>
 
 <div id="forExcelExport" style="display: none;"></div>
