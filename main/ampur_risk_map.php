@@ -47,7 +47,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           zoom: 5,
-          center: { lat: 17.683463424,lng: 103.419288504 },
+          center: { lat: 13.878267974118286,lng: 100.5908203125 },
           mapTypeId: "terrain",
         });
         // Define the LatLng coordinates for the polygon.
