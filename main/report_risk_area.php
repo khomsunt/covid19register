@@ -178,34 +178,71 @@ $("#filter_status").click(function() {
 });
 </script>
 <?php
+// $sql=" 
+// select a.ampur_code_full,a.ampur_name
+
+// ,sum(if(left(from_red,2)='74' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
+// ,sum(if(left(from_red,2)='74',1,0)) 'col_cw74_total' 
+// ,sum(if(left(from_red,2)='21' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
+// ,sum(if(left(from_red,2)='21',1,0)) 'col_cw21_total' 
+// ,sum(if(left(from_red,2)='73' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
+// ,sum(if(left(from_red,2)='73',1,0)) 'col_cw73_total' 
+// ,sum(if(left(from_red,2)='20' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
+// ,sum(if(left(from_red,2)='20',1,0)) 'col_cw20_total' 
+// ,sum(if(left(from_red,2)='10' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
+// ,sum(if(left(from_red,2)='10',1,0)) 'col_cw10_total' 
+// ,sum(if(left(from_red,2)='12' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
+// ,sum(if(left(from_red,2)='12',1,0)) 'col_cw12_total' 
+// ,sum(if(left(from_red,2)='11' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw11_newinday' 
+// ,sum(if(left(from_red,2)='11',1,0)) 'col_cw11_total' 
+// ,sum(if(left(from_red,2)='22' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw22_newinday' 
+// ,sum(if(left(from_red,2)='22',1,0)) 'col_cw22_total' 
+
+// ,sum(if(from_red is not null and from_red!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control3_newinday' 
+// ,sum(if(from_red is not null and from_red!='',1,0)) 'col_control3_total' 
+// ,sum(if(from_orange is not null and from_orange!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control2_newinday' 
+// ,sum(if(from_orange is not null and from_orange!='',1,0)) 'col_control2_total' 
+// ,sum(if(from_yellow is not null and from_yellow!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control1_newinday' 
+// ,sum(if(from_yellow is not null and from_yellow!='',1,0)) 'col_control1_total' 
+
+// ,sum(if(left(register_datetime,10)='".$date_now."',1,0)) 'col_register_all_newinday' 
+// ,count(*) 'col_register_all_total' 
+
+// from from_risk c
+// inner join ampur47 a on a.ampur_code=c.ampur_in_code
+// where c.cut_status_id!=2 and c.register_datetime<='".$datetime_now."' 
+// group by a.ampur_code_full
+// order by a.ampur_code_full
+// ";
+
 $sql=" 
 select a.ampur_code_full,a.ampur_name
 
-,sum(if(left(from_red,2)='74' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw74_newinday' 
-,sum(if(left(from_red,2)='74',1,0)) 'col_cw74_total' 
-,sum(if(left(from_red,2)='21' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw21_newinday' 
-,sum(if(left(from_red,2)='21',1,0)) 'col_cw21_total' 
-,sum(if(left(from_red,2)='73' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw73_newinday' 
-,sum(if(left(from_red,2)='73',1,0)) 'col_cw73_total' 
-,sum(if(left(from_red,2)='20' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw20_newinday' 
-,sum(if(left(from_red,2)='20',1,0)) 'col_cw20_total' 
-,sum(if(left(from_red,2)='10' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw10_newinday' 
-,sum(if(left(from_red,2)='10',1,0)) 'col_cw10_total' 
-,sum(if(left(from_red,2)='12' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw12_newinday' 
-,sum(if(left(from_red,2)='12',1,0)) 'col_cw12_total' 
-,sum(if(left(from_red,2)='11' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw11_newinday' 
-,sum(if(left(from_red,2)='11',1,0)) 'col_cw11_total' 
-,sum(if(left(from_red,2)='22' and left(register_datetime,10)='".$date_now."',1,0)) 'col_cw22_newinday' 
-,sum(if(left(from_red,2)='22',1,0)) 'col_cw22_total' 
+,sum(if(left(from_red,2)='74' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw74_newinday' 
+,sum(if(left(from_red,2)='74' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw74_total' 
+,sum(if(left(from_red,2)='21' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw21_newinday' 
+,sum(if(left(from_red,2)='21' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw21_total' 
+,sum(if(left(from_red,2)='73' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw73_newinday' 
+,sum(if(left(from_red,2)='73' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw73_total' 
+,sum(if(left(from_red,2)='20' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw20_newinday' 
+,sum(if(left(from_red,2)='20' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw20_total' 
+,sum(if(left(from_red,2)='10' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw10_newinday' 
+,sum(if(left(from_red,2)='10' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw10_total' 
+,sum(if(left(from_red,2)='12' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw12_newinday' 
+,sum(if(left(from_red,2)='12' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw12_total' 
+,sum(if(left(from_red,2)='11' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw11_newinday' 
+,sum(if(left(from_red,2)='11' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw11_total' 
+,sum(if(left(from_red,2)='22' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_cw22_newinday' 
+,sum(if(left(from_red,2)='22' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_cw22_total' 
 
-,sum(if(from_red is not null and from_red!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control3_newinday' 
-,sum(if(from_red is not null and from_red!='',1,0)) 'col_control3_total' 
-,sum(if(from_orange is not null and from_orange!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control2_newinday' 
-,sum(if(from_orange is not null and from_orange!='',1,0)) 'col_control2_total' 
-,sum(if(from_yellow is not null and from_yellow!='' and left(register_datetime,10)='".$date_now."',1,0)) 'col_control1_newinday' 
-,sum(if(from_yellow is not null and from_yellow!='',1,0)) 'col_control1_total' 
+,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_control3_newinday' 
+,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_control3_total' 
+,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_control2_newinday' 
+,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_control2_total' 
+,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon='".$date_now."',1,0)) 'col_control1_newinday' 
+,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon<='".$date_now."',1,0)) 'col_control1_total' 
 
-,sum(if(left(register_datetime,10)='".$date_now."',1,0)) 'col_register_all_newinday' 
+,sum(if(date_to_sakonnakhon='".$date_now."',1,0)) 'col_register_all_newinday' 
 ,count(*) 'col_register_all_total' 
 
 from from_risk c
