@@ -235,7 +235,7 @@ for ($i=0;$i<count($rows);$i++) {
     <div class="form-group">
       <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
       <!-- <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" /> -->
-      <input name="datepicker_skn" class="form-control datepicker_skn" onkeydown="return false" />
+      <input name="datepicker_skn" class="form-control datepicker_skn" disabled onkeydown="return false" />
     </div>
 <script>
 $(".datepicker_skn").datepickerSkn('<?php echo date('Y-m-d'); ?>');
