@@ -90,13 +90,15 @@ include("./header.php");
             <div class="btn-group">
                     <button type="button" 
                     <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
-                          class="btn dropdown-toggle" style="background-color:#00FF00; " 
+                          class="btn dropdown-toggle" style="background-color:#00FF00; color:#000000" 
                       <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
-                          class="btn dropdown-toggle" style="background-color:#FFFF00; "
+                          class="btn dropdown-toggle" style="background-color:#FFFF00; color:#000000"
                       <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
                           class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
-                      <?php } else {  //เสี่ยงสูง ?>
-                        class="btn dropdown-toggle" style="background-color:#FF0000; color:#FFFFFF"
+                      <?php } else if($value['risk_status_id']==4) { //เสี่ยงสูง  ?>
+                          class="btn dropdown-toggle" style="background-color:#F78181; color:#FFFFFF"
+                      <?php } else {  //เสี่ยงสูงสุด ?>
+                        class="btn dropdown-toggle" style="background-color:#DF0101; color:#FFFFFF"
                       <?php } ?>
                         data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                       <?php echo $value['risk_level_long_name']; ?>
