@@ -11,7 +11,7 @@
         <meta name="description" content="">
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Jekyll v4.1.1">
-        <title>Ampur Risk</title>
+        <title><?php echo $title; ?></title>
         <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -35,8 +35,11 @@
         <?php
             include("./header.php");
         ?>
-        <main role="main">
-            <h4><?php echo $title; ?></h4>
+        <main role="main" style="padding-left: 20px;">
+            <div style="padding-top: 10px; padding-bottom: 10px;">
+                <h4 style="display: inline;"><?php echo $title; ?></h4>
+                <button  type="button" style="margin-top: -10px; margin-left: 10px;" class="btn btn-primary btn_cut_print"> ส่งออก EXCEL </button>
+            </div>
         <?php
             $max_col=0;
             foreach ($rows[0] as $key => $value) {
@@ -156,7 +159,7 @@
                                             break;
                                     }
                                     ?>
-                                    <td style="text-align:<?php echo autoAlign($a_k[0]); ?>" >
+                                    <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
                                         <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
                                             <?php echo autoFormat($v,$a_k[1]); ?>
                                         </div>
@@ -175,8 +178,8 @@
                             $a_k=explode("|",$k);
                             switch ($a_k[2]) {
                                 case 's':
-                                    $sum[$k]+=$v;
-                                    break;                    
+                                    // $sum[$k]+=1;
+                                    break;
                                 default:
                                     $sum[$k]=$a_k[2];
                                     break;
@@ -193,16 +196,27 @@
         </table>
     </main>
     <?php
-        include("./footer.php");
+        // include("./footer.php");
     ?>
-    <script src="../js/jquery-3.2.1.min.js" ></script>
-    <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/tableToCards.js"></script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
+<script src="../js/jquery-3.2.1.min.js" ></script>
+<script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/tableToCards.js"></script>
+<script src='../js/table2excel.js'></script>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+
+    var file_name="<?php echo thailongdate($datetime_now) ?>";
+    file_name=file_name.replaceAll('-','');
+    file_name=file_name.replaceAll(' ','');
+    file_name=file_name.replaceAll(':','');
+    $('.btn_cut_print').on('click', function Export() {
+        $("#myTable").table2excel({
+            filename: '<?php echo $title; ?>_'+file_name+'.xls'
+        });
+    });
+});
+</script>
 </html>
 
 <?php
