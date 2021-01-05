@@ -31,8 +31,13 @@
     var dateToday=new Date(today);
     var daysInThisMonth=new Date(thisYear, parseInt(thisMonth), 0).getDate();
     var dateLastMonth = new Date();
-    dateLastMonth.setMonth(dateLastMonth.getMonth()-1);
-    var daysInLastMonth=new Date(dateLastMonth.getFullYear(), dateLastMonth.getMonth()+1, 0).getDate();
+    dateLastMonth.setMonth(dateLastMonth.getMonth()-1); // getMonth 0=มกราคม
+    var monthLastMonth=dateLastMonth.getMonth();
+    var yearLastMonth=dateLastMonth.getFullYear();
+    // console.log('monthLastMonth',monthLastMonth);
+    // console.log('yearLastMonth',yearLastMonth);
+    var daysInLastMonth=new Date(yearLastMonth, monthLastMonth+1, 0).getDate();
+    // console.log('daysInLastMonth',daysInLastMonth);
     // getDay 0=sunday
     var firstDayInweek=new Date(thisYear, parseInt(thisMonth)-1, 1).getDay();
     var firstDateInThisBox=daysInLastMonth-firstDayInweek+1;
@@ -41,14 +46,16 @@
     var firstWeek=[];
     var obFirstWeek=[];
     for (var i=firstDateInThisBox;i<=daysInLastMonth;i=i+1) {
+        console.log('daysInLastMonth',daysInLastMonth,i);
         firstWeek.push(i);
         var ob={};
         ob['day']=i;
-        ob['date_db']=thisYear+'-'+thisMonth+'-'+addZero(i,2);
-        ob['full_th']=fullThaidate(thisYear+'-'+thisMonth+'-'+addZero(i,2));
+        ob['date_db']=yearLastMonth+'-'+addZero(monthLastMonth+1,2)+'-'+addZero(i,2);
+        ob['full_th']=fullThaidate(yearLastMonth+'-'+addZero(monthLastMonth+1,2)+'-'+addZero(i,2));
         obFirstWeek.push(ob);
     }
     for (var i=1;i<=7-firstDayInweek;i=i+1) {
+        console.log('FW ',i);
         firstWeek.push(i);
         lastDateOfFirstWeek=i;
         ob['day']=i;
@@ -123,7 +130,7 @@
     });
  
     function fullThaidate(x) {
-        console.log(x);
+        // console.log(x);
         var r="";
         var a=x.split('-');
         r=parseInt(a[2]).toString()+" "+thMonth(a[1])+" "+(parseInt(a[0])+543).toString();
@@ -131,14 +138,14 @@
     }
 
     function addZero(x,n) {
-console.log(x);
-        var l=x.length;
-        var r="";
+        var l=x.toString().length;
+        var r=x.toString();
+        var z="";
         if (n-l>0) {
             for (var i=0;i<n-l;i=i+1) {
-                r=''+r;
+                z='0'+z;
             }
-            r=r+x;
+            r=z+x;
         }
         return r;
     }

@@ -224,8 +224,13 @@ for ($i=0;$i<count($rows);$i++) {
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
-    <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
+      <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
       <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlInput1">วันที่จะเดินทางเข้าออกจากสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
+      <input name="datepicker" class="form-control datepicker" id="date_out_sakonnakhon" onkeydown="return false" />
     </div>
 
     <div class="card">
@@ -379,6 +384,7 @@ function getInputData () {
     changwat_work_code : $("#changwat_work_code").val(),
     date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
     date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
+    date_out_sakonnakhon : formatDate($("#date_out_sakonnakhon").val()),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
