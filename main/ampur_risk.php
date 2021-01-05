@@ -11,7 +11,8 @@ sum(t.total_tambon) total_tambon,
 sum(t.total_risk_tambon0) as total_risk_tambon0,
 sum(t.total_risk_tambon1) as total_risk_tambon1,
 sum(t.total_risk_tambon2) as total_risk_tambon2,
-sum(t.total_risk_tambon3) as total_risk_tambon3
+sum(t.total_risk_tambon3) as total_risk_tambon3,
+sum(t.total_risk_tambon4) as total_risk_tambon4
 from ampur a
 LEFT JOIN 
 (SELECT ampur_code_full,
@@ -19,7 +20,8 @@ count(tambon_code) as total_tambon ,
 sum(if(risk_status_id='0',1,0)) as total_risk_tambon0,
 sum(if(risk_status_id='1',1,0)) as total_risk_tambon1,
 sum(if(risk_status_id='2',1,0)) as total_risk_tambon2,
-sum(if(risk_status_id='3',1,0)) as total_risk_tambon3 
+sum(if(risk_status_id='3',1,0)) as total_risk_tambon3,
+sum(if(risk_status_id='4',1,0)) as total_risk_tambon4 
 FROM tambon WHERE changwat_code = :changwat_code GROUP BY ampur_code_full) t on a.ampur_code_full = t.ampur_code_full
 LEFT JOIN risk_level r on a.risk_status_id = r.risk_level_id
 where a.changwat_code = :changwat_code
@@ -94,6 +96,7 @@ include("./header.php");
       <th style="text-align: center;">เสี่ยงต่ำ</th>
       <th style="text-align: center;">เสี่ยงปานกลาง</th>
       <th style="text-align: center;">เสี่ยงสูง</th>
+      <th style="text-align: center;">เสี่ยงสูงสุด</th>
       <th data-card-footer style="text-align: center;">รายละเอียด</th>
     </tr>
   </thead>
@@ -115,6 +118,7 @@ include("./header.php");
             <td style="text-align: center;"><?php echo $value['total_risk_tambon0'] ? $value['total_risk_tambon0'] :'0' ; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon1'] ? $value['total_risk_tambon1'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon2'] ? $value['total_risk_tambon2'] :'0' ;  ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon4'] ? $value['total_risk_tambon4'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon3'] ? $value['total_risk_tambon3'] :'0' ;  ?></td>
             <td style="text-align: center;">
                 <div class="btn-group">
