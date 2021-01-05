@@ -109,16 +109,22 @@ select risk_level,group_concat(concat(changwat_name,' ') order by CONVERT (chang
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-$c_red_count="";
-$c_red_list="";
+$c_red_strong_count="";
+$c_red_strong_list="";
+$c_red_weak_count="";
+$c_red_weak_list="";
 $c_orange_count="";
 $c_orange_list="";
 $c_yellow_count="";
 $c_yellow_list="";
 for ($i=0;$i<count($rows);$i=$i+1) {
   if ($rows[$i]['risk_level']==3) {
-    $c_red_count=$rows[$i]['c_count'];
-    $c_red_list=$rows[$i]['c_name'];
+    $c_red_strong_count=$rows[$i]['c_count'];
+    $c_red_strong_list=$rows[$i]['c_name'];
+  }
+  if ($rows[$i]['risk_level']==4) {
+    $c_red_weak_count=$rows[$i]['c_count'];
+    $c_red_weak_list=$rows[$i]['c_name'];
   }
   if ($rows[$i]['risk_level']==2) {
     $c_orange_count=$rows[$i]['c_count'];
@@ -133,9 +139,13 @@ for ($i=0;$i<count($rows);$i=$i+1) {
 ?>
 <div style="padding-left: 20px; padding-bottom: 50px;">
 <b>หมายเหตุ</b>
-<br><b>พื้นที่ควบคุมสูงสุด</b> จำนวน <?php echo $c_red_count; ?> จังหวัด ได้แก่ <?php echo $c_red_list; ?>
-<br><b>พื้นที่ควบคุม</b> จำนวน <?php echo $c_orange_count; ?> จังหวัด ได้แก่ <?php echo $c_orange_list; ?>
-<br><b>พื้นที่เฝ้าระวังสูงสุด</b> จำนวน <?php echo $c_yellow_count; ?> จังหวัด ได้แก่ <?php echo $c_yellow_list; ?>
+<br><b>1. พื้นที่ควบคุมสูงสุด</b> จำนวน <?php echo ($c_red_strong_count+$c_red_weak_count); ?> จังหวัด แบ่งเป็น 2 กลุ่มย่อย
+<div style="padding-left: 30px;">
+    <b>1.1 กลุ่มสีแดง</b> จำนวน <?php echo $c_red_strong_count; ?> จังหวัด ได้แก่ <?php echo $c_red_strong_list; ?>
+    <br><b>1.2 กลุ่มสีแดงอ่อน</b> จำนวน <?php echo $c_red_weak_count; ?> จังหวัด ได้แก่ <?php echo $c_red_weak_list; ?>
+</div>
+<b>2. พื้นที่ควบคุม</b> จำนวน <?php echo $c_orange_count; ?> จังหวัด ได้แก่ <?php echo $c_orange_list; ?>
+<br><b>3. พื้นที่เฝ้าระวังสูงสุด</b> จำนวน <?php echo $c_yellow_count; ?> จังหวัด ได้แก่ <?php echo $c_yellow_list; ?>
 </div>
 <?php
 include("./footer.php");
