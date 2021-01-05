@@ -147,7 +147,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <th>มาที่</th>
             <th>ผลการประเมินตนเอง</th>
             <th>วันที่แจ้งมาถึงสกลนคร</th>  
+            <th>วันที่แจ้งออกจากสกลนคร</th>  
             <th>วันที่มาถึงสกลนครจริง</th>  
+            <th>วันที่ออกจากสกลนครจริง</th>  
             <th>ผลการประเมิน จนท.</th>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
@@ -191,11 +193,24 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 </div>
               </td>
               <td>
+                <div class="data">
+                  <?php echo $value['date_out_sakonnakhon']; ?>
+                </div>
+              </td>
+              <td>
                 <div class="data date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>">
                   <?php echo $value['date_arrived_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
                   <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate($value['date_arrived_sakonnakhon']); ?>"/>
+                </div>
+              </td>
+              <td>
+                <div class="data date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>">
+                  <?php echo $value['date_leaved_sakonnakhon']; ?>
+                </div>
+                <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
+                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate($value['date_leaved_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -294,6 +309,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(".select_risk_level_id_"+thisId).show();
           $(".date_arrived_sakonnakhon_"+thisId).hide();
           $(".select_date_arrived_sakonnakhon_"+thisId).show();
+          $(".date_leaved_sakonnakhon_"+thisId).hide();
+          $(".select_date_leaved_sakonnakhon_"+thisId).show();
         })
         $(".btn-save").click(function(){
           let thisId=$(this).attr("covid_register_id");
@@ -303,14 +320,16 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           if ($(".btn-change-risk-level").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
           }else{
             $("#date_arrived_sakonnakhon_"+thisId).remove();
+            $("#date_leaved_sakonnakhon_"+thisId).remove();
           }
           console.log($("#date_arrived_sakonnakhon_"+thisId).val());
+          console.log($("#date_leaved_sakonnakhon_"+thisId).val());
           console.log({ covid_register_id: thisId, risk_level_id: risk_level_id_default });
 
           $.ajax({
             method: "POST",
             url: "./pcu_changeRiskLevel.php",
-            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()), covid_register_id: thisId, risk_level_id: risk_level_id_default }
+            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, risk_level_id: risk_level_id_default }
           })
           .done(function( msg ) {
             // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
@@ -328,6 +347,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(".select_risk_level_id_"+thisId).hide();
           $(".date_arrived_sakonnakhon_"+thisId).show();
           $(".select_date_arrived_sakonnakhon_"+thisId).hide();
+          $(".date_leaved_sakonnakhon_"+thisId).show();
+          $(".select_date_leaved_sakonnakhon_"+thisId).hide();
 
         })
         $(".btn-cancel").click(function(){
@@ -340,6 +361,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(".select_risk_level_id_"+thisId).hide();
           $(".date_arrived_sakonnakhon_"+thisId).show();
           $(".select_date_arrived_sakonnakhon_"+thisId).hide();
+          $(".date_leaved_sakonnakhon_"+thisId).show();
+          $(".select_date_leaved_sakonnakhon_"+thisId).hide();
         })
         $("#btn-close-register").click(function(){
           close_iframe();
