@@ -118,7 +118,7 @@
         </div>
     </form>
     <?php
-    $title="จำนวนผู้แจ้งเดินทางเข้าสกลนร วันที่ ".$_POST['register_datetime'];
+    $title="จำนวนผู้แจ้งเดินทางเข้าสกลนคร วันที่ ".$_POST['register_datetime'];
     include("./autoTable.php");
 ?>
   <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
