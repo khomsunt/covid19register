@@ -85,6 +85,7 @@ $sql=" insert into covid_register ( ".
 // " ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level ".
 " ,date_to_sakonnakhon_text,note,hospcode ".
+" ,moo_in_code_new ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -109,6 +110,7 @@ $sql=" insert into covid_register ( ".
 ",'".$_POST['date_to_sakonnakhon_text']."' ".
 ",'".$_POST['note']."' ".
 ",'".$hospcode."'".
+",'".$_POST['moo_in_code']."' ".
 " ) ";
 
 $obj=$connect->prepare($sql);
