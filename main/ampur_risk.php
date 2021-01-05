@@ -100,7 +100,7 @@ include("./header.php");
   <tbody>
       <?php
       //$sql="select * from risk_status";
-      $sql="select * from risk_level where not risk_level_id ='99'  order by risk_level_id asc ";
+      $sql="select * from risk_level where not risk_level_id ='99'  order by order_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
