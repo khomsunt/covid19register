@@ -18,17 +18,18 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
 $abstain=2;
 try {
-    $Shapefile = new ShapefileReader('../Shapefile/TH_Province.shp');
+    $Shapefile = new ShapefileReader('../Shapefile/TH_PROVINCE2012.shp');
     $a_json_points=[];
     while ($Geometry = $Shapefile->fetchRecord()) {
         $data=$Geometry->getArray();
+        print_r($data);
         $points=$data['rings'][0]['points'];
         $a_points=[];
         for ($x = 0; $x < count($points); $x+=$abstain) {
             array_push($a_points,$points[$x]['x'].",".$points[$x]['y']);
         }
         $json_points=implode("|",$a_points);
-        // echo "<br>".$json_points;
+        echo "<br>".$json_points;
         array_push($a_json_points,$json_points);
     }        
 
