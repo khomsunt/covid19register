@@ -1,5 +1,9 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include('../include/config.php');
+
 
 $evaluate_level=0;
 $evaluate_level_home=0;
@@ -76,6 +80,15 @@ if ($count_village>0) {
     $hospcode=$rows_village[0]['pcucode'];
 }
 
+// $register_user_id='null';
+// if ($_SESSION['user_id']!='') {
+//     $register_user_id=$_SESSION['user_id'];
+// }
+
+$register_user_id=($_SESSION['user_id']!="")?$_SESSION['user_id']:'null';
+$date_out_sakonnakhon=($_POST['date_out_sakonnakhon']!="")?",'".$_POST['date_out_sakonnakhon']."' ":",null";
+
+
 $sql=" insert into covid_register ( ". 
 " fname,lname,cid,tel,occupation_id ".
 " ,tambon_out_code,ampur_out_code,changwat_out_code ". 
@@ -86,6 +99,8 @@ $sql=" insert into covid_register ( ".
 " ,evaluate_level ".
 " ,date_to_sakonnakhon_text,note,hospcode ".
 " ,moo_in_code_new ".
+" ,register_user_id ".
+" ,date_out_sakonnakhon ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -111,6 +126,8 @@ $sql=" insert into covid_register ( ".
 ",'".$_POST['note']."' ".
 ",'".$hospcode."'".
 ",'".$_POST['moo_in_code']."' ".
+",".$register_user_id."".
+$date_out_sakonnakhon.
 " ) ";
 
 $obj=$connect->prepare($sql);
