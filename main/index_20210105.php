@@ -5,28 +5,28 @@ if (session_status() == PHP_SESSION_NONE) {
 // if ($_SESSION['group_id']<=0){
 //   header("Location: ./login.php");
 // }
-// echo "<br><br><br>";
-// print_r($_SESSION);
+echo "<br><br><br>";
+print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
 
 $sql_common="select 
-  c.real_risk as risk_level_id,
+  c.risk_level_id,
   r.risk_level_long_name,
   r.risk_level_name,
   count(c.covid_register_id) as count_risk_level 
   from 
-  from_real_risk c 
-  left join risk_level r on c.real_risk=r.risk_level_id 
+  covid_register c 
+  left join risk_level r on c.risk_level_id=r.risk_level_id 
   left join ampur47 a on c.ampur_in_code=a.ampur_code ";
 $sql_e_common="select 
-  c.real_risk as evaluate_level,
+  c.evaluate_level,
   r.risk_level_long_name,
   r.risk_level_name,
   count(*) as count_e 
   from 
-  from_real_risk c 
-  left join risk_level r on c.real_risk=r.risk_level_id 
+  covid_register c 
+  left join risk_level r on c.risk_level_id=r.risk_level_id 
   left join ampur47 a on c.ampur_in_code=a.ampur_code ";
 
 switch ($_SESSION['group_id']) {
@@ -38,23 +38,28 @@ switch ($_SESSION['group_id']) {
       where 
       cut_status_id=0 
       group by 
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_all=$sql_common."
       group by
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_e_pending=$sql_e_common."
       where 
       c.cut_status_id=0
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_cutted=$sql_e_common."
       where 
       c.cut_status_id=1
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_all=$sql_e_common."
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     break;
   case 3:
     $sql=$sql_common."
@@ -62,29 +67,34 @@ switch ($_SESSION['group_id']) {
       cut_status_id=0 
       and a.node_id=:user_node_id 
       group by 
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_all=$sql_common."
       where 
       a.node_id=:user_node_id 
       group by
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_e_pending=$sql_e_common."
       where 
       c.cut_status_id=0
       and a.node_id=:user_node_id 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_cutted=$sql_e_common."
       where 
       c.cut_status_id=1
       and a.node_id=:user_node_id 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_all=$sql_e_common."
       where 
       a.node_id=:user_node_id 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     break;
   case 8:
   case 9:
@@ -93,29 +103,34 @@ switch ($_SESSION['group_id']) {
       cut_status_id=1 
       and c.hospcode=:hospcode 
       group by 
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_all=$sql_common."
       where 
       c.hospcode=:hospcode 
       group by
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_e_pending=$sql_e_common."
       where 
       c.cut_status_id=0
       and c.hospcode=:hospcode 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_cutted=$sql_e_common."
       where 
       c.cut_status_id=1
       and c.hospcode=:hospcode 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_all=$sql_e_common."
       where 
       c.hospcode=:hospcode 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $params=[ 'hospcode' => $_SESSION['office_code'] ];
     break;
 
@@ -125,29 +140,34 @@ switch ($_SESSION['group_id']) {
       cut_status_id=1 
       and c.ampur_in_code=:ampur_code 
       group by 
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_all=$sql_common."
       where 
       c.ampur_in_code=:ampur_code 
       group by
-      c.real_risk";
+      c.risk_level_id
+      order by r.order_id";
     $sql_e_pending=$sql_e_common."
       where 
       c.cut_status_id=0
       and c.ampur_in_code=:ampur_code 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_cutted=$sql_e_common."
       where 
       c.cut_status_id=1
       and c.ampur_in_code=:ampur_code 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
     $sql_e_all=$sql_e_common."
       where 
       c.ampur_in_code=:ampur_code 
       group by 
-      c.real_risk";
+      c.evaluate_level
+      order by r.order_id";
 
     $params=['ampur_code'=>$_SESSION['ampur_code']];
     break;
@@ -254,7 +274,7 @@ include("./header.php");
           <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_e_pending; ?></span></h5>
         </div>
         <?php
-        $sql="select * from risk_level order by order_id desc";
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -287,7 +307,7 @@ include("./header.php");
           <h5>ข้อมูลตัดแล้ว <span class="badge badge-primary"><?php echo $count_rows_e_cutted; ?></span></h5>
         </div>
         <?php
-        $sql="select * from risk_level order by order_id desc";
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -320,7 +340,7 @@ include("./header.php");
           <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
         </div>
         <?php
-        $sql="select * from risk_level order by order_id desc";
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -350,6 +370,9 @@ include("./header.php");
 
 
 
+    <center>
+      <h5>ข้อมูลการประเมิน (จนท.)</h5>
+    </center>
     <?php
       // print_r($_SESSION);
       if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
@@ -364,22 +387,54 @@ include("./header.php");
       <?php
       if ($_SESSION['group_id']>0){
       ?>
-
       <div class="col-lg-4">
-        <center>
-          <h5>ข้อมูลการประเมิน (จนท.)</h5>
-        </center>
         <?php
-          $count_rows_risk_level_all=0;
-          foreach ($rows_risk_level_all as $key=>$value){
-            $count_rows_risk_level_all+=$value['count_risk_level'];
+          $count_rows_risk_level=0;
+          foreach ($rows_risk_level as $key=>$value){
+            $count_rows_risk_level+=$value['count_risk_level'];
           }
         ?>
         <div class="risk-evaluate" style="cursor:pointer;">
-          <h5>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level_all; ?></span></h5>
+          <h5>
+            ข้อมูลใหม่. 
+            <span class="badge badge-primary">
+              <?php echo $count_rows_risk_level; ?>
+            </span>
+          </h5>
         </div>
         <?php
-        $sql="select * from risk_level order by order_id desc";
+        $sql="select * from risk_level order by risk_level_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($rows_risk_level as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['risk_level_id']){
+                    $this_value=$value['count_risk_level'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-bak" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-4 -->
+
+      <div class="col-lg-4">
+      <?php
+          $count_rows_risk_level_all=0;
+          foreach ($rows_risk_level_all as $key=>$value){
+            $count_rows_risk_level_all+=$value['count_risk_level_all'];
+          }
+        ?>
+        <h5>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level; ?></span></h5>
+        <?php
+        $sql="select * from risk_level order by risk_level_id desc";
         $obj=$connect->prepare($sql);
         $obj->execute();
         $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -392,7 +447,7 @@ include("./header.php");
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
@@ -463,8 +518,7 @@ include("./header.php");
       <script>
         $(function(){
           $(".risk-evaluate").click(function(){
-            console.log($(this).attr("risk_level_id"));
-            window.location = './pcu_register_list.php?risk_level_id='+$(this).attr("risk_level_id");
+            window.location = './pcu_register_list.php';
           })
           $(".btn-new").click(function(){
             window.location = './MyCovid19register.php?type=new&risk_level_id=-1';

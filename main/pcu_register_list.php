@@ -21,9 +21,10 @@ $sql="select c.*,
   a47.ampur_name as ampur_name_in,
   t47.tambon_name as tambon_name_in,
   o.occupation_name,
-  r.risk_level_long_name,
+  r.cut_status_name,
+  c.tel,
   r2.risk_level_long_name as evaluate_level_name
-  from covid_register c 
+  from from_real_risk c 
   left join changwat cw on c.changwat_out_code=cw.changwat_code 
   left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
   left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
@@ -33,14 +34,17 @@ $sql="select c.*,
   left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
   left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
   left join coccupation o on c.occupation_id=o.occupation_id
-  left join risk_level r on c.risk_level_id=r.risk_level_id
-  left join risk_level r2 on c.evaluate_level=r2.risk_level_id
+  left join cut_status r on c.cut_status_id=r.cut_status_id
+  left join risk_level r2 on c.real_risk=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
   if (isset($_POST['cid'])){
     $sql.=" where c.cid='".$_POST['cid']."' ";
   }else{
     $sql.=" where c.hospcode='".$_SESSION['office_code']."'";
+  }
+  if ($_GET['risk_level_id']!='undefined'){
+    $sql.=" and c.real_risk=".$_GET['risk_level_id'];
   }
 // echo $sql;
 $obj=$connect->prepare($sql);
@@ -145,21 +149,21 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <th>ที่อยู่ก่อนเข้าสกลนคร</th>
             <th>ที่ทำงาน</th>
             <th>มาที่</th>
-            <th>ผลการประเมินตนเอง</th>
+            <th>สถานะ</th>
             <th>วันที่แจ้งมาถึงสกลนคร</th>  
             <th>วันที่แจ้งออกจากสกลนคร</th>  
             <th>วันที่มาถึงสกลนครจริง</th>  
             <th>วันที่ออกจากสกลนครจริง</th>  
-            <th>ผลการประเมิน จนท.</th>
+            <th>สถานะข้อมูล</th>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $sql="select * from risk_level order by risk_level_id desc";
+          $sql="select * from cut_status order by cut_status_id";
           $obj=$connect->prepare($sql);
           $obj->execute();
-          $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
+          $rows_cut_status=$obj->fetchAll(PDO::FETCH_ASSOC);
           foreach ($rows as $key => $value) {
             ?>
             <tr id="<?php echo $value['covid_register_id'] ?>">
@@ -214,18 +218,18 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 </div>
               </td>
               <td>
-                <div class="data risk_level_id_<?php echo $value['covid_register_id']; ?>" ><?php echo $value['risk_level_long_name']; ?></div>
-                <div class="btn-group select_risk_level_id_<?php echo $value['covid_register_id']; ?>" style="display:none">
+                <div class="data cut_status_id_<?php echo $value['covid_register_id']; ?>" ><?php echo $value['cut_status_name']; ?></div>
+                <div class="btn-group select_cut_status_id_<?php echo $value['covid_register_id']; ?>" style="display:none">
                   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;">
-                    <?php echo $value['risk_level_long_name']; ?>
+                    <?php echo $value['cut_status_name']; ?>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                     <?php
-                      foreach ($rows_risk_level as $key_risk_level => $value_risk_level) {
-                        if ($value_risk_level['risk_level_id']<>$value['risk_level_id']){
+                      foreach ($rows_cut_status as $key => $value_cut_status) {
+                        if ($value_cut_status['cut_status_id']<>$value['cut_status_id']){
                           ?>
-                          <button covid_register_id="<?php echo $value['covid_register_id']; ?>" risk_level_id="<?php echo $value_risk_level['risk_level_id']; ?>" class="dropdown-item btn-change-risk-level" type="button">
-                            <?php echo $value_risk_level['risk_level_long_name']; ?>
+                          <button covid_register_id="<?php echo $value['covid_register_id']; ?>" cut_status_id="<?php echo $value_cut_status['cut_status_id']; ?>" class="dropdown-item btn-change-cut-status" type="button">
+                            <?php echo $value_cut_status['cut_status_name']; ?>
                           </button>
                           <?php
                         }
@@ -241,7 +245,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
                 </svg>
                 <?php echo $value['tel']; ?>
                 <span class="float-right">
-                  <button risk_level_id="<?php echo $value['risk_level_id']; ?>" covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-secondary btn-edit btn_edit_<?php echo $value['covid_register_id']; ?>'>ประเมิน</button>
+                  <button cut_status_id="<?php echo $value['cut_status_id']; ?>" covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-secondary btn-edit btn_edit_<?php echo $value['covid_register_id']; ?>'>ป้อนข้อมูล</button>
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-save btn_save_<?php echo $value['covid_register_id']; ?>' style="display:none;">บันทึก</button>
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-danger btn-cancel btn_cancel_<?php echo $value['covid_register_id']; ?>' style="display:none;">ยกเลิก</button>
                 </span>
@@ -261,7 +265,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <script src="../js/tableToCards.js"></script>
     <script>
       $body = $("body");
-      var risk_level_id_default=0;
+      var cut_status_id_default=0;
       function close_iframe(){
         $("#register_div").hide();
         $("#register").attr("src","./register.php");
@@ -299,14 +303,14 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         });
 
         $(".btn-edit").click(function(){
-          risk_level_id_default=$(this).attr("risk_level_id");
+          cut_status_id_default=$(this).attr("cut_status_id");
           let thisId=$(this).attr("covid_register_id");
           $(this).parent().find(".btn-edit").hide();
           $(this).parent().find(".btn-save").show();
           $(this).parent().find(".btn-cancel").show();
 
-          $(".risk_level_id_"+thisId).hide();
-          $(".select_risk_level_id_"+thisId).show();
+          $(".cut_status_id_"+thisId).hide();
+          $(".select_cut_status_id_"+thisId).show();
           $(".date_arrived_sakonnakhon_"+thisId).hide();
           $(".select_date_arrived_sakonnakhon_"+thisId).show();
           $(".date_leaved_sakonnakhon_"+thisId).hide();
@@ -317,34 +321,35 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(this).parent().find(".btn-edit").show();
           $(this).parent().find(".btn-save").hide();
           $(this).parent().find(".btn-cancel").hide();
-          if ($(".btn-change-risk-level").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
+          if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
           }else{
             $("#date_arrived_sakonnakhon_"+thisId).remove();
             $("#date_leaved_sakonnakhon_"+thisId).remove();
           }
           console.log($("#date_arrived_sakonnakhon_"+thisId).val());
           console.log($("#date_leaved_sakonnakhon_"+thisId).val());
-          console.log({ covid_register_id: thisId, risk_level_id: risk_level_id_default });
+          console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
 
           $.ajax({
             method: "POST",
             url: "./pcu_changeRiskLevel.php",
-            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, risk_level_id: risk_level_id_default }
+            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
           })
           .done(function( msg ) {
+            console.log(msg);
             // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
             //   thisObj.parent().parent().parent().parent().parent().hide();
             // }else{
             //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
             // }
             // console.log(msg);
-            location.reload();
+            // location.reload();
           })
 
 
 
-          $(".risk_level_id_"+thisId).show();
-          $(".select_risk_level_id_"+thisId).hide();
+          $(".cut_status_id_"+thisId).show();
+          $(".select_cut_status_id_"+thisId).hide();
           $(".date_arrived_sakonnakhon_"+thisId).show();
           $(".select_date_arrived_sakonnakhon_"+thisId).hide();
           $(".date_leaved_sakonnakhon_"+thisId).show();
@@ -357,8 +362,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           $(this).parent().find(".btn-save").hide();
           $(this).parent().find(".btn-cancel").hide();
 
-          $(".risk_level_id_"+thisId).show();
-          $(".select_risk_level_id_"+thisId).hide();
+          $(".cut_status_id_"+thisId).show();
+          $(".select_cut_status_id_"+thisId).hide();
           $(".date_arrived_sakonnakhon_"+thisId).show();
           $(".select_date_arrived_sakonnakhon_"+thisId).hide();
           $(".date_leaved_sakonnakhon_"+thisId).show();
@@ -415,18 +420,18 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             }
           });
         });
-        $(".btn-change-risk-level").click(function(){
+        $(".btn-change-cut-status").click(function(){
           var thisObj=$(this);
-          risk_level_id_default=thisObj.attr("risk_level_id");
+          cut_status_id_default=thisObj.attr("cut_status_id");
           console.log(thisObj.parent().parent().children().first());
           thisObj.parent().parent().children().first().html(thisObj.html());
           // $.ajax({
           //   method: "POST",
           //   url: "./changeRiskLevel.php",
-          //   data: { covid_register_id: thisObj.attr("covid_register_id"), risk_level_id: thisObj.attr("risk_level_id") }
+          //   data: { covid_register_id: thisObj.attr("covid_register_id"), cut_status_id: thisObj.attr("cut_status_id") }
           // })
           // .done(function( msg ) {
-          //   // if ($(".btn-change-risk-level").parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+          //   // if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
           //   //   thisObj.parent().parent().parent().parent().parent().hide();
           //   // }else{
           //   //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
