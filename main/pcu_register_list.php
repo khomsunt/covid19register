@@ -5,11 +5,14 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-echo "<br>";
+// echo "<br>";
 // print_r($_POST);
 // print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
+$sql_count="select 
+  count(c.covid_register_id) as count_all 
+  from from_real_risk c ";
 $sql="select c.*,
   p.prename_name,
   cw.changwat_name as changwat_name_out,
@@ -38,19 +41,61 @@ $sql="select c.*,
   left join risk_level r2 on c.real_risk=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
+  $where="";
   if (isset($_POST['cid'])){
-    $sql.=" where c.cid='".$_POST['cid']."' ";
+    $where.=" where c.cid='".$_POST['cid']."' ";
   }else{
-    $sql.=" where c.hospcode='".$_SESSION['office_code']."'";
+    $where.=" where c.hospcode='".$_SESSION['office_code']."'";
   }
   if ($_GET['risk_level_id']!='undefined'){
-    $sql.=" and c.real_risk=".$_GET['risk_level_id'];
+    $where.=" and c.real_risk=".$_GET['risk_level_id'];
   }
-// echo $sql;
+  $sql.=$where;
+
+  $sql_count.=$where;
+  $obj=$connect->prepare($sql_count);
+  $obj->execute();
+  $rows_count=$obj->fetchAll(PDO::FETCH_ASSOC);
+  $count_all=$rows_count[0]['count_all'];
+  $rp=10;
+  $pages=ceil($count_all/$rp);
+  $page=(isset($_GET['page']))?$_GET['page']:0;
+  $start=$page*$rp;
+  $limit=" limit ".$start.",".$rp;
+  $sql.=$limit;
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+//print_r($_SERVER);
 // print_r($rows);
+$curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);  
+$qrystr=$_SERVER['QUERY_STRING'];
+$a_qrystr=explode("&",$qrystr);
+$aa_qrystr=[];
+foreach ($a_qrystr as $key => $value) {
+  $a_value=explode("=",$value);
+  $aa_qrystr[$a_value[0]]=$a_value[1];
+}
+$a_strqry=[];
+foreach ($aa_qrystr as $key => $value) {
+  if ($key=='page'){
+  }else{
+    array_push($a_strqry,$key."=".$value);
+  }
+}
+$have_page=0;
+foreach ($aa_qrystr as $key => $value) {
+  if ($key=='page'){
+    $have_page++;
+    array_push($a_strqry,$key."=");
+  }else{
+  }
+}
+if ($have_page==0){
+  array_push($a_strqry,"page=");
+}
+$strqry=implode("&",$a_strqry);
 ?>
 
 <!doctype html>
@@ -115,7 +160,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     <?php
       include("./header.php");
     ?>
-    <main role="main" style="margin-top:60px;">
+    <main role="main" style="margin-top:70px;">
       <div class="container">
         <h5>
           <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> 
@@ -255,6 +300,25 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
           } ?>
         </tbody>
       </table>
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item <?php echo ($page=="0")?"disabled":""; ?>">
+            <a class="page-link previous-pagination-link">Previous</a>
+          </li>
+          <?php
+          for ($p=0; $p < $pages; $p++) { 
+            ?>
+              <li class="page-item <?php echo ($page==$p)?"active":""; ?>"><a class="page-link pagination-link" page="<?php echo $p; ?>"><?php echo $p+1; ?></a></li>
+            <?php
+          }
+          ?>
+          <li class="page-item <?php echo ($page==($pages-1))?"disabled":""; ?>">
+            <a class="page-link next-pagination-link">Next</a>
+          </li>
+        </ul>
+      </nav>
+
       </div>
     </main>
     <?php
@@ -293,6 +357,21 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
       $(function(){
         $("#register_div").hide();
+        $(".pagination-link").click(function(){
+          let page=$(this).attr("page");
+          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
+        })
+        $(".previous-pagination-link").click(function(){
+          let page="<?php echo $page-1; ?>";
+          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
+        })
+        $(".next-pagination-link").click(function(){
+          let page="<?php echo $page+1; ?>";
+          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
+        })
+
+
+
         $('.datepicker').datepicker({
           // startDate: '+0d',
           format: 'dd/mm/yyyy',
