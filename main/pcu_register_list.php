@@ -343,7 +343,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
             // }
             // console.log(msg);
-            // location.reload();
+            location.reload();
           })
 
 
