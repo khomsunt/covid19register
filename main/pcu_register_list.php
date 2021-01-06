@@ -126,7 +126,7 @@ $sql="select c.*,
 
 
     </style>
-    <!-- <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/> -->
+    <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
 
   </head>
   <body>
@@ -228,7 +228,7 @@ $sql="select c.*,
                   <?php echo $value['date_arrived_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
-                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate($value['date_arrived_sakonnakhon']); ?>"/>
+                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_arrived_sakonnakhon'])?$value['date_arrived_sakonnakhon']:$value['date_to_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -236,7 +236,7 @@ $sql="select c.*,
                   <?php echo $value['date_leaved_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
-                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate($value['date_leaved_sakonnakhon']); ?>"/>
+                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon'])?$value['date_leaved_sakonnakhon']:$value['date_out_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -488,9 +488,8 @@ $sql="select c.*,
         })
       })
     </script>
-    <!-- <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script> -->
-    <script type="text/javascript" src="../js/datepickerSkn.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
 
   </body>
 </html>

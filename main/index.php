@@ -86,6 +86,37 @@ switch ($_SESSION['group_id']) {
       group by 
       c.real_risk";
     break;
+  case 7:
+      $sql=$sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_all=$sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_all=$sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
+    break;
   case 8:
   case 9:
       $sql=$sql_common."
@@ -155,12 +186,11 @@ switch ($_SESSION['group_id']) {
     # code...
     break;
 }
-// echo "<br>sql=".$sql;
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows_risk_level);
-// echo "<br>sql_all=".$sql_all;
+// echo "<br><br>sql_all=".$sql_all;
 $obj=$connect->prepare($sql_all);
 $obj->execute($params);
 $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
