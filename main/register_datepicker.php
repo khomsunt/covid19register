@@ -40,14 +40,6 @@ include('../include/config.php');
   .dupContentRow {
     padding: 7px;
   }
-  .dayCell {
-    border: solid 0px #eeeeee;
-    cursor: pointer;
-  }
-  .dayCell:hover {
-    border: solid 1px orange;
-    cursor: pointer;
-  }
   </style>
 </head>
 
@@ -235,10 +227,17 @@ for ($i=0;$i<count($rows);$i++) {
     <div class="form-group">
       <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
       <!-- <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" /> -->
-      <input name="datepicker_skn" class="form-control datepicker_skn" disabled onkeydown="return false" />
+      <input name="date_to_sakonnakhon" class="form-control datepicker_skn" id="date_to_sakonnakhon" />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlInput1">วันที่ <span class="required"></span></label>
+      <!-- <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" /> -->
+      <input name="date_to_skn" class="form-control datepicker_skn" id="date_to_skn" />
     </div>
 <script>
-$(".datepicker_skn").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+$("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+$("#date_to_skn").datepickerSkn('<?php echo date('Y-m-d'); ?>');
 </script>
     <div class="card">
       <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
@@ -401,60 +400,69 @@ function getInputData () {
 }
 
 $("#btnSave").click(function() {
-  var data=getInputData();
-  // console.log(data);
- 
-  var not_complete=0;
-  input_required.forEach(element => {
-    if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
-      not_complete=not_complete+1;
-    }
-  });
-
-  if (not_complete>0) {
-    $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
-    $("#modal01_action").css({'display':'block'});
-    $("#modal01").modal('show');
-  }
-  else {
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
-    $("#modal01_action").css({'display':'none'});
-    $("#modal01").modal('show');
-
-    $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-      data: data
-    })
-    .done(function(x) {
-      // console.log(jQuery.parseJSON(x));
-      var r=jQuery.parseJSON(x).data;
-      if (r.status=="success") {
-        registerLastInsertId=r.registerLastInsertId;
-        var data_check= { 
-          cid : cleanNumber(data['cid']),
-          tel : cleanNumber(data['tel']),
-        };
-        $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-          data: data_check
-        })
-        .done(function(x) {
-          // console.log(jQuery.parseJSON(x));
-          var r=jQuery.parseJSON(x).data;
-          if (r.status=="success") {
-            if (r.register_data.length>1) {
-              clearDuplicatedData(r.register_data);
-            }
-            else {
-              // ไม่มีข้อมูลซ้ำ
-              setTimeout(() => {
-                goPageSuggestion();
-              }, 1000);
-            }
-          }
-        });
-      }
-    });
-  }
+  var a=$("#date_to_sakonnakhon").val();
+  var b=$("#date_to_sakonnakhon").attr('date_value');
+  console.log(a,'|',b);
+  var a1=$("#date_to_skn").val();
+  var b1=$("#date_to_skn").attr('date_value');
+  console.log(a1,'|',b1);
 });
+
+// $("#btnSave").click(function() {
+//   var data=getInputData();
+//   // console.log(data);
+ 
+//   var not_complete=0;
+//   input_required.forEach(element => {
+//     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
+//       not_complete=not_complete+1;
+//     }
+//   });
+
+//   if (not_complete>0) {
+//     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
+//     $("#modal01_action").css({'display':'block'});
+//     $("#modal01").modal('show');
+//   }
+//   else {
+//     $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+//     $("#modal01_action").css({'display':'none'});
+//     $("#modal01").modal('show');
+
+//     $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+//       data: data
+//     })
+//     .done(function(x) {
+//       // console.log(jQuery.parseJSON(x));
+//       var r=jQuery.parseJSON(x).data;
+//       if (r.status=="success") {
+//         registerLastInsertId=r.registerLastInsertId;
+//         var data_check= { 
+//           cid : cleanNumber(data['cid']),
+//           tel : cleanNumber(data['tel']),
+//         };
+//         $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
+//           data: data_check
+//         })
+//         .done(function(x) {
+//           // console.log(jQuery.parseJSON(x));
+//           var r=jQuery.parseJSON(x).data;
+//           if (r.status=="success") {
+//             if (r.register_data.length>1) {
+//               clearDuplicatedData(r.register_data);
+//             }
+//             else {
+//               // ไม่มีข้อมูลซ้ำ
+//               setTimeout(() => {
+//                 goPageSuggestion();
+//               }, 1000);
+//             }
+//           }
+//         });
+//       }
+//     });
+//   }
+// });
 
 function clearDuplicatedData(dupData) {
   $("#modal02_dup_list").empty();

@@ -18,10 +18,11 @@ include('../include/config.php');
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-  
-  <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+  <script type="text/javascript" src="../js/datepickerSkn.js"></script>
+
+  <!-- <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
-  <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+  <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script> -->
 
   <style>
   .modal {
@@ -47,17 +48,20 @@ include('../include/config.php');
 <script>
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
-  $('.datepicker').datepicker({
-      <?php 
-        // if ($_SESSION['user_id']!="") { echo "startDate: '+0d',"; } 
-      ?>
-      format: 'dd/mm/yyyy',
-      todayBtn: false,
-      language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
-      thaiyear: true, //Set เป็นปี พ.ศ.
-      autoclose: true,
-  });
+  // $('.datepicker').datepicker({
+  //     <?php 
+  //       // if ($_SESSION['user_id']!="") { echo "startDate: '+0d',"; } 
+  //     ?>
+  //     format: 'dd/mm/yyyy',
+  //     todayBtn: false,
+  //     language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
+  //     thaiyear: true, //Set เป็นปี พ.ศ.
+  //     autoclose: true,
+  // });
   // }).datepicker("setDate", "0");//กำหนดเป็นวันปัจุบัน
+
+  $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+  $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
 
   $(".required").css({
     'color':'red',
@@ -224,13 +228,15 @@ for ($i=0;$i<count($rows);$i++) {
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
-      <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" />
+      <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
+      <!-- <input name="datepicker" class="form-control datepicker" id="date_to_sakonnakhon" onkeydown="return false" /> -->
+      <input name="date_to_sakonnakhon" class="form-control datepicker_skn" id="date_to_sakonnakhon" date_value="" />
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">วันที่จะเดินทางเข้าออกจากสกลนคร(วัน/เดือน/ปี ค.ศ.) <span class="required"></span></label>
-      <input name="datepicker" class="form-control datepicker" id="date_out_sakonnakhon" onkeydown="return false" />
+      <label for="exampleFormControlInput1">วันที่จะเดินทางเข้าออกจากสกลนคร <span class="required"></span></label>
+      <!-- <input name="datepicker" class="form-control datepicker" id="date_out_sakonnakhon" onkeydown="return false" /> -->
+      <input name="date_out_sakonnakhon" class="form-control datepicker_skn" id="date_out_sakonnakhon" date_value="" />
     </div>
 
     <div class="card">
@@ -382,9 +388,11 @@ function getInputData () {
     tambon_work_code : $("#tambon_work_code").val(),
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
-    date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    // date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
+    date_to_sakonnakhon : $("#date_to_sakonnakhon").attr('date_value'),
     date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
-    date_out_sakonnakhon : formatDate($("#date_out_sakonnakhon").val()),
+    // date_out_sakonnakhon : formatDate($("#date_out_sakonnakhon").val()),
+    date_out_sakonnakhon : $("#date_out_sakonnakhon").attr('date_value'),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
@@ -400,6 +408,7 @@ $("#btnSave").click(function() {
  
   var not_complete=0;
   input_required.forEach(element => {
+    console.log(element);
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
       not_complete=not_complete+1;
     }
