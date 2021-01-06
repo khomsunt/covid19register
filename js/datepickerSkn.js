@@ -1,16 +1,19 @@
-﻿$.fn.datepickerSkn = function(today,v){
+﻿$.fn.datepickerSkn = function(today){
     var date_input=this;
+    var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
+    var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
 
     var dayList=['อา','จ','อ','พ','พฤ','ศ','ส'];
-    // var offset = this.offset();
-    // var height = this.outerHeight(false);
-    var masterWidth = this.outerWidth(false);
+    // var offset = date_input.offset();
+    // var height = date_input.outerHeight(false);
+    var masterWidth = date_input.outerWidth(false);
     // var left = offset.left;
     // var top = offset.top;
-    var left = this.left;
-    var top = this.top;
+    var left = date_input.left;
+    var top = date_input.top;
     var divMother=$('<div>');
-    divMother.css({
+    divMother.addClass('datepicker_skn_master_div').css({
+        'display':'none',
         'padding':'3px',
         'background-color':'white', 
         'border-radius':'5px', 
@@ -21,9 +24,11 @@
         'top': top+'px',
         'left': left+'px',
         'width': masterWidth+'px',
+        'max-width':'400px',
     });
-    this.parent().append(divMother);
+    date_input.parent().append(divMother);
     var tableA=$('<table>');
+    tableA.css({'border-spacing': '1px', 'border-collapse': 'separate'});
     var tdWidth=Math.floor(masterWidth/7);
 
     var trTitle=$('<tr>');
@@ -36,9 +41,10 @@
 
     var divTdLeft=$('<div>');
     var divTdRight=$('<div>');
-    tdLeft.css({'padding':'2px'}).append(divTdLeft);
-    tdRight.text('>').css({'font-weight':'bold'});
-    divTdLeft.text('<').css({'font-weight':'bold', 'border': 'solid 1px red'});
+    tdLeft.css({'text-align':'center'}).append(divTdLeft);
+    tdRight.css({'text-align':'right'}).append(divTdRight);
+    divTdLeft.text('<').css({'cursor':'pointer', 'font-weight':'bold', 'border-radius':'3px', 'color':'#71aad6', 'border': 'solid 1px #71aad6'});
+    divTdRight.text('>').css({'cursor':'pointer', 'font-weight':'bold', 'border-radius':'3px', 'color':'#71aad6', 'border': 'solid 1px #71aad6'});
 
     var trHead=$('<tr>');
     dayList.forEach(i => {
@@ -55,26 +61,99 @@
     tdTitle.attr('colspan',5).css({'height':'40px', 'width': (masterWidth-(tdWidth*5))+'px', 'text-align':'center'});
     tdRight.css({'width': tdWidth+'px', 'text-align':'center'});
 
-
     var dates=makeDateData(today);
+    setWeekRows(dates);
 
-    tdTitle.text(dates.monthName);
+    date_input.on('click',function() {
+        $('.datepicker_skn_master_div').not($("#datepicker_skn_master_div"+datepicker_skn_token)).css({'display':'none'});
+        $('.datepicker_skn').not(date_input).prop('disabled',false);
+        date_input.prop('disabled',true);
+        openCalendar();
+    });
 
-    dates.data.forEach(w => {
-        var trHead=$('<tr>');
-        w.forEach(i => {
-            var td=$('<td>');
-            td.addClass('dayCell').text(i.day).attr({'date_db':i.date_db, 'full_th':i.full_th}).css({'height':'40px', 'width': tdWidth+'px', 'text-align':'center'});
-            trHead.append(td);
+    $(divTdLeft).on('click',function() {
+        var prevMonthDate = new Date(calendar_date);
+        prevMonthDate.setMonth(prevMonthDate.getMonth()-1); 
+        calendar_date=prevMonthDate;
+        $('.weekRow'+datepicker_skn_token).remove();
+        var d=prevMonthDate.getFullYear().toString()+"-"+addZero(prevMonthDate.getMonth()+1,2)+"-"+addZero(prevMonthDate.getDate(),2);
+        var x=makeDateData(d);
+        setWeekRows(x);
+    });
+
+    $(divTdRight).on('click',function() {
+        var nextMonthDate = new Date(calendar_date);
+        nextMonthDate.setMonth(nextMonthDate.getMonth()+1); 
+        calendar_date=nextMonthDate;
+        $('.weekRow'+datepicker_skn_token).remove();
+        var d=nextMonthDate.getFullYear().toString()+"-"+addZero(nextMonthDate.getMonth()+1,2)+"-"+addZero(nextMonthDate.getDate(),2);
+        var x=makeDateData(d);
+        setWeekRows(x);
+    });
+
+    function openCalendar() {
+        divMother.fadeIn('fast');
+    }
+
+    function closeCalendar() {
+        date_input.prop('disabled',false);
+        divMother.fadeOut('fast');
+    }
+
+    function setWeekRows(dates) {
+        tdTitle.text(dates.monthName+" "+dates.thaiYear);
+        dates.data.forEach(w => {
+            var tr=$('<tr>');
+            tr.addClass('weekRow'+datepicker_skn_token);
+            w.forEach(i => {
+                var td=$('<td>');
+                td.addClass('dayCell'+datepicker_skn_token).text(i.day).attr({'date_db':i.date_db, 'full_th':i.full_th}).css({'cursor':'pointer', 'height':'40px', 'width': tdWidth+'px', 'text-align':'center', 'border': 'solid 1px transparent'});
+                if (i.other_month==true) {
+                    td.css({'color':'#c9c9c9'});
+                }
+                tr.append(td);
+            });
+            tableA.append(tr);
         });
-        tableA.append(trHead);
-    });
 
-    $(".dayCell").click(function() {
-        console.log($(this).attr('date_db'),'|',$(this).attr('full_th'));
-        date_input.val($(this).attr('full_th'));
-    });
- 
+        $('.dayCell'+datepicker_skn_token).on('click',function() {
+            date_input.val($(this).attr('full_th'));
+            date_input.attr('date_value',$(this).attr('date_db'));
+            closeCalendar();
+        });
+
+        $('.dayCell'+datepicker_skn_token).hover(function(e) { 
+            $(this).css("border",e.type === "mouseenter"?"solid 1px orange":"solid 1px transparent") 
+        })
+
+        setActionButton();
+    }
+
+    function setActionButton() {
+        var tr=$('<tr>');
+        var td=$('<td>');
+        var div=$('<div>');
+        var btnClear=$('<button>');
+        var btnClose=$('<button>');
+        tr.append(td);
+        div.append(btnClear).append(btnClose);
+        td.append(div);
+        tr.addClass('weekRow'+datepicker_skn_token);
+        td.attr('colspan',7);
+        div.css({'display':'flex','justify-content':'space-between'});
+        btnClear.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'}).text('ล้าง');
+        btnClose.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'}).text('ปิด');
+        tableA.append(tr);
+
+        btnClear.on('click',function() {
+            date_input.val('').attr('date_value',null);
+        });
+
+        btnClose.on('click',function() {
+            closeCalendar();
+        });
+    }
+
     function makeDateData(today) {
         // https://www.w3schools.com/js/js_date_methods.asp
         // getDay 0=sunday
@@ -88,7 +167,6 @@
         var daysInThisMonth=new Date(thisYear, parseInt(thisMonth), 0).getDate();
 
         var dateLastMonth = new Date(thisYear, parseInt(thisMonth)-1, 15);
-        console.log(dateLastMonth);
         dateLastMonth.setMonth(dateLastMonth.getMonth()-1); 
         var monthLastMonth=dateLastMonth.getMonth();
         var yearLastMonth=dateLastMonth.getFullYear();
@@ -104,6 +182,7 @@
             ob['day']=i;
             ob['date_db']=yearLastMonth+'-'+addZero(monthLastMonth+1,2)+'-'+addZero(i,2);
             ob['full_th']=fullThaidate(yearLastMonth+'-'+addZero(monthLastMonth+1,2)+'-'+addZero(i,2));
+            ob['other_month']=true;
             obFirstWeek.push(ob);
         }
         for (var i=1;i<=7-firstDayInweek;i=i+1) {
@@ -112,6 +191,7 @@
             ob['day']=i;
             ob['date_db']=thisYear+'-'+thisMonth+'-'+addZero(i,2);
             ob['full_th']=fullThaidate(thisYear+'-'+thisMonth+'-'+addZero(i,2));
+            ob['other_month']=false;
             obFirstWeek.push(ob);
         }
 
@@ -127,6 +207,7 @@
                 ob['day']=ld;
                 ob['date_db']=thisYear+'-'+thisMonth+'-'+addZero(ld,2);
                 ob['full_th']=fullThaidate(thisYear+'-'+thisMonth+'-'+addZero(ld,2));
+                ob['other_month']=false;
                 w.push(ob);
             }
             weekList.push(w);
@@ -139,12 +220,13 @@
                 ob['day']=i;
                 ob['date_db']=thisYear+'-'+thisMonth+'-'+addZero(i,2);
                 ob['full_th']=fullThaidate(thisYear+'-'+thisMonth+'-'+addZero(i,2));
+                ob['other_month']=false;
                 lastWeek.push(ob);
             }
 
             var dateNextMonth = new Date(thisYear, parseInt(thisMonth)-1, 15);
-            dateNextMonth.setMonth(dateNextMonth.getMonth()+1); // getMonth 0=มกราคม
-            var monthNextMonth=dateNextMonth.getMonth()+1; // getMonth 0=มกราคม
+            dateNextMonth.setMonth(dateNextMonth.getMonth()+1); 
+            var monthNextMonth=dateNextMonth.getMonth()+1; 
             var yearNextMonth=dateNextMonth.getFullYear();
             var x=7-lastWeek.length;
             for (var i=1;i<=x;i=i+1) {
@@ -152,11 +234,14 @@
                 ob['day']=i;
                 ob['date_db']=yearNextMonth+'-'+addZero(monthNextMonth,2)+'-'+addZero(i,2);
                 ob['full_th']=fullThaidate(yearNextMonth+'-'+addZero(monthNextMonth,2)+'-'+addZero(i,2));
+                ob['other_month']=true;
                 lastWeek.push(ob);
             }
             weekList.push(lastWeek);
         }
         var r={};
+        r['dbYear']=thisYear.toString();
+        r['thaiYear']=(parseInt(thisYear)+543).toString();
         r['monthName']=thisMonthName;
         r['data']=weekList;
         return r;
