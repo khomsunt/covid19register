@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['group_id']<=0){
   header("Location: ./login.php");
 }
-// echo "<br>";
+echo "<br>";
 // print_r($_POST);
 // print_r($_SESSION);
 include('../include/config.php');
@@ -57,6 +57,8 @@ $sql="select c.*,
   $obj->execute();
   $rows_count=$obj->fetchAll(PDO::FETCH_ASSOC);
   $count_all=$rows_count[0]['count_all'];
+  // echo "<br><br><br>count_all=".$count_all;
+  // echo "<br>".$sql_count;
   $rp=10;
   $pages=ceil($count_all/$rp);
   $page=(isset($_GET['page']))?$_GET['page']:0;
@@ -160,7 +162,7 @@ $strqry=implode("&",$a_strqry);
     <?php
       include("./header.php");
     ?>
-    <main role="main" style="margin-top:70px;">
+    <main role="main" style="margin-top:60px;">
       <div class="container">
         <h5>
           <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> 
@@ -177,7 +179,7 @@ $strqry=implode("&",$a_strqry);
         </div>
 
       </div>
-      <div id="register_div" class="container">
+      <div id="register_div" class="container" style="display:none;">
         <div style="width:100%;text-align:right;">
           <button style="float-right" id= "btn-close-register">x</button>
         </div>
@@ -319,6 +321,7 @@ $strqry=implode("&",$a_strqry);
       var cut_status_id_default=0;
       function close_iframe(){
         $("#register_div").hide();
+        $(".auto-pagination").show();
         $("#register").attr("src","./register.php");
       }
       function formatDate(d) {
@@ -344,6 +347,7 @@ $strqry=implode("&",$a_strqry);
 
       $(function(){
         $("#register_div").hide();
+        $(".auto-pagination").show();
         $(".pagination-link").click(function(){
           let page=$(this).attr("page");
           window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
@@ -463,6 +467,7 @@ $strqry=implode("&",$a_strqry);
                   let thisData=json_data.data[0];
                   $("#divMyTable").hide();
                   $("#register_div").show();
+                  $(".auto-pagination").hide();
                   $("#register").contents().find('#cid').val(thisData['CID']);
                   $("#register").contents().find('#fname').val(thisData['NAME']);
                   $("#register").contents().find('#lname').val(thisData['LNAME']);
@@ -480,6 +485,7 @@ $strqry=implode("&",$a_strqry);
                 $("#register").contents().find("select").val("");
                 $("#divMyTable").hide();
                 $("#register_div").show();
+                $(".auto-pagination").hide();
                 $("#register").contents().find('#cid').val($("#cid").val());
 
               }

@@ -1,4 +1,4 @@
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation" class="auto-pagination">
     <ul class="pagination justify-content-end">
         <li class="page-item <?php echo ($page=="0")?"disabled":""; ?>">
         <a class="page-link previous-pagination-link">Previous</a>
