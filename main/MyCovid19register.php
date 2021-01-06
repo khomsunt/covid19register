@@ -98,11 +98,11 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
-  <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง</h4></th>
+  <th colspan="38"><h4>ทะเบียนรายงานตัวของผู้เดินทาง</h4></th>
   <!-- <th colspan="39"><h4>ทะเบียนรายงานตัวของผู้เดินทาง วันเวลาที่ตัดข้อมูล<?php echo $_POST['cut_datetime']; ?></h4></th> -->
   </tr>
   <tr>
-  <th colspan="39" style="background-color:#C8C6C5">
+  <th colspan="38" style="background-color:#C8C6C5">
   <h5>
   หมายเหตุ (1) หมายถึง ผู้เดินทางมาจากจังหวัดสมุทรสาคร (ไม่เกี่ยวข้องกับตลาดอาหารปลา)<br>
   หมายเหตุ (2) หมายถึง ผู้มีประหวัดเกี่ยวข้องกับตลาดอาหารทะเลทั้งหมดในจังหวัดสมุทรสาคร<br>
@@ -111,10 +111,10 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   หมายเหตุ (2) หมายถึง แรงงานต่างด้าว ในพื้นที่จังหวัดสกลนคร<br>
   </h5>
   </th>
-  <th colspan="39"></th>
+ 
   </tr>
   <tr>
-  <th colspan="39"></th>
+  <th colspan="38"></th>
   </tr>
   <tr class="text-center">
     <th rowspan="2">วันที่ตัดข้อมูล</th>
@@ -313,13 +313,14 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     </script>
     <script type="text/javascript">
             var $btnDLtoExcel = $('.btn_cut_print');
-            var file_name=date('Y-m-d H:i:s');
-            file_name=file_name.replaceAll('-','');
-            file_name=file_name.replaceAll(' ','');
-            file_name=file_name.replaceAll(':','');
+            // var file_name= <?php $now_date_time; ?>
+            // file_name=file_name.replaceAll('-','');
+            // file_name=file_name.replaceAll(' ','');
+            // file_name=file_name.replaceAll(':','');
             $btnDLtoExcel.on('click', function Export() {
             $("#myTable").table2excel({
-                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
+                // filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
+                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+'.xls'
             });
             // $.ajax({method: "POST", url: "cut_data_execute.php",
             //  data: {risk_level_id: $(this).attr("risk_level_id"),type_cut: $(this).attr("type_cut"),office_code:$(this).attr("office_code")}

@@ -154,6 +154,9 @@
                                         case 's':
                                             $sum[$k]+=$v;
                                             break;                    
+                                        case 'a':
+                                            $sum[$k]+=$v;
+                                            break;                    
                                         default:
                                             $sum[$k]=$a_k[2];
                                             break;
@@ -179,6 +182,9 @@
                             switch ($a_k[2]) {
                                 case 's':
                                     // $sum[$k]+=1;
+                                    break;
+                                case 'a':
+                                    $sum[$k]=$sum[$k]/count($rows);
                                     break;
                                 default:
                                     $sum[$k]=$a_k[2];
