@@ -43,7 +43,7 @@ $sql="select c.*,
 // if ($_SESSION['group_id']==3){
   $where="";
   if (isset($_POST['cid'])){
-    $where.=" where c.cid='".$_POST['cid']."' ";
+    $where.=" where c.hospcode='".$_SESSION['office_code']."' and (c.cid='".$_POST['cid']."' or c.fname like '%".$_POST['cid']."%') ";
   }else{
     $where.=" where c.hospcode='".$_SESSION['office_code']."'";
   }
@@ -51,53 +51,25 @@ $sql="select c.*,
     $where.=" and c.real_risk=".$_GET['risk_level_id'];
   }
   $sql.=$where;
-
   $sql_count.=$where;
   $obj=$connect->prepare($sql_count);
   $obj->execute();
   $rows_count=$obj->fetchAll(PDO::FETCH_ASSOC);
-  $count_all=$rows_count[0]['count_all'];
-  // echo "<br><br><br>count_all=".$count_all;
-  // echo "<br>".$sql_count;
-  $rp=10;
-  $pages=ceil($count_all/$rp);
-  $page=(isset($_GET['page']))?$_GET['page']:0;
-  $start=$page*$rp;
-  $limit=" limit ".$start.",".$rp;
-  $sql.=$limit;
-$obj=$connect->prepare($sql);
-$obj->execute();
-$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+  // echo "<br><br><br>";
+  // print_r($rows_count);
 
-//print_r($_SERVER);
-// print_r($rows);
-$curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);  
-$qrystr=$_SERVER['QUERY_STRING'];
-$a_qrystr=explode("&",$qrystr);
-$aa_qrystr=[];
-foreach ($a_qrystr as $key => $value) {
-  $a_value=explode("=",$value);
-  $aa_qrystr[$a_value[0]]=$a_value[1];
-}
-$a_strqry=[];
-foreach ($aa_qrystr as $key => $value) {
-  if ($key=='page'){
-  }else{
-    array_push($a_strqry,$key."=".$value);
-  }
-}
-$have_page=0;
-foreach ($aa_qrystr as $key => $value) {
-  if ($key=='page'){
-    $have_page++;
-    array_push($a_strqry,$key."=");
-  }else{
-  }
-}
-if ($have_page==0){
-  array_push($a_strqry,"page=");
-}
-$strqry=implode("&",$a_strqry);
+  $rp=10; //rows per page
+  include("./autoPaginationFunction.php");
+
+  $obj=$connect->prepare($sql);
+  $obj->execute();
+  $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+  // echo "<br><br>POST=";
+  // print_r($_POST);
+  // echo "<br><br><br>".$sql;
+
+  // print_r($rows);
 ?>
 
 <!doctype html>
@@ -456,7 +428,7 @@ $strqry=implode("&",$a_strqry);
             let json_data=JSON.parse(msg);
             if (json_data.data.length>0){
               if (json_data.dataSource=='covid'){
-                var form = $('<form action="./pcu_register_list.php" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
+                var form = $('<form action="./pcu_register_list.php?<?php echo $strqry; ?>0" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
                 $('body').append(form);
                 $(form).submit();                
               }else{
