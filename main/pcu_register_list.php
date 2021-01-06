@@ -183,6 +183,9 @@ $strqry=implode("&",$a_strqry);
         </div>
         <iframe id="register" frameborder="0" src="./register.php" title="" style="width:100%;height:100%"></iframe>
       </div>
+      <?php
+      include("./autoPagination.php");
+      ?>
       <div id="divMyTable">
       <table class="table" id="myTable">
         <thead>
@@ -213,7 +216,7 @@ $strqry=implode("&",$a_strqry);
             ?>
             <tr id="<?php echo $value['covid_register_id'] ?>">
               <td>
-                <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $key+1; ?></span>
+                <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $start+$key+1; ?>.</span>
                 <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
               </td>
               <td><div class="data"><?php echo $value['cid']; ?></div></div></td>
@@ -300,26 +303,10 @@ $strqry=implode("&",$a_strqry);
           } ?>
         </tbody>
       </table>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-          <li class="page-item <?php echo ($page=="0")?"disabled":""; ?>">
-            <a class="page-link previous-pagination-link">Previous</a>
-          </li>
-          <?php
-          for ($p=0; $p < $pages; $p++) { 
-            ?>
-              <li class="page-item <?php echo ($page==$p)?"active":""; ?>"><a class="page-link pagination-link" page="<?php echo $p; ?>"><?php echo $p+1; ?></a></li>
-            <?php
-          }
-          ?>
-          <li class="page-item <?php echo ($page==($pages-1))?"disabled":""; ?>">
-            <a class="page-link next-pagination-link">Next</a>
-          </li>
-        </ul>
-      </nav>
-
       </div>
+      <?php
+      include("./autoPagination.php");
+      ?>
     </main>
     <?php
       include("./footer.php");
