@@ -24,7 +24,7 @@ IF
 ( c.evaluate_level = 3, 1, 0 )) AS red,
 sum(
 IF
-( c.evaluate_level = 99, 1, 0 )) AS gray,
+( c.evaluate_level = 4, 1, 0 )) AS weak_red,
 count(*) AS count_all 
 FROM
 covid_register c
@@ -87,11 +87,11 @@ include("./header.php");
         <tr>
         <th style="text-align: center";>ลำดับที่</th>
         <th>ชื่ออำเภอ</th>
-        <th style="text-align: center";>สีเขียว</th>
-        <th style="text-align: center";>สีเหลือง</th>
-        <th style="text-align: center";>สีส้ม</th>      
-        <th style="text-align: center";>สีแดง</th>  
-        <th style="text-align: center";>สีเทา</th>  
+        <th style="text-align: center";>เสี่ยงต่ำมาก</th>
+        <th style="text-align: center";>เสี่ยงต่ำ</th>
+        <th style="text-align: center";>เสี่ยงปานกลาง</th>      
+        <th style="text-align: center";>เสี่ยงสูง</th>  
+        <th style="text-align: center";>เสี่ยงสูงมาก</th>    
         <th style="text-align: center";>จำนวนทั้งหมด</th>  
        
         </tr>
@@ -115,8 +115,8 @@ include("./header.php");
                 <td style="text-align: center";><?php echo $value['green']; $rowTotal1 += $value['green']; ?></td>
                 <td style="text-align: center";><?php echo $value['yellow']; $rowTotal2 += $value['yellow']; ?></td>
                 <td style="text-align: center";><?php echo $value['orange']; $rowTotal3 += $value['orange']; ?></td>
-                <td style="text-align: center";><?php echo $value['red']; $rowTotal4 += $value['red']; ?></td>
-                <td style="text-align: center";><?php echo $value['gray']; $rowTotal5 += $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['weak_red']; $rowTotal4 += $value['weak_red']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; $rowTotal5 += $value['red']; ?></td>
                 <td style="text-align: center";><?php echo $value['count_all']; $rowTotal6 += $value['count_all']; ?></td>
             </tr>
             <?php

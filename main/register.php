@@ -45,7 +45,7 @@ include('../include/config.php');
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
-  $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','2021-02-03');
+  $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
 
   $(".required").css({
     'color':'red',

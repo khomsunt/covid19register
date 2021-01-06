@@ -41,9 +41,11 @@ SELECT
 	count( * ) AS count_ampur_risk 
 FROM
 	ampur a
-	LEFT JOIN risk_level r ON a.risk_status_id = r.risk_level_id 
-GROUP BY
-	a.risk_status_id
+  LEFT JOIN risk_level r ON a.risk_status_id = r.risk_level_id 
+  GROUP BY
+  a.risk_status_id
+  ORDER BY 
+  r.order_id
 ";
 $obj=$connect->prepare($sql_report_risk);
 $obj->execute();
@@ -103,9 +105,13 @@ include("./footer.php");
                  //console.log($(this).attr("risk_level_id"));
                   var form = $('<form action="./ampur_orange.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
                 
+                }else if($(this).attr("risk_level_id")==3){
+                 //console.log($(this).attr("risk_level_id"));
+                  var form = $('<form action="./ampur_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
+                
                 }else{
                   //console.log(attr("risk_level_id"));
-                  var form = $('<form action="./ampur_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
+                  var form = $('<form action="./ampur_weak_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
                 }
                 $('body').append(form);
                 $(form).submit(); 
