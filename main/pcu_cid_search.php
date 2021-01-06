@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 include('../include/config.php');
 $_POST['cid']=str_replace('-','',$_POST['cid']);
 $_POST['cid']=str_replace(' ','',$_POST['cid']);
-$sql="SELECT * from covid_register where hospcode='".$_SESSION['office_code']."' and replace(replace(cid,'-',''),' ','') =:cid";
+$sql="SELECT * from covid_register where hospcode='".$_SESSION['office_code']."' and (replace(replace(cid,'-',''),' ','') =:cid or fname like '%".$_POST['cid']."%')";
 $obj=$connect->prepare($sql);
 $obj->execute(['cid' => $_POST['cid']]);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);

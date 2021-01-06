@@ -37,8 +37,10 @@ foreach ($rows_changwat_red as $key => $value) {
 }
 $sql_risk_3=",".implode(",",$a_changwat_red);
 $sql_risk="
-,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด_ใหม่` 
-,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด_สะสม` 
+,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_ใหม่` 
+,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_สะสม` 
+,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
+,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
 ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
 ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_สะสม` 
 ,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_ใหม่` 

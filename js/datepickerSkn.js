@@ -1,7 +1,9 @@
-﻿$.fn.datepickerSkn = function(today){
+﻿$.fn.datepickerSkn = function(today,defaultDate){
     var date_input=this;
     var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
     var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
+    var default_date=typeof defaultDate!= 'undefined'?defaultDate:null;
+    var selectedDate='';
 
     var dayList=['อา','จ','อ','พ','พฤ','ศ','ส'];
     // var offset = date_input.offset();
@@ -61,7 +63,15 @@
     tdTitle.attr('colspan',5).css({'height':'40px', 'width': (masterWidth-(tdWidth*5))+'px', 'text-align':'center'});
     tdRight.css({'width': tdWidth+'px', 'text-align':'center'});
 
-    var dates=makeDateData(today);
+    var dates;
+    if (default_date!=null) {
+        dates=makeDateData(default_date);
+        selectDate(fullThaidate(default_date),default_date);
+        selectedDate=default_date;
+    }
+    else {
+        dates=makeDateData(today);
+    }
     setWeekRows(dates);
 
     date_input.on('click',function() {
@@ -107,26 +117,33 @@
             tr.addClass('weekRow'+datepicker_skn_token);
             w.forEach(i => {
                 var td=$('<td>');
-                td.addClass('dayCell'+datepicker_skn_token).text(i.day).attr({'date_db':i.date_db, 'full_th':i.full_th}).css({'cursor':'pointer', 'height':'40px', 'width': tdWidth+'px', 'text-align':'center', 'border': 'solid 1px transparent'});
+                td.addClass('dayCell'+datepicker_skn_token).text(i.day).attr({'date_db':i.date_db, 'full_th':i.full_th}).css({'cursor':'pointer', 'height':'40px', 'width': tdWidth+'px', 'text-align':'center', 'border': 'solid 1px transparent', 'border-radius':'3px'});
                 if (i.other_month==true) {
                     td.css({'color':'#c9c9c9'});
                 }
+                // if (i.date_db==default_date) {
+                //     td.css({'background-color':'#e8f4ff'});
+                // }
                 tr.append(td);
             });
             tableA.append(tr);
         });
 
         $('.dayCell'+datepicker_skn_token).on('click',function() {
-            date_input.val($(this).attr('full_th'));
-            date_input.attr('date_value',$(this).attr('date_db'));
-            closeCalendar();
+            selectDate($(this).attr('full_th'),$(this).attr('date_db'));
         });
 
         $('.dayCell'+datepicker_skn_token).hover(function(e) { 
-            $(this).css("border",e.type === "mouseenter"?"solid 1px orange":"solid 1px transparent") 
+            $(this).css("border",e.type === "mouseenter"?"solid 1px #60b2ff":"solid 1px transparent") 
         })
 
         setActionButton();
+    }
+
+    function selectDate(show_text_value,date_value) {
+        date_input.val(show_text_value);
+        date_input.attr('date_value',date_value);
+        closeCalendar();
     }
 
     function setActionButton() {
