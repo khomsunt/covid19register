@@ -11,7 +11,7 @@ sum(if(c.evaluate_level=0,1,0)) as green,
 sum(if(c.evaluate_level=1,1,0)) as yellow,
 sum(if(c.evaluate_level=2,1,0)) as orange,
 sum(if(c.evaluate_level=3,1,0)) as red,
-sum(if(c.evaluate_level=99,1,0)) as gray,
+sum(if(c.evaluate_level=4,1,0)) as weak_red,
 count(c.covid_register_id) as all_color
 FROM
 covid_register c
@@ -68,15 +68,15 @@ include("./header.php");
     <table class="table" id="myTable">
     <thead>
         <tr>
-        <th>ลำดับที่</th>
-        <th>ชื่ออำเภอ</th>
+        <th style="text-align: center">ลำดับที่</th>
+        <th style="text-align: center">ชื่ออำเภอ</th>
         <!-- <th>Node </th> -->
-        <th>สีเขียว</th>
-        <th>สีเหลือง</th>
-        <th>สีส้ม</th>      
-        <th>สีแดง</th>  
-        <th>สีเทา</th>  
-        <th>จำนวนทั้งหมด</th>  
+        <th style="text-align: center">เสี่ยงต่ำมาก</th>
+        <th style="text-align: center">เสี่ยงต่ำ</th>
+        <th style="text-align: center">เสี่ยงปานกลาง</th>      
+        <th style="text-align: center">เสี่ยงสูง</th>  
+        <th style="text-align: center">เสี่ยงสูงสุด</th>  
+        <th style="text-align: center">จำนวนทั้งหมด</th>  
        
         </tr>
     </thead>
@@ -99,8 +99,8 @@ include("./header.php");
                 <td style="text-align: center";><?php echo $value['green']; $rowTotal1 += $value['green']; ?></td>
                 <td style="text-align: center";><?php echo $value['yellow']; $rowTotal2 += $value['yellow']; ?></td>
                 <td style="text-align: center";><?php echo $value['orange']; $rowTotal3 += $value['orange']; ?></td>
-                <td style="text-align: center";><?php echo $value['red']; $rowTotal4 += $value['red']; ?></td>
-                <td style="text-align: center";><?php echo $value['gray']; $rowTotal5 += $value['gray']; ?></td>
+                <td style="text-align: center";><?php echo $value['weak_red']; $rowTotal4 += $value['weak_red']; ?></td>
+                <td style="text-align: center";><?php echo $value['red']; $rowTotal5 += $value['red']; ?></td>
                 <td style="text-align: center";><?php echo $value['all_color']; $rowTotal6 += $value['all_color']; ?></td>
             </tr>
         

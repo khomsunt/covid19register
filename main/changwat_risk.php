@@ -82,7 +82,7 @@ include("./header.php");
       <th data-card-title style="text-align: center;">ลำดับ</th>
       <th data-card-title style="text-align: left;">จังหวัด</th>
       <th style="text-align: center;">อำเภอทั้งหมด</th>
-      <th style="text-align: center;">เสี่ยงต่ำมาก</th>
+      <!-- <th style="text-align: center;">เสี่ยงต่ำมาก</th> -->
       <th style="text-align: center;">เสี่ยงต่ำ</th>
       <th style="text-align: center;">เสี่ยงปานกลาง</th>
       <th style="text-align: center;">เสี่ยงสูง</th>
@@ -99,7 +99,7 @@ include("./header.php");
             <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td style="text-align: left;"><?php echo $value['changwat_name']; ?></td>
             <td style="text-align: center;"><?php echo $value['ampur_total']; ?></td>
-            <td style="text-align: center;"><?php echo $value['total_risk_ampur0']; ?></td>
+            <!-- <td style="text-align: center;"><?php echo $value['total_risk_ampur0']; ?></td> -->
             <td style="text-align: center;"><?php echo $value['total_risk_ampur1']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_ampur2']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_ampur4']; ?></td>

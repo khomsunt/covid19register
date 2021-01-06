@@ -11,7 +11,7 @@ $sql_report_risk="SELECT
     FROM
     ampur a
     left join changwat c on a.changwat_code = c.changwat_code
-    where a.risk_status_id=3
+    where a.risk_status_id=4
     order by c.changwat_name,a.ampur_name ";
 $obj=$connect->prepare($sql_report_risk);
 $obj->execute();
@@ -50,7 +50,7 @@ include("./header.php");
 ?>
 <main role="main" style="margin-top:90px;">
     <div class="container">
-        <h5>รายชื่ออำเภอเสี่ยงสูงสุด</h5>
+        <h5>รายชื่ออำเภอเสี่ยงสูง</h5>
     </div>
     <table class="table" id="myTable">
     <thead>
