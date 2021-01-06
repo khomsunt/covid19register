@@ -313,13 +313,14 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     </script>
     <script type="text/javascript">
             var $btnDLtoExcel = $('.btn_cut_print');
-            var file_name=date('Y-m-d H:i:s');
-            file_name=file_name.replaceAll('-','');
-            file_name=file_name.replaceAll(' ','');
-            file_name=file_name.replaceAll(':','');
+            // var file_name= <?php $now_date_time; ?>
+            // file_name=file_name.replaceAll('-','');
+            // file_name=file_name.replaceAll(' ','');
+            // file_name=file_name.replaceAll(':','');
             $btnDLtoExcel.on('click', function Export() {
             $("#myTable").table2excel({
-                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
+                // filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
+                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+'.xls'
             });
             // $.ajax({method: "POST", url: "cut_data_execute.php",
             //  data: {risk_level_id: $(this).attr("risk_level_id"),type_cut: $(this).attr("type_cut"),office_code:$(this).attr("office_code")}
