@@ -121,9 +121,9 @@
                 if (i.other_month==true) {
                     td.css({'color':'#c9c9c9'});
                 }
-                if (i.date_db==default_date) {
-                    td.css({'background-color':'#e8f4ff'});
-                }
+                // if (i.date_db==default_date) {
+                //     td.css({'background-color':'#e8f4ff'});
+                // }
                 tr.append(td);
             });
             tableA.append(tr);
