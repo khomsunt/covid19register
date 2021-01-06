@@ -408,7 +408,6 @@ $("#btnSave").click(function() {
  
   var not_complete=0;
   input_required.forEach(element => {
-    console.log(element);
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
       not_complete=not_complete+1;
     }
