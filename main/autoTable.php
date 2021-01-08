@@ -163,7 +163,7 @@
                                     }
                                     ?>
                                     <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
-                                        <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
+                                        <div class="testdiv col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
                                             <?php echo autoFormat($v,$a_k[1]); ?>
                                         </div>
                                     </td>
@@ -207,12 +207,11 @@
 <script src="../js/jquery-3.2.1.min.js" ></script>
 <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/tableToCards.js"></script>
-<script src='../js/table2excel.js'></script>
+<!-- <script src='../js/table2excel.js'></script> -->
 <script>
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
-
-    var file_name="<?php echo thailongdate($datetime_now) ?>";
+    var file_name="<?php echo thailongdate($datetime_now); ?>";
     file_name=file_name.replaceAll('-','');
     file_name=file_name.replaceAll(' ','');
     file_name=file_name.replaceAll(':','');

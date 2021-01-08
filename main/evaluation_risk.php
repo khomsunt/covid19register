@@ -98,6 +98,7 @@ include("./footer.php");
 <script>
 
        $(function(){
+         console.log('dddd');
             $(".tag-link").click(function(){
               console.log($(this).attr("risk_level_id"));
                 if($(this).attr("risk_level_id")==0){ //เขียว
