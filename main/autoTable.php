@@ -162,8 +162,8 @@
                                             break;
                                     }
                                     ?>
-                                    <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
-                                        <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
+                                    <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>;">
+                                        <div class="col_<?php echo $col; ?> <?php echo str_replace('_',' ',$a_k[3]); ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
                                             <?php echo autoFormat($v,$a_k[1]); ?>
                                         </div>
                                     </td>

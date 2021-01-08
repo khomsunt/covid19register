@@ -1,4 +1,11 @@
 ﻿$.fn.datepickerSkn = function(today,defaultDate){
+    console.log(this);
+    this.val('ddddddddd5');
+console.log(this.attr('class'));
+    this.on('click',function() {
+        console.log('33333------');
+    });
+
     var date_input=this;
     var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
     var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
@@ -14,6 +21,22 @@
     var left = date_input.left;
     var top = date_input.top;
     var divMother=$('<div>');
+    // divMother.addClass('datepicker_skn_master_div').css({
+    //     'display':'none',
+    //     'padding':'3px',
+    //     'background-color':'white', 
+    //     'border-radius':'5px', 
+    //     'border':'solid 1px #999999', 
+    //     'box-shadow': '0px 4px 10px #cccccc', 
+    //     'position':'absolute', 
+    //     'z-index':'50',
+    //     'top': top+'px',
+    //     'left': left+'px',
+    //     'width': masterWidth+'px',
+    //     'max-width':'400px',
+    //     'min-width':'330px',
+    // });
+    // date_input.parent().append(divMother);
     divMother.addClass('datepicker_skn_master_div').css({
         'display':'none',
         'padding':'3px',
@@ -23,12 +46,11 @@
         'box-shadow': '0px 4px 10px #cccccc', 
         'position':'absolute', 
         'z-index':'50',
-        'top': top+'px',
-        'left': left+'px',
         'width': masterWidth+'px',
         'max-width':'400px',
+        'min-width':'330px',
     });
-    date_input.parent().append(divMother);
+    $('body').append(divMother);
     var tableA=$('<table>');
     tableA.css({'border-spacing': '1px', 'border-collapse': 'separate'});
     var tdWidth=Math.floor(masterWidth/7);
@@ -102,6 +124,16 @@
     });
 
     function openCalendar() {
+        var h = date_input.outerHeight(false);
+        var offset = date_input.offset();
+        var t=offset.top;
+        var l=offset.left;
+        console.log(t,l,h);
+        divMother.css({
+            'position':'absolute', 
+            'top': t+h+'px',
+            'left': l+'px',
+        });
         divMother.fadeIn('fast');
     }
 
