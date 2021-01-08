@@ -249,6 +249,8 @@ $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
     </style>
     <!-- Custom styles for this template -->
     <link href="../css/carousel.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   </head>
   <body>
 <?php
@@ -423,6 +425,12 @@ include("./header.php");
             }
             ?>
             <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php
+                if ($rows_value['risk_level_id']=='39' or $rows_value['risk_level_id']=='59' or $rows_value['risk_level_id']=='99'){
+                  ?>
+                <i class="fa fa-home text-success"></i>
+                  <?php
+                }?>
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
