@@ -21,9 +21,9 @@ include('../include/config.php');
         <li class="nav-item active">
           <a class="nav-link" href="./evaluation_risk.php">เกณฑ์การประเมิน<span class="sr-only">(current)</span></a>
         </li>
-        <!-- <li class="nav-item active">
+        <li class="nav-item active">
           <a class="nav-link" href="./ampur_rate.php">การบันทึกข้อมูลของหน่วยบริการ<span class="sr-only">(current)</span></a>
-        </li> -->
+        </li>
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
           ?>
