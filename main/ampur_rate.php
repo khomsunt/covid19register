@@ -27,5 +27,7 @@
                 $('body').append(form);
                 $(form).submit();                
         })
+        $(".ชื่ออำเภอ").addClass("cursor-hand");
+
     })
 </script>
