@@ -21,9 +21,13 @@
     $obj=$connect->prepare($sql_ampur_rate);
     $obj->execute();
     $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-    echo "<br><br><br><br>";
+    echo "<br><br><br>";
     //print_r($rows);
-    
     $title="รายงานผลงานการบันทึกข้อมูลรายหน่วยบริการ";
     include("./autoTable.php");
 ?>
+<script>
+    $(function(){
+        $("#pager1").addClass("pager");
+    })
+</script>
