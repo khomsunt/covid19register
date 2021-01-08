@@ -12,8 +12,6 @@
     $obj=$connect->prepare($sql_ampur_rate);
     $obj->execute();
     $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-    echo "<br><br><br><br>";
-    //print_r($rows);
     
     $title="รายงานการประเมินความเสี่ยง.";
     include("./autoTable.php");
@@ -27,5 +25,7 @@
                 $('body').append(form);
                 $(form).submit();                
         })
+        $(".ชื่ออำเภอ").addClass("cursor-hand");
+
     })
 </script>
