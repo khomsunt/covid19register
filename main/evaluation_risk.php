@@ -16,6 +16,12 @@ include('../include/config.php');
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
+              .center {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 65%;
+        }
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -37,8 +43,9 @@ include("./header.php");
 $sql_report_risk="
 SELECT
 	r.risk_level_name,
-	r.risk_level_id,
-	count( * ) AS count_ampur_risk 
+  r.risk_level_id,
+  area_level_name,
+	count( * ) AS count_ampur_risk
 FROM
 	ampur a
   LEFT JOIN risk_level r ON a.risk_status_id = r.risk_level_id 
@@ -58,13 +65,13 @@ $risk_level_id = $rows_report_risk['risk_level_id'];
         <h5>เกณฑ์การประเมินความเสี่ยง covid-19 รายบุคคล</h5>
     </div>
     <?php if ($_SESSION['group_id']>0){ ?>
-    <img src="../image/covid_evaluate.png" class="rounded img-fluid" alt="...">
+    <img src="../image/covid_evaluate_flow.png" class="rounded img-fluid center " alt="...">
     <ul class="list-group">
       <?php foreach ($rows_report_risk as $key => $value) { ?>
       
         <div class="tag-link"  risk_level_id = "<?php echo $value['risk_level_id']; ?>" >
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            <?php echo $value['risk_level_name']   ?>
+            <?php echo $value['area_level_name']   ?>
           
             <span class="badge badge-primary badge-pill"><?php echo $value['count_ampur_risk']  ?></span>
           

@@ -75,7 +75,7 @@ include("./header.php");
   <tbody>
       <?php
       //$sql="select * from risk_status";
-      $sql="select * from risk_level where not risk_level_id ='99'  order by order_id asc ";
+      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5') order by order_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -88,28 +88,18 @@ include("./header.php");
             <td><?php echo $value['tambon_name']; ?></td>
             <td>
             <div class="btn-group">
-                    <button type="button" 
-                    <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
-                          class="btn dropdown-toggle" style="background-color:#00FF00; color:#000000" 
-                      <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
-                          class="btn dropdown-toggle" style="background-color:#FFFF00; color:#000000"
-                      <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
-                          class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
-                      <?php } else if($value['risk_status_id']==4) { //เสี่ยงสูง  ?>
-                          class="btn dropdown-toggle" style="background-color:#F78181; color:#FFFFFF"
-                      <?php } else {  //เสี่ยงสูงสุด ?>
-                        class="btn dropdown-toggle" style="background-color:#DF0101; color:#FFFFFF"
-                      <?php } ?>
+            <button type="button" 
+                          class="btn dropdown-toggle" style="background-color:<?php echo $value['background_color'] ?>; color:<?php echo $value['color'] ?>" 
                         data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                      <?php echo $value['risk_level_long_name']; ?>
-                      
+                      <?php echo $value['area_level_name']; ?>
+
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                         <?php
                         foreach ($rows_risk as $key_risk_area => $value_area) {
                             ?>
                             <button tambon_code_full="<?php echo $value['tambon_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_level_id']; ?>" class="dropdown-item btn-change-area" type="button">
-                                <?php echo $value_area['risk_level_long_name']; ?>
+                                <?php echo $value_area['area_level_name']; ?>
                             </button>
                             <?php
                         }
