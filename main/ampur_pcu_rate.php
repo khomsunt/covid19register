@@ -16,7 +16,7 @@
     ,a.percent_not5999 as 'r|f|a|ร้อยละ'
     from office o 
     left join ampur_pcu_rate a on o.office_code=a.hospcode 
-    where o.ampur_code='01' and o.have_person=1
+    where o.ampur_code='".$_POST['ampur_code']."' and o.have_person=1
     order by percent_not5999 desc, o.office_code";
     $obj=$connect->prepare($sql_ampur_rate);
     $obj->execute();
