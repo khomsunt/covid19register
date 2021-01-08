@@ -196,7 +196,7 @@ include("./autoTable.php");
         $('#quarantine_complete').prop('checked','<?php echo $_GET['quarantine_complete']; ?>'==1?true:false);
         $('#quarantine_escape').prop('checked','<?php echo $_GET['quarantine_escape']; ?>'==1?true:false);
 
-        $(".ชื่ออำเภอ").addClass("cursor-hand").click(function(){
+        $(".<br>_อำเภอ_ชื่ออำเภอ").addClass("cursor-hand").click(function(){
             let ampur_code=$(this).parent().parent().children().find("div").html().trim();
             // console.log(ampur_code,"<?php echo $today; ?>");
             var x=location.href.split('/');
