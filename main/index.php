@@ -256,7 +256,7 @@ $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 <?php
 include("./header.php");
 ?>
-<main role="main" style="margin-top:20px;">
+<main role="main" style="margin-top:50px;">
   <div class="container marketing">
     <center>
       <h5>ข้อมูลการประเมินตนเอง</h5>
