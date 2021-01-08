@@ -9,67 +9,176 @@ include('../include/config.php');
 include('../include/functions.php');
 
 $today=date("Y-m-d");
-if (!isset($_POST['register_datetime'])){
-    $_POST['register_datetime']=$today;
+if ($_GET['register_datetime']!='') {
+    $today=substr($_GET['register_datetime'],0,10);
 }
+
 $sql_changwat_red="select a.changwat_code,c.changwat_name 
-    from ampur a 
-    left join changwat c on a.changwat_code=c.changwat_code 
-    where a.risk_status_id=3 
-    group by a.changwat_code";
+from ampur a 
+left join changwat c on a.changwat_code=c.changwat_code 
+where a.risk_status_id=3 
+group by a.changwat_code";
 $obj=$connect->prepare($sql_changwat_red);
 $obj->execute();
 $rows_changwat_red=$obj->fetchAll(PDO::FETCH_ASSOC);
 
-$sql="
-SELECT `f`.`ampur_in_code` AS `l|c||<br>_อำเภอ_รหัสอำเภอ`
-,a.ampur_name as `l|c|รวม|<br>_อำเภอ_ชื่ออำเภอ`
-,sum(if(left(register_datetime,10)='".$_POST['register_datetime']."',1,0)) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ใหม่` 
-,count(*) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ทั้งหมด`  
-";
-$a_changwat_red=[];
-foreach ($rows_changwat_red as $key => $value) {
-    $sql_risk_3=" 
-    sum(if(left(from_red,2)='".$value['changwat_code']."' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ใหม่`, 
-    sum(if(left(from_red,2)='".$value['changwat_code']."' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_สะสม` 
+if ($_GET['ampur_code']=='') {
+    $sql="
+    SELECT `f`.`ampur_in_code` AS `l|c||<br>_อำเภอ_รหัสอำเภอ`
+    ,a.ampur_name as `l|c|รวม|<br>_อำเภอ_ชื่ออำเภอ`
+    ,sum(if(left(register_datetime,10)='".$today."',1,0)) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ใหม่` 
+    ,count(*) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ทั้งหมด`  
     ";
-    array_push($a_changwat_red,$sql_risk_3);
+    $a_changwat_red=[];
+    foreach ($rows_changwat_red as $key => $value) {
+        $cc=$value['changwat_code'];
+        $sql_risk_3=" 
+        sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ใหม่`
+        ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_สะสม` 
+        ";
+        if ($_GET['quarantine_period']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=31,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
+            ";
+        }
+        if ($_GET['quarantine_complete']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=3,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
+            ";
+        }
+        if ($_GET['quarantine_escape']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=30,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
+            ";
+        }
+        array_push($a_changwat_red,$sql_risk_3);
+    }
+    $sql_risk_3=",".implode(",",$a_changwat_red);
+    $sql_risk="
+    ,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_ใหม่` 
+    ,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_สะสม` 
+    ,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
+    ,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
+    ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
+    ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_สะสม` 
+    ,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_ใหม่` 
+    ,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_สะสม` 
+    from from_real_risk f 
+    inner join ampur47 a on a.ampur_code=f.ampur_in_code 
+    where f.cut_status_id!=2 and left(f.register_datetime,10)<=left('".$today."',10) 
+    group by a.ampur_code_full 
+    order by a.ampur_code_full 
+    ";
 }
-$sql_risk_3=",".implode(",",$a_changwat_red);
-$sql_risk="
-,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_ใหม่` 
-,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_สะสม` 
-,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
-,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
-,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
-,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_สะสม` 
-,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon =left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_ใหม่` 
-,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon<=left('".$_POST['register_datetime']."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_สะสม` 
-from from_risk f 
-inner join ampur47 a on a.ampur_code=f.ampur_in_code 
-where f.cut_status_id!=2 and left(f.register_datetime,10)<=left('".$_POST['register_datetime']."',10) 
-group by a.ampur_code_full 
-order by a.ampur_code_full 
-";  
+else {
+    $sql="
+    SELECT o.office_code AS `l|c||<br>_<br>_รหัส`
+    ,if(o.office_name is not null,o.office_name,'(ไม่ระบุหมู่จำแนกหน่วยบริการไม่ได้)') as `l|c|รวม|<br>_<br>_หน่วยบริการ`
+    ,sum(if(left(register_datetime,10)='".$today."',1,0)) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ใหม่` 
+    ,count(*) `r|n|s|ลงทะเบียน_เข้าสกลนคร_ทั้งหมด`  
+    ";
+    $a_changwat_red=[];
+    foreach ($rows_changwat_red as $key => $value) {
+        $cc=$value['changwat_code'];
+        $sql_risk_3=" 
+        sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ใหม่` 
+        ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_สะสม` 
+        ";
+        if ($_GET['quarantine_period']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=31,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
+            ";
+        }
+        if ($_GET['quarantine_complete']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=3,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
+            ";
+        }
+        if ($_GET['quarantine_escape']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and date_to_sakonnakhon<=left('".$today."',10) and real_risk=30,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(สีแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
+            ";
+        }
+        array_push($a_changwat_red,$sql_risk_3);
+    }
+    $sql_risk_3=",".implode(",",$a_changwat_red);
+    $sql_risk="
+    ,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_ใหม่` 
+    ,sum(if(from_red is not null and from_red!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดง)_สะสม` 
+    ,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
+    ,sum(if(from_red_weak is not null and from_red_weak!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
+    ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
+    ,sum(if(from_orange is not null and from_orange!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_สะสม` 
+    ,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_ใหม่` 
+    ,sum(if(from_yellow is not null and from_yellow!='' and date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_สะสม` 
+    from from_risk f 
+    inner join ampur47 a on a.ampur_code=f.ampur_in_code 
+    left join office o on o.office_code=f.hospcode
+    where f.cut_status_id!=2 and left(f.register_datetime,10)<=left('".$today."',10) and a.ampur_code='".$_GET['ampur_code']."'
+    group by f.hospcode 
+    order by o.office_type, o.office_code 
+    ";
+}
+
 $sql=$sql.$sql_risk_3.$sql_risk;
 // echo "<br><br><br>".$sql;
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<form id="search" method="post">
+<!-- <form id="search" method="post">
     <div class="form-group"  style="margin-top:60px; padding: 20px;">
         <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร </label>
         <div class="input-group mb-3">
-        <input name="register_datetime" class="form-control datepicker" id="register_datetime" onkeydown="return false" value="<?php echo $_POST['register_datetime']; ?>"/>
+        <input name="register_datetime" class="form-control datepicker" id="register_datetime" onkeydown="return false" value="<?php echo $today; ?>"/>
         <div class="input-group-append">
             <button class="btn btn-outline-secondary btn-search" type="button">ค้นหา</button>
         </div>
         </div>
     </div>
-</form>
+</form> -->
+<div style="padding: 20px; padding-top: 80px; max-width: 800px;">
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">ตัวเลือกการแสดงรายงาน</div>
+        <div class="card-body" style="padding: 5px; padding-left: 20px;">
+
+            <div class="controls form-inline">
+                <div style="margin-right: 10px;">วันที่เดินทางเข้าถึงสกลนคร</div>
+                <div>
+                    <input name="register_datetime" class="form-control datepicker" id="register_datetime" onkeydown="return false" value="<?php echo $today; ?>" style="width: 120px; text-align: center;" />
+                </div>
+            </div>
+
+            <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
+                <input type="checkbox" class="form-check-input" id="quarantine_period">
+                <label class="form-check-label" for="quarantine_period">
+                    แสดงคอลัมน์ อยู่ระหว่างกักตัว
+                </label>
+            </div>
+
+            <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
+                <input type="checkbox" class="form-check-input" id="quarantine_complete">
+                <label class="form-check-label" for="quarantine_complete">
+                    แสดงคอลัมน์ กักตัวครบ14วัน
+                </label>
+            </div>
+
+            <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
+                <input type="checkbox" class="form-check-input" id="quarantine_escape">
+                <label class="form-check-label" for="quarantine_escape">
+                    แสดงคอลัมน์ ออกจากพื้นที่ (หมายถึง ออกจากพื้นที่ก่อนครบ14วัน)
+                </label>
+            </div>
+
+            <div style="text-align: right;">
+                <button class="btn btn-success btn-search" type="button">ประมวลผล</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <?php
-$title="จำนวนผู้แจ้งเดินทางเข้าสกลนคร วันที่ ".thailongdate($_POST['register_datetime']);
+$title="จำนวนผู้แจ้งเดินทางเข้าสกลนคร วันที่ ".thailongdate($today);
 include("./autoTable.php");
 ?>
 <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
@@ -82,11 +191,20 @@ include("./autoTable.php");
 </style>
 <script>
     $(function(){
-        $(".ชื่ออำเภอ").addClass("cursor-hand");
-        $(".ชื่ออำเภอ").click(function(){
+
+        $('#quarantine_period').prop('checked','<?php echo $_GET['quarantine_period']; ?>'==1?true:false);
+        $('#quarantine_complete').prop('checked','<?php echo $_GET['quarantine_complete']; ?>'==1?true:false);
+        $('#quarantine_escape').prop('checked','<?php echo $_GET['quarantine_escape']; ?>'==1?true:false);
+
+        $(".ชื่ออำเภอ").addClass("cursor-hand").click(function(){
             let ampur_code=$(this).parent().parent().children().find("div").html().trim();
-            console.log(ampur_code,"<?php echo $_POST['register_datetime']; ?>");
-        })
+            // console.log(ampur_code,"<?php echo $today; ?>");
+            var x=location.href.split('/');
+            var u=x[x.length-1];
+            var e=u.split('?');
+            window.location=e[0]+'?register_datetime='+$('#register_datetime').val()+'&ampur_code='+ampur_code;
+        });
+
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             todayBtn: false,
@@ -94,9 +212,28 @@ include("./autoTable.php");
             thaiyear: true, //Set เป็นปี พ.ศ.
             autoclose: true,
         });
+
         $(".btn-search").click(function(){
-            $("#search").submit();
-        })
+            var x=location.href.split('/');
+            var u=x[x.length-1];
+            var e=u.split('?');
+            var a=[];
+            a.push('register_datetime='+$('#register_datetime').val());
+            if ($("#quarantine_period").prop('checked')==true) {
+                a.push("quarantine_period=1");
+            }
+            if ($("#quarantine_complete").prop('checked')==true) {
+                a.push("quarantine_complete=1");
+            }
+            if ($("#quarantine_escape").prop('checked')==true) {
+                a.push("quarantine_escape=1");
+            }
+            var url_params="";
+            if (a.length>0) {
+                url_params="?"+a.join('&');
+            }
+            window.location=e[0]+url_params;
+        });
     })
 </script>
 <?php
