@@ -86,6 +86,37 @@ switch ($_SESSION['group_id']) {
       group by 
       c.real_risk";
     break;
+  case 7:
+      $sql=$sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_all=$sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_all=$sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
+    break;
   case 8:
   case 9:
       $sql=$sql_common."
@@ -155,12 +186,11 @@ switch ($_SESSION['group_id']) {
     # code...
     break;
 }
-// echo "<br>sql=".$sql;
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows_risk_level);
-// echo "<br>sql_all=".$sql_all;
+// echo "<br><br>sql_all=".$sql_all;
 $obj=$connect->prepare($sql_all);
 $obj->execute($params);
 $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -219,6 +249,8 @@ $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
     </style>
     <!-- Custom styles for this template -->
     <link href="../css/carousel.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   </head>
   <body>
 <?php
@@ -393,6 +425,12 @@ include("./header.php");
             }
             ?>
             <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php
+                if ($rows_value['risk_level_id']=='39' or $rows_value['risk_level_id']=='59' or $rows_value['risk_level_id']=='99'){
+                  ?>
+                <i class="fa fa-home text-success"></i>
+                  <?php
+                }?>
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>

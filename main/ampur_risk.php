@@ -5,8 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 include('../include/config.php');
 
 
-$sql_current_cut="select ampur_name, a.ampur_code_full,
-a.risk_status_id, r.risk_level_long_name, 
+$sql_current_cut="select ampur_name, a.ampur_code_full, a.risk_status_id,
+r.risk_level_long_name, r.area_level_name, r.background_color, r.color,
 sum(t.total_tambon) total_tambon,
 sum(t.total_risk_tambon0) as total_risk_tambon0,
 sum(t.total_risk_tambon1) as total_risk_tambon1,
@@ -92,7 +92,7 @@ include("./header.php");
       <th data-card-title style="text-align: center;">ลำดับ</th>
       <th data-card-title style="text-align: left;">ชื่ออำเภอ</th>
       <th style="text-align: center;">ตำบลทั้งหมด</th>
-      <th style="text-align: center;">เสี่ยงต่ำมาก</th>
+      <!-- <th style="text-align: center;">เสี่ยงต่ำมาก</th> -->
       <th style="text-align: center;">เสี่ยงต่ำ</th>
       <th style="text-align: center;">เสี่ยงปานกลาง</th>
       <th style="text-align: center;">เสี่ยงสูง</th>
@@ -103,7 +103,7 @@ include("./header.php");
   <tbody>
       <?php
       //$sql="select * from risk_status";
-      $sql="select * from risk_level where not risk_level_id ='99'  order by order_id asc ";
+      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5')  order by order_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -115,7 +115,7 @@ include("./header.php");
             <td style="text-align: center;"><?php echo ++$i; ?></td>
             <td style="text-align: left;"><?php echo $value['ampur_name']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_tambon'] ? $value['total_tambon'] :'0' ; ?></td>
-            <td style="text-align: center;"><?php echo $value['total_risk_tambon0'] ? $value['total_risk_tambon0'] :'0' ; ?></td>
+            <!-- <td style="text-align: center;"><?php echo $value['total_risk_tambon0'] ? $value['total_risk_tambon0'] :'0' ; ?></td> -->
             <td style="text-align: center;"><?php echo $value['total_risk_tambon1'] ? $value['total_risk_tambon1'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon2'] ? $value['total_risk_tambon2'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon4'] ? $value['total_risk_tambon4'] :'0' ;  ?></td>
@@ -123,19 +123,9 @@ include("./header.php");
             <td style="text-align: center;">
                 <div class="btn-group">
                     <button type="button" 
-                      <?php if($value['risk_status_id']==0) { //เสี่ยงต่ำมาก ?> 
-                          class="btn dropdown-toggle" style="background-color:#00FF00; color:#000000" 
-                      <?php } else if($value['risk_status_id']==1) { //เสี่ยงต่ำ  ?>
-                          class="btn dropdown-toggle" style="background-color:#FFFF00; color:#000000"
-                      <?php } else if($value['risk_status_id']==2) { //เสี่ยงปานกลาง  ?>
-                          class="btn dropdown-toggle" style="background-color:#FF8800; color:#FFFFFF"
-                      <?php } else if($value['risk_status_id']==4) { //เสี่ยงสูง  ?>
-                          class="btn dropdown-toggle" style="background-color:#F78181; color:#FFFFFF"
-                      <?php } else {  //เสี่ยงสูงสุด ?>
-                        class="btn dropdown-toggle" style="background-color:#DF0101; color:#FFFFFF"
-                      <?php } ?>
+                          class="btn dropdown-toggle" style="background-color:<?php echo $value['background_color'] ?>; color:<?php echo $value['color'] ?>" 
                         data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                      <?php echo $value['risk_level_long_name']; ?>
+                      <?php echo $value['area_level_name']; ?>
 
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
@@ -143,7 +133,7 @@ include("./header.php");
                         foreach ($rows_ampur_risk as $key_risk_area => $value_area) {
                             ?>
                             <button ampur_code_full="<?php echo $value['ampur_code_full']; ?>" risk_status_id="<?php echo $value_area['risk_level_id']; ?>" class="dropdown-item btn-change-ampur-risk" type="button">
-                                <?php echo $value_area['risk_level_long_name']; ?>
+                                <?php echo $value_area['area_level_name']; ?>
                             </button>
                             <?php
                         }
