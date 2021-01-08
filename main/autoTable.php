@@ -225,7 +225,8 @@ $(function () {
             filename: '<?php echo $title; ?>_'+file_name+'.xls'
         });
     });
-    </script>
+});
+</script>
 </html>
 
 <?php
