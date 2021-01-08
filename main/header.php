@@ -27,12 +27,12 @@ include('../include/config.php');
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
           ?>
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">
             <a class="nav-link" href="./pre_cut_data_detail.php">ตัดข้อมูล</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="./cut_data.php">ประวัติการตัดข้อมูล</a>
-          </li>
+          </li> -->
           <li class="nav-item active">
             <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
           </li>
