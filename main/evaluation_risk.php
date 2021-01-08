@@ -65,7 +65,7 @@ $risk_level_id = $rows_report_risk['risk_level_id'];
         <h5>เกณฑ์การประเมินความเสี่ยง covid-19 รายบุคคล</h5>
     </div>
     <?php if ($_SESSION['group_id']>0){ ?>
-    <img src="../image/covid_evaluate_flow.png" class="rounded img-fluid center " alt="...">
+    <img src="../image/flow_liff_covid.png" class="rounded img-fluid center " alt="...">
     <ul class="list-group">
       <?php foreach ($rows_report_risk as $key => $value) { ?>
       
