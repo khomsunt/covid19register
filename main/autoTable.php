@@ -1,4 +1,5 @@
-<!doctype html>
+<?php 
+?>
 <html lang="en">
     <head>
         <?php
@@ -23,6 +24,10 @@
                 -ms-user-select: none;
                 user-select: none;
             }
+            .cursor-hand{
+                cursor:hand;
+                color: blue;
+            }
 
             @media (min-width: 768px) {
                 .bd-placeholder-img-lg {
@@ -35,7 +40,7 @@
         <?php
             include("./header.php");
         ?>
-        <main role="main" style="padding-left: 20px;">
+        <main role="main" style="padding-left: 20px;margin-top: 60px;">
             <div style="padding-top: 10px; padding-bottom: 10px;">
                 <h4 style="display: inline;"><?php echo $title; ?></h4>
                 <button  type="button" style="margin-top: -10px; margin-left: 10px;" class="btn btn-primary btn_cut_print"> ส่งออก EXCEL </button>
@@ -220,8 +225,7 @@ $(function () {
             filename: '<?php echo $title; ?>_'+file_name+'.xls'
         });
     });
-});
-</script>
+    </script>
 </html>
 
 <?php
