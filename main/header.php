@@ -56,6 +56,11 @@ include('../include/config.php');
             </li>
       </ul>
       <ul class="navbar-nav">
+      <li class="nav-item active">
+         <a class="nav-link" href="https://www.skko.moph.go.th/liff_covid/manual.pdf" target="_blank">คู่มือการใช้งาน</a>
+         <!-- <a class="nav-link" href="/manual.pdf" target="_blank">คู่มือการใช้งาน</a> -->
+      </li>
+
         <li class="nav-item active">
           <?php
           if ($_SESSION['user_id']==""){
