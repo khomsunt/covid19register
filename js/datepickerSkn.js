@@ -1,11 +1,4 @@
 ﻿$.fn.datepickerSkn = function(today,defaultDate){
-    console.log(this);
-    this.val('ddddddddd5');
-console.log(this.attr('class'));
-    this.on('click',function() {
-        console.log('33333------');
-    });
-
     var date_input=this;
     var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
     var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
@@ -128,7 +121,6 @@ console.log(this.attr('class'));
         var offset = date_input.offset();
         var t=offset.top;
         var l=offset.left;
-        console.log(t,l,h);
         divMother.css({
             'position':'absolute', 
             'top': t+h+'px',
