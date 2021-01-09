@@ -1,4 +1,4 @@
-﻿$.fn.datepickerSkn = function(today,defaultDate){
+﻿$.fn.datepickerSkn = function(today,defaultDate,lock){
     var date_input=this;
     var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
     var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
@@ -162,6 +162,10 @@
         })
 
         setActionButton();
+        console.log('lock-'+lock);
+        if (lock=='lock') {
+            date_input.prop('disabled',true);
+        }
     }
 
     function selectDate(show_text_value,date_value) {
