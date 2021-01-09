@@ -85,8 +85,10 @@ if ($count_village>0) {
 //     $register_user_id=$_SESSION['user_id'];
 // }
 
-$register_user_id=($_SESSION['user_id']!="")?$_SESSION['user_id']:'null';
+$register_user_id=(isset($_SESSION['user_id']))?$_SESSION['user_id']:'null';
 $date_out_sakonnakhon=($_POST['date_out_sakonnakhon']!="")?",'".$_POST['date_out_sakonnakhon']."' ":",null";
+$checkpoint_office_id=($_POST['checkpoint_office_id']!="")?",'".$_POST['checkpoint_office_id']."' ":",null";
+$checkpoint_datetime=($_POST['checkpoint_datetime']!="")?",'".$_POST['checkpoint_datetime']." ".date('H:i:s')."' ":",null";
 
 
 $sql=" insert into covid_register ( ". 
@@ -96,11 +98,8 @@ $sql=" insert into covid_register ( ".
 " ,date_to_sakonnakhon ". 
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
 // " ,risk_level_id,auto_cut_status_id ".
-" ,evaluate_level ".
-" ,date_to_sakonnakhon_text,note,hospcode ".
-" ,moo_in_code_new ".
-" ,register_user_id ".
-" ,date_out_sakonnakhon ".
+" ,evaluate_level,date_to_sakonnakhon_text,note,hospcode,moo_in_code_new,register_user_id,date_out_sakonnakhon ".
+" ,checkpoint_office_id,checkpoint_datetime ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -128,6 +127,8 @@ $sql=" insert into covid_register ( ".
 ",'".$_POST['moo_in_code']."' ".
 ",".$register_user_id."".
 $date_out_sakonnakhon.
+$checkpoint_office_id.
+$checkpoint_datetime.
 " ) ";
 
 $obj=$connect->prepare($sql);

@@ -3,6 +3,12 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 include('../include/config.php');
+
+$checkpoint_office_id=isset($_GET['checkpoint_id'])?$_GET['checkpoint_id']:null;
+$checkpoint_datetime=isset($_GET['checkpoint_date'])?$_GET['checkpoint_date'].' '.date('H:i:s'):null;
+
+// echo "<br>checkpoint_office_id-".$checkpoint_office_id;
+// echo "<br>checkpoint_datetime-".$checkpoint_datetime;
 ?>
 
 <!doctype html>
@@ -370,19 +376,24 @@ function getInputData () {
     tambon_work_code : $("#tambon_work_code").val(),
     ampur_work_code : $("#ampur_work_code").val(),
     changwat_work_code : $("#changwat_work_code").val(),
-    // date_to_sakonnakhon : formatDate($("#date_to_sakonnakhon").val()),
     date_to_sakonnakhon : $("#date_to_sakonnakhon").attr('date_value'),
     date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
-    // date_out_sakonnakhon : formatDate($("#date_out_sakonnakhon").val()),
     date_out_sakonnakhon : $("#date_out_sakonnakhon").attr('date_value'),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
     note : $("#note").val(),
+    checkpoint_office_id : '<?php echo $checkpoint_office_id; ?>',
+    checkpoint_datetime : '<?php echo $checkpoint_datetime; ?>',
   }
   return data;
 }
+
+$("#xxbtnSave").click(function() {
+  var data=getInputData();
+  console.log(data);
+});
 
 $("#btnSave").click(function() {
   var data=getInputData();

@@ -20,7 +20,7 @@ include('../include/config.php');
           display: block;
           margin-left: auto;
           margin-right: auto;
-          width: 65%;
+          width: 50%;
         }
       .bd-placeholder-img {
         font-size: 1.125rem;

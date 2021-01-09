@@ -209,24 +209,24 @@
     <?php
         // include("./footer.php");
     ?>
-    <script src="../js/jquery-3.2.1.min.js" ></script>
-    <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/tableToCards.js"></script>
-    <!-- <script src='../js/table2excel.js'></script> -->
-    <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        var file_name="<?php echo thailongdate($datetime_now); ?>";
-        file_name=file_name.replaceAll('-','');
-        file_name=file_name.replaceAll(' ','');
-        file_name=file_name.replaceAll(':','');
-        $('.btn_cut_print').on('click', function Export() {
-            $("#myTable").table2excel({
-                filename: '<?php echo $title; ?>_'+file_name+'.xls'
-            });
+<script src="../js/jquery-3.2.1.min.js" ></script>
+<script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/tableToCards.js"></script>
+<script src='../js/table2excel.js'></script>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    var file_name="<?php echo thailongdate($datetime_now); ?>";
+    file_name=file_name.replaceAll('-','');
+    file_name=file_name.replaceAll(' ','');
+    file_name=file_name.replaceAll(':','');
+    $('.btn_cut_print').on('click', function Export() {
+        $("#myTable").table2excel({
+            filename: '<?php echo $title; ?>_'+file_name+'.xls'
         });
     });
-    </script>
+});
+</script>
 </html>
 
 <?php
