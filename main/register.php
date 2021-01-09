@@ -62,7 +62,12 @@ else {
 <script>
 var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
-  $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+  if ('<?php echo $checkpoint_office_id; ?>'!='') {
+    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock');
+  }
+  else {
+    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+  }
   $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
 
   $(".required").css({
