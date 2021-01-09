@@ -94,7 +94,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?>
         </h5>
       </div>
-      <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+      <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูและส่งออกExcel</button>
       <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
@@ -269,21 +269,34 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         </tr>
       <?php
       $i++;
-    if($_GET['type']=='new'){
-      $sql_update="update covid_register set cut_status_id=1,cut_datetime='".$now_date_time."' where covid_register_id=".$value['covid_register_id']." and cut_status_id=0";    
-      //echo "<br>sql_update=".$sql_update;
-      $obj=$connect->prepare($sql_update);
-      $obj->execute();
-                            }
+    // if($_GET['type']=='new'){
+    //   $sql_update="update covid_register set cut_status_id=1,cut_datetime='".$now_date_time."' where covid_register_id=".$value['covid_register_id']." and cut_status_id=0";    
+    //   //echo "<br>sql_update=".$sql_update;
+    //   $obj=$connect->prepare($sql_update);
+    //   $obj->execute();
+    //                         }
       } ?>
   </tbody>
 </table>
 
-      <button risk_level_id="<?php echo $value['risk_level_id']; ?>"  type_cut="<?php echo $value['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ส่งออก</button>
+<button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูและส่งออกExcel</button>
     </main>
     <?php
       include("./footer.php");
     ?>
+<div class="modal fade" id="modal01" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="modal01_body" style="margin-top:30px; margin-bottom: 30px;">
+        ...
+      </div>
+      <div class="modal-footer" id="modal01_action" style="text-align: right;">
+        <button type="button" class="btn btn-secondary" id="btnInsideModal" data-dismiss="modal">ตกลง</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="../js/jquery-3.2.1.min.js" ></script>
     <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/tableToCards.js"></script>
@@ -318,10 +331,26 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             // file_name=file_name.replaceAll(' ','');
             // file_name=file_name.replaceAll(':','');
             $btnDLtoExcel.on('click', function Export() {
-            $("#myTable").table2excel({
-                // filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
-                filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+'.xls'
+              // $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+              // $("#modal01_action").css({'display':'none'});
+              // $("#modal01").modal('show');
+            $.ajax({method: "POST", url: "ajaxCut.php",
+              data: { 
+                open_datetime: "<?php echo date("Y-m-d H:i:s"); ?>", 
+                type_cut: $(this).attr("type_cut"),
+                office_code: $(this).attr("office_code")
+              }
+              
+            })
+            .done(function(x) {
+              console.log(jQuery.parseJSON(x));
+              $("#myTable").table2excel({
+                          // filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
+                          filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+'.xls'
+                      });
             });
+
+          
             // $.ajax({method: "POST", url: "cut_data_execute.php",
             //  data: {risk_level_id: $(this).attr("risk_level_id"),type_cut: $(this).attr("type_cut"),office_code:$(this).attr("office_code")}
             //   })
