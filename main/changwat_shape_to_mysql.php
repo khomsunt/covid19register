@@ -11,34 +11,34 @@ use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
-$sql="select * from TH_Province";
+$sql="select * from Province";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
 $abstain=2;
 try {
-    $Shapefile = new ShapefileReader('../Shapefile/TH_PROVINCE2012.shp');
+    $Shapefile = new ShapefileReader('../Shapefile/Province.shp');
     $a_json_points=[];
     while ($Geometry = $Shapefile->fetchRecord()) {
         $data=$Geometry->getArray();
-        print_r($data);
+        // print_r($data);
         $points=$data['rings'][0]['points'];
         $a_points=[];
         for ($x = 0; $x < count($points); $x+=$abstain) {
             array_push($a_points,$points[$x]['x'].",".$points[$x]['y']);
         }
         $json_points=implode("|",$a_points);
-        echo "<br>".$json_points;
+        // echo "<br>".$json_points;
         array_push($a_json_points,$json_points);
     }        
 
     foreach ($rows as $key => $value) {
-        $sql="update TH_Province set points10='".$a_json_points[$key]."' where prov_id=".($key+1);
+        $sql="update Province set points10='".$a_json_points[$key]."' where prov_id=".($key+1);
         // echo "<br>sql=".$sql;
         $obj=$connect->prepare($sql);
         $obj->execute();
-        echo "<br>key=".$key;
+        // echo "<br>key=".$key;
 
     }
 } catch (ShapefileException $e) {

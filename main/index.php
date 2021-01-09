@@ -182,7 +182,40 @@ switch ($_SESSION['group_id']) {
 
     $params=['ampur_code'=>$_SESSION['ampur_code']];
     break;
-  default:
+
+  case 11:
+      $sql=$sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_all=$sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sql_e_pending=$sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_cutted=$sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sql_e_all=$sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
+    break;
+
+    default:
     # code...
     break;
 }
@@ -257,9 +290,78 @@ $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 <main role="main" style="margin-top:50px;">
+<!-- 
+ด่านตรวจ -->
+<?php
+  if ($_SESSION['group_id']==11){
+  ?>
+  <center>
+  </center>
+  <div class="container">
+  <div class="row" >
+
+    <div class="col-lg-4">
+      <div>
+        <center>
+        <h5>QR code<br><?php echo $_SESSION['office_name']; ?></h5>
+        </center>
+      </div>
+      <?php
+      $sql_qrcode="select * from checkpoint_qrcode where office_id=".$_SESSION['office_id']." order by checkpoint_qrcode_id desc limit 1";
+      $obj=$connect->prepare($sql);
+      $obj->execute($params);
+      $rows_qrcode=$obj->fetchAll(PDO::FETCH_ASSOC);
+      ?>
+      <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://www.skko.moph.go.th/liff_covid/register.php?checkpoint_id=<?php echo $rows_qrcode['token']; ?>&choe=UTF-8" />
+    </div><!-- /.col-lg-4 -->
+
+    <div class="col-lg-4 d-none">
+      <?php
+        $count_rows_risk_level_all=0;
+        foreach ($rows_risk_level_all as $key=>$value){
+          $count_rows_risk_level_all+=$value['count_risk_level'];
+        }
+      ?>
+      <div class="risk-evaluate" style="cursor:pointer;">
+        <h5>ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level_all; ?></span></h5>
+      </div>
+      <?php
+      $sql="select * from risk_level order by order_id desc";
+      $obj=$connect->prepare($sql);
+      $obj->execute();
+      $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+      foreach ($rows as $rows_key => $rows_value) {
+          $this_value=0;
+          foreach ($rows_risk_level_all as $key=>$value){
+              if ($rows_value['risk_level_id']==$value['risk_level_id']){
+                  $this_value=$value['count_risk_level'];
+                  break;
+              }
+          }
+          ?>
+          <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+              <?php
+              if ($rows_value['risk_level_id']=='39' or $rows_value['risk_level_id']=='59' or $rows_value['risk_level_id']=='99'){
+                ?>
+              <i class="fa fa-home text-success"></i>
+                <?php
+              }?>
+              <?php echo $rows_value['risk_level_long_name']; ?> 
+              <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+          </button>
+          <?php
+      } ?>
+
+    </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+  </div>
+  <?php 
+  }else{ ?>
+
+
   <div class="container marketing">
     <center>
-      <h5>ข้อมูลการประเมินตนเอง</h5>
+      <h5>ข้อมูลการรายงานตัวเข้าสกลนคร <?php echo $_SESSION['office_name']; ?></h5>
     </center>
     <?php
       // print_r($_SESSION);
@@ -445,6 +547,7 @@ include("./header.php");
 
 
 
+
     <!-- START THE FEATURETTES -->
 
     <!-- <hr class="featurette-divider">
@@ -488,6 +591,8 @@ include("./header.php");
     <!-- /END THE FEATURETTES -->
 
   </div><!-- /.container -->
+  <?php
+  } ?>
 
 
   <!-- FOOTER -->
