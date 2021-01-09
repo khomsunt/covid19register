@@ -343,7 +343,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
               
             })
             .done(function(x) {
-              console.log(jQuery.parseJSON(x));
+              //console.log(jQuery.parseJSON(x));
               $("#myTable").table2excel({
                           // filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+file_name+'.xls'
                           filename: 'รายชื่อผู้แจ้งเข้าจังหวัด'+'.xls'
