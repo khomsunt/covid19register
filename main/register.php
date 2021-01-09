@@ -4,11 +4,23 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 
-$checkpoint_office_id=isset($_GET['checkpoint_id'])?$_GET['checkpoint_id']:null;
-$checkpoint_datetime=isset($_GET['checkpoint_date'])?$_GET['checkpoint_date'].' '.date('H:i:s'):null;
+$checkpoint_token=isset($_GET['checkpoint_id'])?$_GET['checkpoint_id']:null;
 
+$sql="select * from checkpoint_qrcode where token=:checkpoint_token limit 1 ";
+$obj=$connect->prepare($sql);
+$obj->execute([ 'checkpoint_token' => $checkpoint_token ]);
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+$rows_count=$obj->rowCount();
+if ($rows_count>0) {
+  $checkpoint_office_id=$rows[0]['office_id'];
+}
+else {
+  $checkpoint_office_id='';
+}
+
+// echo "<br>".$sql;
+// echo "<br>checkpoint_token-".$checkpoint_token;
 // echo "<br>checkpoint_office_id-".$checkpoint_office_id;
-// echo "<br>checkpoint_datetime-".$checkpoint_datetime;
 ?>
 
 <!doctype html>
@@ -384,16 +396,15 @@ function getInputData () {
     tambon_in_code : $("#tambon_in_code").val(),
     ampur_in_code : $("#ampur_in_code").val(),
     note : $("#note").val(),
-    checkpoint_office_id : '<?php echo $checkpoint_office_id; ?>',
-    checkpoint_datetime : '<?php echo $checkpoint_datetime; ?>',
+    checkpoint_id : '<?php echo $checkpoint_office_id; ?>',
   }
   return data;
 }
 
-$("#xxbtnSave").click(function() {
-  var data=getInputData();
-  console.log(data);
-});
+// $("#xbtnSave").click(function() {
+//   var data=getInputData();
+//   console.log(data);
+// });
 
 $("#btnSave").click(function() {
   var data=getInputData();
