@@ -117,7 +117,7 @@ include("./footer.php");
                  //console.log($(this).attr("risk_level_id"));
                   var form = $('<form action="./ampur_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
                 
-                }else{
+                }else if($(this).attr("risk_level_id")==4){
                   //console.log(attr("risk_level_id"));
                   var form = $('<form action="./ampur_weak_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
                 }

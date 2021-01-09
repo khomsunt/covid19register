@@ -12,6 +12,7 @@ if (count($rows)==1){
     $_SESSION["group_id"] = $rows[0]['group_id'];
     $_SESSION["office_id"] = $rows[0]['office_id'];
     $_SESSION["office_code"] = $rows[0]['office_code'];
+    $_SESSION["office_name"] = $rows[0]['office_name'];
     $_SESSION["ampur_code"] = $rows[0]['ampur_code'];
 }else{
     $_SESSION["user_id"] = "";
@@ -19,6 +20,7 @@ if (count($rows)==1){
     $_SESSION["group_id"] = "";
     $_SESSION["office_id"] = "";
     $_SESSION["office_code"] = "";
+    $_SESSION["office_name"] = "";
     $_SESSION["ampur_code"] = "";
 }
 
