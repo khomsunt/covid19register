@@ -158,3 +158,34 @@
         </tr>
     </tbody>
 </table>
+<?php
+    function autoFormat($v,$f){
+        $_return=$v;
+        switch ($f) {
+            case 'f':
+                $_return=number_format($v,2);
+                break;
+            case 'n':
+                $_return=number_format($v);
+                break;
+            default:
+                break;
+        }
+        return $_return;
+    }
+
+    function autoAlign($f){
+        $_return="left";
+        switch ($f) {
+            case 'r':
+                $_return="right";
+                break;
+            case 'c':
+                $_return="center";
+                break;
+            default:
+                break;
+        }
+        return $_return;
+    }
+?>

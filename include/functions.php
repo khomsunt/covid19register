@@ -1,5 +1,5 @@
 <?php
-    include('../include/config.php');
+    include_once('../include/config.php');
 
 	function thailongdate($date)
     {

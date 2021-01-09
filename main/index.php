@@ -357,6 +357,11 @@ include("./header.php");
 
     </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
+    <div class="row">
+      <?php 
+      include("./checkpoint_dashboard_count.php");
+      ?>
+    </div>
   </div>
   <?php 
   }else{ ?>
