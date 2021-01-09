@@ -94,7 +94,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?>
         </h5>
       </div>
-      <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูและส่งออกExcel</button>
+      <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button>
       <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
@@ -279,7 +279,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   </tbody>
 </table>
 
-<button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูและส่งออกExcel</button>
+<button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button>
     </main>
     <?php
       include("./footer.php");
@@ -326,7 +326,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     </script>
     <script type="text/javascript">
             var $btnDLtoExcel = $('.btn_cut_print');
-            // var file_name= <?php $now_date_time; ?>
+            // var file_name= <?php echo $now_date_time; ?>
             // file_name=file_name.replaceAll('-','');
             // file_name=file_name.replaceAll(' ','');
             // file_name=file_name.replaceAll(':','');
