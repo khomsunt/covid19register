@@ -309,11 +309,12 @@ include("./header.php");
       <center>
       <?php
       $sql_qrcode="select * from checkpoint_qrcode where office_id=".$_SESSION['office_id']." order by checkpoint_qrcode_id desc limit 1";
-      $obj=$connect->prepare($sql);
-      $obj->execute($params);
+      $obj=$connect->prepare($sql_qrcode);
+      $obj->execute();
       $rows_qrcode=$obj->fetchAll(PDO::FETCH_ASSOC);
+      $url="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=".$rows_qrcode[0]['token']."&choe=UTF-8";
       ?>
-      <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=<?php echo $rows_qrcode['token']; ?>&choe=UTF-8" />
+      <img src="<?php echo $url; ?>" />
       </center>
     </div><!-- /.col-lg-4 -->
 
