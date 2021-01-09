@@ -306,13 +306,15 @@ include("./header.php");
         <h5>QR code<br><?php echo $_SESSION['office_name']; ?></h5>
         </center>
       </div>
+      <center>
       <?php
       $sql_qrcode="select * from checkpoint_qrcode where office_id=".$_SESSION['office_id']." order by checkpoint_qrcode_id desc limit 1";
       $obj=$connect->prepare($sql);
       $obj->execute($params);
       $rows_qrcode=$obj->fetchAll(PDO::FETCH_ASSOC);
       ?>
-      <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://www.skko.moph.go.th/liff_covid/register.php?checkpoint_id=<?php echo $rows_qrcode['token']; ?>&choe=UTF-8" />
+      <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=<?php echo $rows_qrcode['token']; ?>&choe=UTF-8" />
+      </center>
     </div><!-- /.col-lg-4 -->
 
     <div class="col-lg-4 d-none">
