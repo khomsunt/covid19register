@@ -6,6 +6,7 @@ include_once('../include/config.php');
 include_once('../include/functions.php');
 
 $sql="SELECT
+    left(f.register_datetime,10) as `l|d||วันที่`,
 	c.changwat_name as `l|c|รวม|ชื่อจังหวัด`,
 	r.area_level_name as `l|c||พื้นที่เสี่ยง`,
 	count(*) AS `l|n|s|รวม`,
@@ -36,14 +37,18 @@ WHERE
 	LEFT ( f.register_datetime, 10 )= curdate() 
 	AND f.checkpoint_id = ".$_SESSION['office_id']." 
 GROUP BY
-	f.real_risk_area_changwat
+    left(f.register_datetime,10),
+    f.real_risk_area_changwat
 ORDER BY
+    left(f.register_datetime,10) desc,
 	r.order_id desc
 	;";
 // echo $sql;
+
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
-include("./autoTableTable.php");
+$title="จำนวนการลงทะเบียนที่ ".$_SESSION['office_name'];
+include("./autoTable.php");
 ?>

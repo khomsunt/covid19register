@@ -168,6 +168,9 @@
             case 'n':
                 $_return=number_format($v);
                 break;
+            case 'd':
+                $_return=thaishortdate($v);
+                break;
             default:
                 break;
         }

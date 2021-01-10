@@ -24,6 +24,24 @@ include('../include/config.php');
         <li class="nav-item active">
           <a class="nav-link" href="./ampur_rate.php">การบันทึกข้อมูลของหน่วยบริการ<span class="sr-only">(current)</span></a>
         </li>
+
+
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            รายงาน
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <?php
+            if ($_SESSION['group_id']=='11'){
+              ?>
+                <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
+              <?php
+            }?>
+          </div>
+        </li>
+
+
+
         <?php
         if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
           ?>
