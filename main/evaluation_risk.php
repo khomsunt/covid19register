@@ -120,6 +120,9 @@ include("./footer.php");
                 }else if($(this).attr("risk_level_id")==4){
                   //console.log(attr("risk_level_id"));
                   var form = $('<form action="./ampur_weak_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
+                }else if($(this).attr("risk_level_id")==5){
+                  //console.log(attr("risk_level_id"));
+                  var form = $('<form action="./ampur_strong_red.php" method="post"><input type="hidden" name="risk_level_id" value="' + $(this).attr("risk_level_id") + '"></input>' + '</form>');
                 }
                 $('body').append(form);
                 $(form).submit(); 
