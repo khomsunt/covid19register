@@ -133,7 +133,10 @@
                             if (isset($filter)){
                                 $filter_i=array_search($a_k[3],$filter);
                                 if ($filter_i){
-                                    $$filter_i[]=$v;
+                                    if (!isset($$filter_i)){
+                                        $$filter_i=[];
+                                    }
+                                    array_push($$filter_i,$v);
                                 }
                             }
                             ?>
