@@ -135,8 +135,11 @@
                                 if ($filter_i){
                                     if (!isset($$filter_i)){
                                         $$filter_i=[];
+                                        $filter_v=$filter_i."_value";
+                                        $$filter_v=[];
                                     }
                                     array_push($$filter_i,$v);
+                                    array_push($$filter_v,$thisValue);
                                 }
                             }
                             ?>

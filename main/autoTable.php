@@ -74,12 +74,14 @@
             if (isset($filter)){
                 foreach ($filter as $fk => $fv) {
                     $$fk=array_unique($$fk);
+                    $tt=$fk."_value";
+                    $$tt=array_unique($$tt);
                     ?>
                     $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("").html("--กรองข้อมูล--"));
                     <?php
                     foreach ($$fk as $key => $value) {
                         ?>
-                        $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $value; ?>"));
+                        $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $$tt[$key]; ?>"));
                         <?php
                     }
                     if (isset($_POST[$fk])){
