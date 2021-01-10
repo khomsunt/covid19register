@@ -7,9 +7,10 @@ include_once('../include/functions.php');
 
 $sql="SELECT
     left(f.register_datetime,10) as `l|d||วันที่`,
+    o.office_name as `l|c||ด่านตรวจ`,
 	c.changwat_name as `l|c|รวม|ชื่อจังหวัด`,
 	r.area_level_name as `l|c||พื้นที่เสี่ยง`,
-	count(*) AS `l|n|s|รวม`,
+	count(*) AS `c|n|s|รวม`,
 	sum(if(f.ampur_in_code='01',1,0)) as `c|n|s|แจ้งเข้าอำเภอ_เมือง`,
 	sum(if(f.ampur_in_code='02',1,0)) as `c|n|s|แจ้งเข้าอำเภอ_กุสุมาลย์`,
 	sum(if(f.ampur_in_code='03',1,0)) as `c|n|s|แจ้งเข้าอำเภอ_กุดบาก`,
@@ -38,6 +39,7 @@ WHERE
     f.checkpoint_id
 GROUP BY
     left(f.register_datetime,10),
+    f.checkpoint_id,
     f.real_risk_area_changwat
 ORDER BY
     left(f.register_datetime,10) desc,

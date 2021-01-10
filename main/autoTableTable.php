@@ -133,7 +133,7 @@
                 <?php
             }
         ?>
-        <tr>
+        <tr style="font-weight: bold;">
             <?php
                 foreach ($rows[0] as $k => $v) {
                     $a_k=explode("|",$k);
