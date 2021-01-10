@@ -43,7 +43,7 @@ ORDER BY
     left(f.register_datetime,10) desc,
 	r.order_id desc
 	;";
-echo $sql;
+// echo $sql;
 
 $obj=$connect->prepare($sql);
 $obj->execute($params);

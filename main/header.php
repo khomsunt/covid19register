@@ -37,6 +37,10 @@ include('../include/config.php');
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
+            if ($_SESSION['group_id']=='2'){ ?>
+              <a class="nav-link" href="./checkpoint_all_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
+              <?php
+            }
             if ($_SESSION['group_id']=='11'){ ?>
               <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
               <?php
