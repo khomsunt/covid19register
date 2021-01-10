@@ -30,11 +30,12 @@ $sql="SELECT
 	sum(if(f.ampur_in_code='18',1,0)) as `c|n|s|แจ้งเข้าอำเภอ_ภูพาน`
 FROM
 	from_real_risk f
+    left join office o on f.checkpoint_id = o.office_id
 	LEFT JOIN changwat_risk c ON f.real_risk_area_changwat = c.changwat_code
 	LEFT JOIN risk_level r ON c.risk_status_id = r.risk_level_id 
 	left join ampur47 a on f.ampur_in_code = a.ampur_code_full
-WHERE
-	f.checkpoint_id = ".$_SESSION['office_id']." 
+WHERE 
+    f.checkpoint_id
 GROUP BY
     left(f.register_datetime,10),
     f.real_risk_area_changwat
@@ -42,7 +43,7 @@ ORDER BY
     left(f.register_datetime,10) desc,
 	r.order_id desc
 	;";
-// echo $sql;
+echo $sql;
 
 $obj=$connect->prepare($sql);
 $obj->execute($params);
