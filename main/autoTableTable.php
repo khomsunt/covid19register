@@ -88,7 +88,17 @@
                 if ($aa_h[0]<>""){
                     ?>
                     <th rowspan="<?php echo $aa_h[1]; ?>" colspan="<?php echo $aa_h[2]; ?>" style="text-align:center;vertical-align: middle;">
-                        <?php echo $aa_h[0]; ?>
+                        <div class="container">
+                            <?php echo $aa_h[0]; ?>                                                
+                            <?php
+                            if (isset($filter)){
+                                $filter_i=array_search($aa_h[0],$filter);
+                                if ($filter_i){
+                                    echo '<div><select class="filter-autotable" id="filter-'.$filter_i.'" filterName="'.$filter_i.'"></select></div>';
+                                }
+                            }
+                            ?>
+                        </div>
                     </th>
                     <?php
                 }
@@ -119,10 +129,17 @@
                                     $sum[$k]=$a_k[2];
                                     break;
                             }
+                            $thisValue=autoFormat($v,$a_k[1]);
+                            if (isset($filter)){
+                                $filter_i=array_search($a_k[3],$filter);
+                                if ($filter_i){
+                                    $$filter_i[]=$v;
+                                }
+                            }
                             ?>
                             <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
-                                <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $a_k[3]; ?>">
-                                    <?php echo autoFormat($v,$a_k[1]); ?>
+                                <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo str_replace("_"," ",$a_k[3]); ?>">
+                                    <?php echo $thisValue; ?>
                                 </div>
                             </td>
                             <?php
@@ -159,6 +176,8 @@
     </tbody>
 </table>
 <?php
+
+
     function autoFormat($v,$f){
         $_return=$v;
         switch ($f) {

@@ -5,6 +5,30 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once('../include/config.php');
 include_once('../include/functions.php');
 
+foreach ($_GET as $key => $value) {
+    $_POST[$key]=$value;
+}
+// echo "<br><br><br>";
+// print_r($_POST);
+$a_add_where=[];
+if (isset($_POST['register_datetime'])){
+    array_push($a_add_where," left(f.register_datetime,10)='".$_POST['register_datetime']."' ");
+}
+if (isset($_POST['office_name'])){
+    array_push($a_add_where," o.office_name='".$_POST['office_name']."' ");
+}
+if (isset($_POST['changwat_name'])){
+    array_push($a_add_where," c.changwat_name='".$_POST['changwat_name']."' ");
+}
+if (isset($_POST['area_level_name'])){
+    array_push($a_add_where," r.area_level_name='".$_POST['area_level_name']."' ");
+}
+$add_where="";
+$add_where=implode(" and ",$a_add_where);
+if (count($a_add_where)>0){
+    $add_where=" and ".$add_where;
+}
+
 $sql="SELECT
     left(f.register_datetime,10) as `l|d||วันที่`,
     o.office_name as `l|c||ด่านตรวจ`,
@@ -36,7 +60,8 @@ FROM
 	LEFT JOIN risk_level r ON c.risk_status_id = r.risk_level_id 
 	left join ampur47 a on f.ampur_in_code = a.ampur_code_full
 WHERE 
-    f.checkpoint_id
+    f.checkpoint_id ".$add_where;
+$sql.="    
 GROUP BY
     left(f.register_datetime,10),
     f.checkpoint_id,
@@ -51,6 +76,8 @@ $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
+
+$filter=array("register_datetime"=>"วันที่","changwat_name"=>"ชื่อจังหวัด","office_name"=>"ด่านตรวจ","area_level_name"=>"พื้นที่เสี่ยง");
 $title="จำนวนการลงทะเบียนที่ ".$_SESSION['office_name'];
 include("./autoTable.php");
 ?>

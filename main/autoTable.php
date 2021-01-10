@@ -68,6 +68,51 @@
                 });
             });
         </script>
+<script>
+    $(function(){
+        <?php
+            if (isset($filter)){
+                foreach ($filter as $fk => $fv) {
+                    $$fk=array_unique($$fk);
+                    ?>
+                    $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("").html("--กรองข้อมูล--"));
+                    <?php
+                    foreach ($$fk as $key => $value) {
+                        ?>
+                        $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $value; ?>"));
+                        <?php
+                    }
+                    if (isset($_POST[$fk])){
+                        ?>
+                        $("#filter-<?php echo $fk; ?>").val("<?php echo $_POST[$fk]; ?>");
+                        <?php
+                    }
+                }  
+                ?>
+                $(".filter-autotable").on("change",function(){
+                    let formData="";
+                    $('.filter-autotable').each(function(){
+                        if ($(this).val()!=""){
+                            formData=formData+'<input type="hidden" name="'+$(this).attr("filterName")+'" value="' + $(this).val() + '"></input>';
+                            console.log($(this).attr("filterName"),$(this).val());
+                        }
+                    });
+
+
+                    var form = $('<form action="" method="post">'+ formData + '</form>');
+                    $('body').append(form);
+                    $(form).submit();                
+
+
+                    
+                });
+                <?php      
+            }
+        ?>
+    })
+</script>
+
+
     </body>
 </html>
 
