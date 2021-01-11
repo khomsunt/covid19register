@@ -5,23 +5,14 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once('../include/config.php');
 include_once('../include/functions.php');
 $sql="select c.covid_register_id as `l|c||รหัส` ,
-c.fname as `l|c||ชื่อ` ,
-c.lname as `l|c||นามสกุล` ,
+CONCAT(IF(p.prename_name,p.prename_name,''),'',c.fname,' ',c.lname) as `l|c||ชื่อ` ,
 c.cid as `l|c||เลขบัตร`,
-p.prename_name as `l|c||คำนำหน้าชื่อ`,
-cw.changwat_name  as `l|c||จังหวัดที่มา`,
-a.ampur_name as  `l|c||อำเภอที่มา`,
-t.tambon_name as `l|c||ตำบลที่มา`,
-cw2.changwat_name as `l|c||จังหวัดที่ทำงาน`,
-a2.ampur_name as `l|c||อำเภอที่ทำงาน`,
-t2.tambon_name as `l|c||ตำบลที่ทำงาน`,
-a47.ampur_name as `l|c||อยู่ที่อำเภอ`,
-t47.tambon_name as `l|c||อยู่ที่ตำบล`,
+CONCAT('ต.',IF(t.tambon_name<>'',t.tambon_name,'') ,' ','อ.',if(a.ampur_name<>'',a.ampur_name,''),' ','จ.',if(cw.changwat_name<>'',cw.changwat_name,'')) as `l|c||ที่อยู่ก่อนเข้าสกลนคร`,
+CONCAT('ต.',IF(t2.tambon_name<>'',t2.tambon_name,'') ,' ','อ.',if(a2.ampur_name<>'',a2.ampur_name,''),' ','จ.',if(cw2.changwat_name<>'',cw2.changwat_name,'')) as `l|c||ที่ทำงาน`,
+CONCAT('ที่อยู่ ',IF(c.house_in_no<>'',c.house_in_no,'') ,' ','หมู่ ',IF(c.moo_in_code<>'',c.moo_in_code,'') ,' ','ต.',IF(t47.tambon_name<>'',t47.tambon_name,'') ,' ','อ.',if(a47.ampur_name<>'',a47.ampur_name,'')) as `l|c||มาที่`,
 o.occupation_name as `l|c||อาชีพ`,
-r.cut_status_name as `l|c||สถานะข้อมูล`,
 c.tel as `l|c||เบอร์โทร`,
 r2.risk_level_long_name as `l|c||สถานะ`,
-c.checkpoint_id as `l|c||รหัสด่านตรวจ`,
 of.office_name as `l|c||ชื่อด่านตรวจ`
 from from_real_risk c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
@@ -54,3 +45,8 @@ include("./autoTable.php");
 
 ?>
 <script>
+    $(function(){
+        $(".ชื่อ").addClass("cursor-hand");
+
+    })
+</script>
