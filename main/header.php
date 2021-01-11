@@ -31,7 +31,7 @@ include('../include/config.php');
         } ?>
 
 
-        <li class="nav-item active dropdown">
+        <li class="nav-item active dropdown" style="width:400px;">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             รายงาน
           </a>

@@ -140,6 +140,7 @@
                                     }
                                     array_push($$filter_i,$v);
                                     array_push($$filter_v,$thisValue);
+                                    // print_r($$filter_v);
                                 }
                             }
                             ?>
