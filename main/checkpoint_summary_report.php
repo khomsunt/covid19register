@@ -23,8 +23,12 @@ foreach ($rows_changwat_risk as $key => $value) {
 $sql_add=implode(",",$a_sql_add);
 $sql_add.=",sum(if(f.real_risk_area_changwat not in(".implode(",",$a_changwat_risk)."),1,0)) as `c|n|s|อื่นๆ` ";
 $sql.=$sql_add;
-$sql.=" from from_real_risk f left join changwat c on f.real_risk_area_changwat=c.changwat_code where f.checkpoint_id=401 group by f.real_date_to_sakonnakhon";
-// echo "<br><br><br>sql=".$sql;
+    if(($_SESSION['group_id']=='11')){
+        $sql.=" from from_real_risk f left join changwat c on f.real_risk_area_changwat=c.changwat_code where f.checkpoint_id='".$_SESSION["office_id"]."' group by f.real_date_to_sakonnakhon"; 
+    }else{
+        $sql.=" from from_real_risk f left join changwat c on f.real_risk_area_changwat=c.changwat_code where f.checkpoint_id group by f.real_date_to_sakonnakhon";
+    }
+//echo "<br><br><br>sql=".$sql;
 
 $obj=$connect->prepare($sql);
 $obj->execute($params);

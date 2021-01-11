@@ -46,6 +46,7 @@ include('../include/config.php');
               <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
               <?php
             }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ ?>
+              <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
               <a class="nav-link" href="./changwat_risk.php" style="color:black;">รายงานพื้นที่เสี่ยง</a>
               <a class="nav-link" href="./report_risk_ampur.php" style="color:black;">รายงานกลุ่มเสี่ยงรายอำเภอ</a>
             <?php } ?>
