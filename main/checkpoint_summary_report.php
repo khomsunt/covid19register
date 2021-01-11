@@ -33,7 +33,11 @@ $sql.=$sql_add;
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-$title="จำนวนการลงทะเบียนที่ ".$_SESSION['office_name']." รายวัน";
+    if(($_SESSION['group_id']=='11')){
+        $title="จำนวนการลงทะเบียน ผ่าน".$_SESSION['office_name']." รายวัน";
+    }else{
+        $title="จำนวนการลงทะเบียน ผ่านด่านตรวจ covid-19 จังหวัดสกลนคร";
+    }
 include("./autoTable.php");
 
 ?>

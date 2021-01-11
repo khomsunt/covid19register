@@ -78,6 +78,12 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
 
 $filter=array("register_datetime"=>"วันที่","changwat_name"=>"ชื่อจังหวัด","office_name"=>"ด่านตรวจ","area_level_name"=>"พื้นที่เสี่ยง");
-$title="จำนวนการลงทะเบียนที่ ".$_SESSION['office_name'];
+
+if(($_SESSION['group_id']=='11')){
+	$title="จำนวนการลงทะเบียนที่ ".$_SESSION['office_name'];
+}else{
+	$title="จำนวนการลงทะเบียน ผ่านด่านตรวจ covid-19 จังหวัดสกลนคร";
+}
+
 include("./autoTable.php");
 ?>
