@@ -5,6 +5,9 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once('../include/config.php');
 include_once('../include/functions.php');
 
+echo "<br><br><br>";
+print_r($_POST);
+
 $sql_changwat_risk="select * from changwat_risk where risk_status_id=5";
 $obj=$connect->prepare($sql_changwat_risk);
 $obj->execute($params);
@@ -39,5 +42,22 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
         $title="จำนวนการลงทะเบียน ผ่านด่านตรวจ covid-19 จังหวัดสกลนคร";
     }
 include("./autoTable.php");
-
 ?>
+<script>
+    $(function(){
+        $(".วันที่").addClass("cursor-hand");
+        $(".วันที่").on("click",function(){
+            console.log($(this).attr("originalValue"));
+            let formData="";
+            formData=formData+'<input type="hidden" name="condition" value="f.real_date_to_sakonnakhon='+$(this).attr("originalValue")+'"></input>';
+            var form = $('<form action="./person_list.php" method="post">'+ formData + '</form>');
+            $('body').append(form);
+            $(form).submit();                
+
+
+
+
+            // alert('ddddd');
+        })
+    })
+</script>
