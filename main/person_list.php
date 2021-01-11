@@ -4,6 +4,9 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include_once('../include/config.php');
 include_once('../include/functions.php');
+// echo "<br><br><br>";
+// print_r($_POST);
+
 $sql="select c.covid_register_id as `l|c||รหัส` ,
 CONCAT(IF(p.prename_name,p.prename_name,''),'',c.fname,' ',c.lname) as `l|c||ชื่อ` ,
 c.cid as `l|c||เลขบัตร`,
@@ -30,6 +33,11 @@ left join prename p on c.prename_id=p.prename_id
 left join office of on c.checkpoint_id = of.office_id
 where checkpoint_id is not null";
 
+if (isset($_POST['condition']) and $_POST['condition']<>""){
+    $sql.=" and ".$_POST['condition'];
+}
+
+// echo "<br>sql=".$sql;
 
 
 
@@ -45,8 +53,8 @@ include("./autoTable.php");
 
 ?>
 <script>
-    $(function(){
-        $(".ชื่อ").addClass("cursor-hand");
+    // $(function(){
+    //     $(".ชื่อ").addClass("cursor-hand");
 
-    })
+    // })
 </script>

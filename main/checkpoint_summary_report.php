@@ -5,8 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once('../include/config.php');
 include_once('../include/functions.php');
 
-echo "<br><br><br>";
-print_r($_POST);
+// echo "<br><br><br>";
+// print_r($_POST);
 
 $sql_changwat_risk="select * from changwat_risk where risk_status_id=5";
 $obj=$connect->prepare($sql_changwat_risk);
@@ -36,11 +36,13 @@ $sql.=$sql_add;
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-    if(($_SESSION['group_id']=='11')){
-        $title="จำนวนการลงทะเบียน ผ่าน".$_SESSION['office_name']." รายวัน";
-    }else{
-        $title="จำนวนการลงทะเบียน ผ่านด่านตรวจ covid-19 จังหวัดสกลนคร";
-    }
+$condition_group="";
+if(($_SESSION['group_id']=='11')){
+    $title="จำนวนการลงทะเบียน ผ่าน".$_SESSION['office_name']." รายวัน";
+    $condition_group=" and checkpoint_id=".$_SESSION['office_id'];
+}else{
+    $title="จำนวนการลงทะเบียน ผ่านด่านตรวจ covid-19 จังหวัดสกลนคร";
+}
 include("./autoTable.php");
 ?>
 <script>
@@ -49,7 +51,7 @@ include("./autoTable.php");
         $(".วันที่").on("click",function(){
             console.log($(this).attr("originalValue"));
             let formData="";
-            formData=formData+'<input type="hidden" name="condition" value="f.real_date_to_sakonnakhon='+$(this).attr("originalValue")+'"></input>';
+            formData=formData+'<input type="hidden" name="condition" value="real_date_to_sakonnakhon=\''+$(this).attr("originalValue")+'\'<?php echo $condition_group; ?>"></input>';
             var form = $('<form action="./person_list.php" method="post">'+ formData + '</form>');
             $('body').append(form);
             $(form).submit();                
