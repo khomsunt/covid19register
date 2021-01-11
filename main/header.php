@@ -42,6 +42,7 @@ include('../include/config.php');
               <?php
             }
             if ($_SESSION['group_id']=='11'){ ?>
+              <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
               <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
               <?php
             }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ ?>
