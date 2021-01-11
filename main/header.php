@@ -31,7 +31,7 @@ include('../include/config.php');
         } ?>
 
 
-        <li class="nav-item active dropdown">
+        <li class="nav-item active dropdown" style="width:400px;">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             รายงาน
           </a>
@@ -42,6 +42,7 @@ include('../include/config.php');
               <?php
             }
             if ($_SESSION['group_id']=='11'){ ?>
+              <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
               <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
               <?php
             }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ ?>

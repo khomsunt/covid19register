@@ -81,7 +81,7 @@
                     <?php
                     foreach ($$fk as $key => $value) {
                         ?>
-                        $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $$tt[$key]; ?>"));
+                        $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $value; ?>"));
                         <?php
                     }
                     if (isset($_POST[$fk])){
