@@ -51,10 +51,11 @@ if ($_GET['ampur_code']=='') {
             ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
-        $sql_risk_3.=" 
-        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
-        ";
-
+        if ($_GET['quarantine_unfilled']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+            ";
+        }
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
@@ -73,8 +74,10 @@ if ($_GET['ampur_code']=='') {
         $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
-    $sql_risk.="
+    if ($_GET['quarantine_unfilled']=='1') {
+        $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
+    }
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
     ,sum(if(from_orange is not null and from_orange!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
@@ -117,9 +120,11 @@ else {
             ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
-        $sql_risk_3.=" 
-        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
-        ";
+        if ($_GET['quarantine_unfilled']=='1') {
+            $sql_risk_3.=" 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+            ";
+        }
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
@@ -138,8 +143,10 @@ else {
         $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
-    $sql_risk.="
+    if ($_GET['quarantine_unfilled']=='1') {
+        $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
+    }
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
     ,sum(if(from_orange is not null and from_orange!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
@@ -161,17 +168,6 @@ $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<!-- <form id="search" method="post">
-    <div class="form-group"  style="margin-top:60px; padding: 20px;">
-        <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร </label>
-        <div class="input-group mb-3">
-        <input name="register_datetime" class="form-control datepicker" id="register_datetime" onkeydown="return false" value="<?php echo $today; ?>"/>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary btn-search" type="button">ค้นหา</button>
-        </div>
-        </div>
-    </div>
-</form> -->
 <div style="padding: 20px; padding-top: 80px; max-width: 900px;">
     <div class="card" style="margin-bottom: 20px;">
         <div class="card-header">ตัวเลือกการแสดงรายงาน</div>
@@ -187,21 +183,28 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_period">
                 <label class="form-check-label" for="quarantine_period">
-                    แสดงคอลัมน์ อยู่ระหว่างกักตัว (หมายถึง จำนวนผู้ที่อยู่ระหว่างกักตัว ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ อยู่ระหว่างกักตัว (หมายถึง จำนวนผู้ที่อยู่ระหว่างกักตัว สะสม ณ วันเวลาที่ประมวลผลรายงาน)
                 </label>
             </div>
 
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_complete">
                 <label class="form-check-label" for="quarantine_complete">
-                    แสดงคอลัมน์ กักตัวครบ14วัน (หมายถึง กักตัวครบ14วันแล้ว ทั้งที่ยังอยู่ในพื้นที่และที่ออกจากพื้นที่ไปแล้ว ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ กักตัวครบ14วัน (หมายถึง กักตัวครบ14วันแล้ว ทั้งที่ยังอยู่ในพื้นที่และที่ออกจากพื้นที่ไปแล้ว สะสม ณ วันเวลาที่ประมวลผลรายงาน)
                 </label>
             </div>
 
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_escape">
                 <label class="form-check-label" for="quarantine_escape">
-                    แสดงคอลัมน์ ออกจากพื้นที่ (หมายถึง ออกจากพื้นที่ก่อนครบ14วัน ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ ออกจากพื้นที่ (หมายถึง ออกจากพื้นที่ก่อนครบ14วัน สะสม ณ วันเวลาที่ประมวลผลรายงาน)
+                </label>
+            </div>
+
+            <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
+                <input type="checkbox" class="form-check-input" id="quarantine_unfilled">
+                <label class="form-check-label" for="quarantine_unfilled">
+                    แสดงคอลัมน์ ยังไม่ป้อนข้อมูล (หมายถึง ยังไม่ป้อนข้อมูล สะสม ณ วันเวลาที่ประมวลผลรายงาน)
                 </label>
             </div>
 
@@ -230,6 +233,7 @@ include("./autoTable.php");
         $('#quarantine_period').prop('checked','<?php echo $_GET['quarantine_period']; ?>'==1?true:false);
         $('#quarantine_complete').prop('checked','<?php echo $_GET['quarantine_complete']; ?>'==1?true:false);
         $('#quarantine_escape').prop('checked','<?php echo $_GET['quarantine_escape']; ?>'==1?true:false);
+        $('#quarantine_unfilled').prop('checked','<?php echo $_GET['quarantine_unfilled']; ?>'==1?true:false);
 
         $('.-_-_ชื่ออำเภอ').addClass("cursor-hand").click(function(){
             let ampur_code=$(this).parent().parent().children().find("div").html().trim();
@@ -262,6 +266,9 @@ include("./autoTable.php");
             }
             if ($("#quarantine_escape").prop('checked')==true) {
                 a.push("quarantine_escape=1");
+            }
+            if ($("#quarantine_unfilled").prop('checked')==true) {
+                a.push("quarantine_unfilled=1");
             }
             var url_params="";
             if (a.length>0) {
