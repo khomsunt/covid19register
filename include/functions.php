@@ -1,6 +1,8 @@
 <?php
     include_once('../include/config.php');
-
+    foreach ($_POST as $key => $value) {
+        $_POST[$key]=utf8_decode(urldecode($value));
+    }
 	function thailongdate($date)
     {
         $mon=array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');

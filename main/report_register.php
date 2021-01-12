@@ -1,12 +1,9 @@
-<?php
+<?php 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include_once('../include/config.php');
 include_once('../include/functions.php');
-
-// echo "<br><br><br>";
-// print_r($_POST);
 
 $sql="select c.covid_register_id as `l|c||รหัส` ,
 CONCAT(IF(p.prename_name,p.prename_name,''),'',c.fname,' ',c.lname) as `l|c||ชื่อ` ,
@@ -33,28 +30,19 @@ left join risk_level r2 on c.real_risk=r2.risk_level_id
 left join prename p on c.prename_id=p.prename_id
 left join office of on c.checkpoint_id = of.office_id
 ";
-$where=" where checkpoint_id is not null ";
-
-if (isset($_POST['condition']) and $_POST['condition']<>""){
-    $where.=" and ".$_POST['condition'];
-}
-
+$where = " where c.cut_status_id=1 ";
 $sql.=$where;
 
-// echo "<br>sql=".$sql;
 $rp=10; //rows per page
-$sql_count="select count(c.covid_register_id) as count_all from from_real_risk c ";
+$sql_count="select count(c.covid_register_id) as count_all from from_real_risk c";
 include("./autoPaginationFunction.php");
 
-
-
+//echo "<br><br><br><br>".$rows_count;
+//print_r($rows_count);
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
-$title="รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร  ".$_SESSION['office_name'];
+$title="รายงานข้อมูลกลุ่มเสี่ยงที่เดินทางถึงสกลนคร";
 include("./autoTable.php");
-
-
-
 ?>
