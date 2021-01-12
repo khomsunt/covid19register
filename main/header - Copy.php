@@ -21,45 +21,58 @@ include('../include/config.php');
         <li class="nav-item active">
           <a class="nav-link" href="./evaluation_risk.php">เกณฑ์การประเมิน<span class="sr-only">(current)</span></a>
         </li>
-        <?php
-        if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
-          ?>
-            <li class="nav-item active">
-              <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
-            </li>
-          <?php
-        } ?>
+        <li class="nav-item active">
+          <a class="nav-link" href="./ampur_rate.php">การบันทึกข้อมูลของหน่วยบริการ<span class="sr-only">(current)</span></a>
+        </li>
 
 
-        <li class="nav-item active dropdown" style="width:400px;">
+        <li class="nav-item active dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             รายงาน
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
-            if ($_SESSION['group_id']=='2'){ ?>
-              <a class="nav-link" href="./checkpoint_all_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
+            if ($_SESSION['group_id']=='11'){
+              ?>
+                <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
               <?php
-            }
-            if ($_SESSION['group_id']=='11'){ ?>
-              <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
-              <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
-              <?php
-            }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ ?>
-              <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
-              <a class="nav-link" href="./changwat_risk.php" style="color:black;">รายงานพื้นที่เสี่ยง</a>
-              <a class="nav-link" href="./report_risk_ampur.php" style="color:black;">รายงานกลุ่มเสี่ยงรายอำเภอ</a>
-            <?php } ?>
-              <a class="nav-link" href="./report_in_date.php" style="color:black;">รายงานแยกรายวัน</a>
-              <a class="nav-link" href="./report_risk_area.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล</a>
-              <a class="nav-link" href="./ampur_rate.php" style="color:black;">รายงานการบันทึกข้อมูลของหน่วยบริการ</a>
-           </div>
+            }?>
+          </div>
         </li>
 
-        
-        
-      </ul>
 
+
+        <?php
+        if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){
+          ?>
+          <!-- <li class="nav-item active">
+            <a class="nav-link" href="./pre_cut_data_detail.php">ตัดข้อมูล</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./cut_data.php">ประวัติการตัดข้อมูล</a>
+          </li> -->
+          <li class="nav-item active">
+            <a class="nav-link" href="./listUser.php">ผู้ใช้งาน</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./changwat_risk.php">พื้นที่เสี่ยง</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./report_risk_ampur.php">กลุ่มเสี่ยงรายอำเภอ</a>
+            </li>
+            
+          <?php
+        } ?>
+        <li class="nav-item active">
+            <a class="nav-link" href="./report_in_date.php">แยกรายวัน</a>
+              
+            </li>
+
+            <li class="nav-item active">
+            <a class="nav-link" href="./report_risk_area.php">จำนวนผู้เดินทางเข้าสกล</a>
+              
+            </li>
+      </ul>
       <ul class="navbar-nav">
       <li class="nav-item active">
          <a class="nav-link" href="https://www.skko.moph.go.th/liff_covid/manual.pdf" target="_blank">คู่มือการใช้งาน</a>
