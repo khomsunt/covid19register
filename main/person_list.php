@@ -4,11 +4,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include_once('../include/config.php');
 include_once('../include/functions.php');
-// echo "<br><br><br>";
-// print_r($_POST);
+//echo "<br><br><br>";
+//print_r($_POST);
 
 $sql="select c.covid_register_id as `l|c||รหัส` ,
-CONCAT(IF(p.prename_name,p.prename_name,''),'',c.fname,' ',c.lname) as `l|c||ชื่อ` ,
+CONCAT(IF(p.prename_name<>'',p.prename_name,''),'',c.fname,' ',c.lname) as `l|c||ชื่อ` ,
 c.cid as `l|c||เลขบัตร`,
 CONCAT('ต.',IF(t.tambon_name<>'',t.tambon_name,'') ,' ','อ.',if(a.ampur_name<>'',a.ampur_name,''),' ','จ.',if(cw.changwat_name<>'',cw.changwat_name,'')) as `l|c||ที่อยู่ก่อนเข้าสกลนคร`,
 CONCAT('ต.',IF(t2.tambon_name<>'',t2.tambon_name,'') ,' ','อ.',if(a2.ampur_name<>'',a2.ampur_name,''),' ','จ.',if(cw2.changwat_name<>'',cw2.changwat_name,'')) as `l|c||ที่ทำงาน`,
@@ -16,6 +16,7 @@ CONCAT('ที่อยู่ ',IF(c.house_in_no<>'',c.house_in_no,'') ,' ','ห
 o.occupation_name as `l|c||อาชีพ`,
 c.tel as `l|c||เบอร์โทร`,
 r2.risk_level_long_name as `l|c||สถานะ`,
+c.real_date_to_sakonnakhon as `l|c||วันที่เดินทางเข้าสกล`,
 of.office_name as `l|c||ชื่อด่านตรวจ`
 from from_real_risk c 
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
@@ -37,7 +38,7 @@ if (isset($_POST['condition']) and $_POST['condition']<>""){
     $sql.=" and ".$_POST['condition'];
 }
 
-// echo "<br>sql=".$sql;
+//echo "<br>sql=".$sql;
 
 
 
