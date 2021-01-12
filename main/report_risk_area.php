@@ -51,6 +51,10 @@ if ($_GET['ampur_code']=='') {
             ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
+        $sql_risk_3.=" 
+        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+        ";
+
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
@@ -69,6 +73,8 @@ if ($_GET['ampur_code']=='') {
         $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
+    $sql_risk.="
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
     ,sum(if(from_orange is not null and from_orange!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
@@ -111,6 +117,9 @@ else {
             ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
+        $sql_risk_3.=" 
+        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+        ";
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
@@ -129,6 +138,8 @@ else {
         $sql_risk.="
         ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
+    $sql_risk.="
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
     ,sum(if(from_orange is not null and from_orange!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_ใหม่` 
