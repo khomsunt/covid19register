@@ -74,6 +74,11 @@
         }
     }
 ?>
+<?php
+if (isset($rp)) {
+    include("./autoPagination.php");
+    }
+?>
 <table class="table" id="myTable" border="1">
     <thead>
         <?php
@@ -182,6 +187,11 @@
         </tr>
     </tbody>
 </table>
+<?php
+if (isset($rp)) {
+include("./autoPagination.php");
+}
+?>
 <?php
 
 

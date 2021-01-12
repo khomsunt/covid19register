@@ -1,4 +1,9 @@
 <?php
+$sql_count.=$where;
+$obj=$connect->prepare($sql_count);
+$obj->execute();
+$rows_count=$obj->fetchAll(PDO::FETCH_ASSOC);
+
 $count_all=$rows_count[0]['count_all'];
   $pages=ceil($count_all/$rp);
   $page=(isset($_GET['page']))?$_GET['page']:0;

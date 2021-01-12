@@ -10,9 +10,7 @@ echo "<br>";
 // print_r($_SESSION);
 include('../include/config.php');
 include('../include/functions.php');
-$sql_count="select 
-  count(c.covid_register_id) as count_all 
-  from from_real_risk c ";
+
 $sql="select c.*,
   p.prename_name,
   cw.changwat_name as changwat_name_out,
@@ -51,14 +49,12 @@ $sql="select c.*,
     $where.=" and c.real_risk=".$_GET['risk_level_id'];
   }
   $sql.=$where;
-  $sql_count.=$where;
-  $obj=$connect->prepare($sql_count);
-  $obj->execute();
-  $rows_count=$obj->fetchAll(PDO::FETCH_ASSOC);
+  
   // echo "<br><br><br>";
   // print_r($rows_count);
 
   $rp=10; //rows per page
+  $sql_count="select count(c.covid_register_id) as count_all from from_real_risk c ";
   include("./autoPaginationFunction.php");
 
   $obj=$connect->prepare($sql);
@@ -128,6 +124,9 @@ $sql="select c.*,
     </style>
     <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
 
+    <script src="../js/jquery-3.2.1.min.js" ></script>
+    <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/tableToCards.js"></script>
   </head>
   <body>
   <div class="modal"></div>
@@ -285,9 +284,7 @@ $sql="select c.*,
     <?php
       include("./footer.php");
     ?>
-    <script src="../js/jquery-3.2.1.min.js" ></script>
-    <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/tableToCards.js"></script>
+    
     <script>
       $body = $("body");
       var cut_status_id_default=0;
@@ -320,18 +317,7 @@ $sql="select c.*,
       $(function(){
         $("#register_div").hide();
         $(".auto-pagination").show();
-        $(".pagination-link").click(function(){
-          let page=$(this).attr("page");
-          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
-        })
-        $(".previous-pagination-link").click(function(){
-          let page="<?php echo $page-1; ?>";
-          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
-        })
-        $(".next-pagination-link").click(function(){
-          let page="<?php echo $page+1; ?>";
-          window.location="./<?php echo $curPageName; ?>?<?php echo $strqry; ?>"+page;
-        })
+        
 
 
 
