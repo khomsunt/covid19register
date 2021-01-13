@@ -183,28 +183,28 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_period">
                 <label class="form-check-label" for="quarantine_period">
-                    แสดงคอลัมน์ อยู่ระหว่างกักตัว (หมายถึง จำนวนผู้ที่อยู่ระหว่างกักตัว สะสม ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ อยู่ระหว่างกักตัว (หมายถึง จำนวนผู้ที่อยู่ระหว่างกักตัว สะสม)
                 </label>
             </div>
 
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_complete">
                 <label class="form-check-label" for="quarantine_complete">
-                    แสดงคอลัมน์ กักตัวครบ14วัน (หมายถึง กักตัวครบ14วันแล้ว ทั้งที่ยังอยู่ในพื้นที่และที่ออกจากพื้นที่ไปแล้ว สะสม ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ กักตัวครบ14วัน (หมายถึง กักตัวครบ14วันแล้ว ทั้งที่ยังอยู่ในพื้นที่และที่ออกจากพื้นที่ไปแล้ว สะสม)
                 </label>
             </div>
 
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_escape">
                 <label class="form-check-label" for="quarantine_escape">
-                    แสดงคอลัมน์ ออกจากพื้นที่ (หมายถึง ออกจากพื้นที่ก่อนครบ14วัน สะสม ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ ออกจากพื้นที่ (หมายถึง ออกจากพื้นที่ก่อนครบ14วัน สะสม)
                 </label>
             </div>
 
             <div class="form-check" style="padding-top: 5px; padding-bottom: 5px;">
                 <input type="checkbox" class="form-check-input" id="quarantine_unfilled">
                 <label class="form-check-label" for="quarantine_unfilled">
-                    แสดงคอลัมน์ ยังไม่ป้อนข้อมูล (หมายถึง ยังไม่ป้อนข้อมูล สะสม ณ วันเวลาที่ประมวลผลรายงาน)
+                    แสดงคอลัมน์ ยังไม่ป้อนข้อมูล (หมายถึง ยังไม่ป้อนข้อมูล สะสม)
                 </label>
             </div>
 
