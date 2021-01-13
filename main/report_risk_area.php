@@ -33,50 +33,50 @@ if ($_GET['ampur_code']=='') {
     foreach ($rows_changwat_red as $key => $value) {
         $cc=$value['changwat_code'];
         $sql_risk_3=" 
-        sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ใหม่` 
-        ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_สะสม` 
+        sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51,5,52,50,59)) or (left(from_red,2)='".$cc."' and real_risk in (31,3,32,30,99)) ) and real_date_to_sakonnakhon=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ใหม่` 
+        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51,5,52,50,59)) or (left(from_red,2)='".$cc."' and real_risk in (31,3,32,30,99)) ) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_สะสม` 
         ";
         if ($_GET['quarantine_period']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51)) or (left(from_red,2)='".$cc."' and real_risk in (31)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51)) or (left(from_red,2)='".$cc."' and real_risk in (31)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
             ";
         }
         if ($_GET['quarantine_complete']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (5,52)) or (left(from_red,2)='".$cc."' and real_risk in (3,32)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (5,52)) or (left(from_red,2)='".$cc."' and real_risk in (3,32)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
             ";
         }
         if ($_GET['quarantine_escape']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
         if ($_GET['quarantine_unfilled']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
             ";
         }
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
     $sql_risk="
-    ,sum(if( ((from_red_strong is not null and from_red_strong!='') or (from_red is not null and from_red!='')) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่`
-    ,sum(if(from_red is not null and from_red!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";
+    ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่`
+    ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";
     if ($_GET['quarantine_period']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (51)) or (from_red is not null and from_red!='' and real_risk in (31)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ระหว่างกักตัว` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (51)) or (from_red is not null and from_red!='' and real_risk in (31)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ระหว่างกักตัว` ";
     }
     if ($_GET['quarantine_complete']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (5,52)) or (from_red is not null and from_red!='' and real_risk in (3,32)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_กักตัวครบ14วัน` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (5,52)) or (from_red is not null and from_red!='' and real_risk in (3,32)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_กักตัวครบ14วัน` ";
     }
     if ($_GET['quarantine_escape']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
     if ($_GET['quarantine_unfilled']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
     }
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
@@ -102,50 +102,50 @@ else {
     foreach ($rows_changwat_red as $key => $value) {
         $cc=$value['changwat_code'];
         $sql_risk_3=" 
-        sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ใหม่` 
-        ,sum(if('".$cc."' in (left(from_red_strong,2),left(from_red,2)) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_สะสม` 
+        sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51,5,52,50,59)) or (left(from_red,2)='".$cc."' and real_risk in (31,3,32,30,99)) ) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ใหม่` 
+        ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51,5,52,50,59)) or (left(from_red,2)='".$cc."' and real_risk in (31,3,32,30,99)) ) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_สะสม` 
         ";
         if ($_GET['quarantine_period']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51)) or (left(from_red,2)='".$cc."' and real_risk in (31)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (51)) or (left(from_red,2)='".$cc."' and real_risk in (31)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ระหว่างกักตัว` 
             ";
         }
         if ($_GET['quarantine_complete']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (5,52)) or (left(from_red,2)='".$cc."' and real_risk in (3,32)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (5,52)) or (left(from_red,2)='".$cc."' and real_risk in (3,32)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_กักตัวครบ14วัน` 
             ";
         }
         if ($_GET['quarantine_escape']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (50)) or (left(from_red,2)='".$cc."' and real_risk in (30)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ออกจากพื้นที่` 
             ";
         }
         if ($_GET['quarantine_unfilled']=='1') {
             $sql_risk_3.=" 
-            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
+            ,sum(if( ( (left(from_red_strong,2)='".$cc."' and real_risk in (59)) or (left(from_red,2)='".$cc."' and real_risk in (99)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_".$value['changwat_name']."_ยังไม่ป้อนข้อมูล` 
             ";
         }
         array_push($a_changwat_red,$sql_risk_3);
     }
     $sql_risk_3=",".implode(",",$a_changwat_red);
     $sql_risk="
-    ,sum(if( ((from_red_strong is not null and from_red_strong!='') or (from_red is not null and from_red!='')) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่`
-    ,sum(if(from_red is not null and from_red!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";
+    ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่`
+    ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";
     if ($_GET['quarantine_period']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (51)) or (from_red is not null and from_red!='' and real_risk in (31)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ระหว่างกักตัว` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (51)) or (from_red is not null and from_red!='' and real_risk in (31)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ระหว่างกักตัว` ";
     }
     if ($_GET['quarantine_complete']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (5,52)) or (from_red is not null and from_red!='' and real_risk in (3,32)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_กักตัวครบ14วัน` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (5,52)) or (from_red is not null and from_red!='' and real_risk in (3,32)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_กักตัวครบ14วัน` ";
     }
     if ($_GET['quarantine_escape']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (50)) or (from_red is not null and from_red!='' and real_risk in (30)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ออกจากพื้นที่` ";
     }
     if ($_GET['quarantine_unfilled']=='1') {
         $sql_risk.="
-        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
+        ,sum(if( ( (from_red_strong is not null and from_red_strong!='' and real_risk in (59)) or (from_red is not null and from_red!='' and real_risk in (99)) ) and real_date_to_sakonnakhon<=left('".$today."',10) ,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ยังไม่ป้อนข้อมูล` ";
     }
     $sql_risk.=" ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_ใหม่` 
     ,sum(if(from_red_weak is not null and from_red_weak!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงอ่อน)_สะสม` 
@@ -153,7 +153,7 @@ else {
     ,sum(if(from_orange is not null and from_orange!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุม_สะสม` 
     ,sum(if(from_yellow is not null and from_yellow!='' and real_date_to_sakonnakhon =left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_ใหม่` 
     ,sum(if(from_yellow is not null and from_yellow!='' and real_date_to_sakonnakhon<=left('".$today."',10),1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่เฝ้าระวังสูงสุด_สะสม` 
-    from from_risk f 
+    from from_real_risk f 
     inner join ampur47 a on a.ampur_code=f.ampur_in_code 
     left join office o on o.office_code=f.hospcode
     where f.cut_status_id!=2 and left(f.register_datetime,10)<=left('".$today."',10) and a.ampur_code='".$_GET['ampur_code']."'
@@ -236,12 +236,30 @@ include("./autoTable.php");
         $('#quarantine_unfilled').prop('checked','<?php echo $_GET['quarantine_unfilled']; ?>'==1?true:false);
 
         $('.-_-_ชื่ออำเภอ').addClass("cursor-hand").click(function(){
-            let ampur_code=$(this).parent().parent().children().find("div").html().trim();
-            // console.log(ampur_code,"<?php echo $today; ?>");
             var x=location.href.split('/');
             var u=x[x.length-1];
             var e=u.split('?');
-            window.location=e[0]+'?register_datetime='+$('#register_datetime').val()+'&ampur_code='+ampur_code;
+            var a=[];
+            let ampur_code=$(this).parent().parent().children().find("div").html().trim();
+            a.push('ampur_code='+ampur_code);
+            a.push('register_datetime='+$('#register_datetime').val());
+            if ($("#quarantine_period").prop('checked')==true) {
+                a.push("quarantine_period=1");
+            }
+            if ($("#quarantine_complete").prop('checked')==true) {
+                a.push("quarantine_complete=1");
+            }
+            if ($("#quarantine_escape").prop('checked')==true) {
+                a.push("quarantine_escape=1");
+            }
+            if ($("#quarantine_unfilled").prop('checked')==true) {
+                a.push("quarantine_unfilled=1");
+            }
+            var url_params="";
+            if (a.length>0) {
+                url_params="?"+a.join('&');
+            }
+            window.location=e[0]+url_params;
         });
 
         $('.datepicker').datepicker({
