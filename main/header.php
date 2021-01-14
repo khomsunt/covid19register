@@ -4,8 +4,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('../include/config.php');
 ?>
-<header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<header >
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="topbar_menu">
     <a class="navbar-brand" href="./index.php"><?php echo $projectTitle; ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -53,6 +53,7 @@ include('../include/config.php');
               <a class="nav-link" href="./report_in_date.php" style="color:black;">รายงานแยกรายวัน</a>
               <a class="nav-link" href="./report_risk_area.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล</a>
               <a class="nav-link" href="./ampur_rate.php" style="color:black;">รายงานการบันทึกข้อมูลของหน่วยบริการ</a>
+              <a class="nav-link" href="./report_register.php" style="color:black;">รายงานการลงทะเบียน</a>
            </div>
         </li>
 

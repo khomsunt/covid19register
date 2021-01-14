@@ -75,123 +75,118 @@
     }
 ?>
 <?php
-if (isset($rp)) {
     include("./autoPagination.php");
-    }
 ?>
-<table class="table" id="myTable" border="1">
-    <thead>
-        <?php
-        for ($i=0; $i < $max_col; $i++) { 
-            // echo "<br><br>".$i."<br>";
-            // print_r($a_h[$i]);
-            ?>
-            <tr>
+<main role="main" style="padding-left:10px; padding-right:10px;">
+    <table class="table" id="myTable" border="1">
+        <thead>
             <?php
-            foreach ($a_h[$i] as $k => $v) {
-                $aa_h=explode("_",$v);
-                if ($aa_h[0]<>""){
-                    ?>
-                    <th rowspan="<?php echo $aa_h[1]; ?>" colspan="<?php echo $aa_h[2]; ?>" style="text-align:center;vertical-align: middle;">
-                        <div class="container">
-                            <?php echo $aa_h[0]; ?>                                                
-                            <?php
-                            if (isset($filter)){
-                                $filter_i=array_search($aa_h[0],$filter);
-                                if ($filter_i){
-                                    echo '<div><select class="filter-autotable" id="filter-'.$filter_i.'" filterName="'.$filter_i.'"></select></div>';
-                                }
-                            }
-                            ?>
-                        </div>
-                    </th>
-                    <?php
-                }
-            } ?>
-            </tr>
-            <?php
-        }
-        ?>
-    </thead>
-    <tbody>
-        <?php
-            $sum=[];
-            foreach ($rows as $key => $value) {
+            for ($i=0; $i < $max_col; $i++) { 
+                // echo "<br><br>".$i."<br>";
+                // print_r($a_h[$i]);
                 ?>
-                <tr class="row_<?php echo $key; ?>">
-                    <?php
-                        $col=0;
-                        foreach ($value as $k => $v) {
-                            $a_k=explode("|",$k);
-                            switch ($a_k[2]) {
-                                case 's':
-                                    $sum[$k]+=$v;
-                                    break;                    
-                                case 'a':
-                                    $sum[$k]+=$v;
-                                    break;                    
-                                default:
-                                    $sum[$k]=$a_k[2];
-                                    break;
-                            }
-                            $thisValue=autoFormat($v,$a_k[1]);
-                            if (isset($filter)){
-                                $filter_i=array_search($a_k[3],$filter);
-                                if ($filter_i){
-                                    if (!isset($$filter_i)){
-                                        $$filter_i=[];
-                                        $filter_v=$filter_i."_value";
-                                        $$filter_v=[];
+                <tr>
+                <?php
+                foreach ($a_h[$i] as $k => $v) {
+                    $aa_h=explode("_",$v);
+                    if ($aa_h[0]<>""){
+                        ?>
+                        <th rowspan="<?php echo $aa_h[1]; ?>" colspan="<?php echo $aa_h[2]; ?>" style="text-align:center;vertical-align: middle;">
+                            
+                                <?php echo $aa_h[0]; ?>                                                
+                                <?php
+                                if (isset($filter)){
+                                    $filter_i=array_search($aa_h[0],$filter);
+                                    if ($filter_i){
+                                        echo '<div><select class="filter-autotable" id="filter-'.$filter_i.'" filterName="'.$filter_i.'"></select></div>';
                                     }
-                                    array_push($$filter_i,$v);
-                                    array_push($$filter_v,$thisValue);
-                                    // print_r($$filter_v);
                                 }
-                            }
-                            ?>
-                            <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
-                                <div class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" originalValue="<?php echo $v; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo str_replace("_"," ",$a_k[3]); ?>">
-                                    <?php echo $thisValue; ?>
-                                </div>
-                            </td>
-                            <?php
-                            ++$col;
-                        }
-                    ?>
+                                ?>
+                            
+                        </th>
+                        <?php
+                    }
+                } ?>
                 </tr>
                 <?php
             }
-        ?>
-        <tr style="font-weight: bold;">
+            ?>
+        </thead>
+        <tbody>
             <?php
-                foreach ($rows[0] as $k => $v) {
-                    $a_k=explode("|",$k);
-                    switch ($a_k[2]) {
-                        case 's':
-                            // $sum[$k]+=1;
-                            break;
-                        case 'a':
-                            $sum[$k]=$sum[$k]/count($rows);
-                            break;
-                        default:
-                            $sum[$k]=$a_k[2];
-                            break;
-                    }
+                $sum=[];
+                foreach ($rows as $key => $value) {
                     ?>
-                    <td style="text-align:<?php echo autoAlign($a_k[0]); ?>">
-                        <?php echo autoFormat($sum[$k],$a_k[1]); ?>
-                    </td>
+                    <tr class="row_<?php echo $key; ?>">
+                        <?php
+                            $col=0;
+                            foreach ($value as $k => $v) {
+                                $a_k=explode("|",$k);
+                                switch ($a_k[2]) {
+                                    case 's':
+                                        $sum[$k]+=$v;
+                                        break;                    
+                                    case 'a':
+                                        $sum[$k]+=$v;
+                                        break;                    
+                                    default:
+                                        $sum[$k]=$a_k[2];
+                                        break;
+                                }
+                                $thisValue=autoFormat($v,$a_k[1]);
+                                if (isset($filter)){
+                                    $filter_i=array_search($a_k[3],$filter);
+                                    if ($filter_i){
+                                        if (!isset($$filter_i)){
+                                            $$filter_i=[];
+                                            $filter_v=$filter_i."_value";
+                                            $$filter_v=[];
+                                        }
+                                        array_push($$filter_i,$v);
+                                        array_push($$filter_v,$thisValue);
+                                        // print_r($$filter_v);
+                                    }
+                                }
+                                ?>
+                                <td style="white-space: nowrap; text-align:<?php echo autoAlign($a_k[0]); ?>" >
+                                    <span class="col_<?php echo $col; ?> <?php echo $a_k[3]; ?>" originalValue="<?php echo $v; ?>" data-toggle="tooltip" data-placement="top" title="<?php echo str_replace("_"," ",$a_k[3]); ?>">
+                                        <?php echo $thisValue; ?>
+                                    </span>
+                                </td>
+                                <?php
+                                ++$col;
+                            }
+                        ?>
+                    </tr>
                     <?php
                 }
             ?>
-        </tr>
-    </tbody>
-</table>
-<?php
-if (isset($rp)) {
-include("./autoPagination.php");
-}
-?>
+            <tr style="font-weight: bold;">
+                <?php
+                    foreach ($rows[0] as $k => $v) {
+                        $a_k=explode("|",$k);
+                        switch ($a_k[2]) {
+                            case 's':
+                                // $sum[$k]+=1;
+                                break;
+                            case 'a':
+                                $sum[$k]=$sum[$k]/count($rows);
+                                break;
+                            default:
+                                $sum[$k]=$a_k[2];
+                                break;
+                        }
+                        ?>
+                        <td style="text-align:<?php echo autoAlign($a_k[0]); ?>">
+                            <?php echo autoFormat($sum[$k],$a_k[1]); ?>
+                        </td>
+                        <?php
+                    }
+                ?>
+            </tr>
+        </tbody>
+    </table>
+</main>
 <?php
 
 
