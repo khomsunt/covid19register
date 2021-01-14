@@ -19,7 +19,7 @@
 <script>
     $(function(){
         $(".ชื่ออำเภอ").click(function(){
-            let ampur_code=$(this).parent().parent().children().find("div").html().trim();
+            let ampur_code=$(this).parent().parent().children().find("span").html().trim();
             console.log(ampur_code,"<?php echo $_POST['register_datetime']; ?>");
             var form = $('<form action="./ampur_pcu_rate.php" method="post"><input type="hidden" name="ampur_code" value="' + ampur_code + '"></input>' + '</form>');
                 $('body').append(form);
