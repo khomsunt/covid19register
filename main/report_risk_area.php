@@ -240,7 +240,7 @@ include("./autoTable.php");
             var u=x[x.length-1];
             var e=u.split('?');
             var a=[];
-            let ampur_code=$(this).parent().parent().children().find("div").html().trim();
+            let ampur_code=$(this).parent().parent().children().find("span").html().trim();
             a.push('ampur_code='+ampur_code);
             a.push('register_datetime='+$('#register_datetime').val());
             if ($("#quarantine_period").prop('checked')==true) {
