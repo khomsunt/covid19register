@@ -127,28 +127,27 @@ $sql="select c.*,
     <script src="../js/jquery-3.2.1.min.js" ></script>
     <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/tableToCards.js"></script>
-  </head>
-  <body>
-  <div class="modal"></div>
-    <?php
-      include("./header.php");
-    ?>
-    <main role="main" style="margin-top:60px;">
-      <div class="container">
+</head>
+<body>
+<div class="modal"></div>
+  <?php
+    include("./header.php");
+  ?>
+
+      <div id="auto_table_title" style="padding: 10px; float:left; float:top; position:fixed; z-index:1000; background-color:#D3D3D3; width:100%;">
         <h5>
           <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> 
           รายชื่อผู้เดินทางเข้า 
           <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
         </h5>
         <div>
-          <div class="input-group mb-3">
+          <div class="input-group">
             <input id="cid" type="text" class="form-control" placeholder="เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2" value="<?php echo $_POST['cid']; ?>">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary btn-info btn-cid-search" type="button" style="color:#000000">ค้นหา</button>
             </div>
           </div>        
         </div>
-
       </div>
       <div id="register_div" class="container" style="display:none;">
         <div style="width:100%;text-align:right;">
@@ -159,6 +158,9 @@ $sql="select c.*,
       <?php
       include("./autoPagination.php");
       ?>
+
+    <main role="main">
+
       <div id="divMyTable">
       <table class="table" id="myTable">
         <thead>
@@ -277,9 +279,6 @@ $sql="select c.*,
         </tbody>
       </table>
       </div>
-      <?php
-      include("./autoPagination.php");
-      ?>
     </main>
     <?php
       include("./footer.php");
@@ -314,8 +313,18 @@ $sql="select c.*,
         return r;
       }
 
-      $(function(){
-        $("#register_div").hide();
+      var headerHeight=0;
+      var autoTableTitleHeight=0;
+      var autoPaginationHeight=0;
+      $(function () {
+          headerHeight=$("#topbar_menu").outerHeight();
+          $("#auto_table_title").offset({top: headerHeight});
+          autoTableTitleHeight=$("#auto_table_title").outerHeight();
+          autoPaginationHeight=$("#auto_pagination").outerHeight(true);
+          $("#auto_pagination").css("margin-top",headerHeight+autoTableTitleHeight);
+          $("#divMyTable").css("margin-top",(headerHeight+autoTableTitleHeight+autoPaginationHeight)+"px");
+          //alert(headerHeight+autoTableTitleHeight+autoPaginationHeight+20);
+          $("#register_div").hide();
         $(".auto-pagination").show();
         
 

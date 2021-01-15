@@ -1,27 +1,25 @@
-<nav id="auto_pagination" aria-label="Page navigation" class="auto-pagination" style="position:fixed; right:10px;">
+<nav id="auto_pagination" aria-label="Page navigation" class="auto-pagination" style="position:fixed; right:10px; z-index:1001; " >
     <ul class="pagination justify-content-end">
         <?php
-        $start_page=($page-3);
+        $start_page=($page-2);
         $start_page=($start_page<0)?0:$start_page;
-        $end_page=($page+3);
-        $end_page=(($end_page-$start_page)<6)?($end_page+(6-($end_page-$start_page))):$end_page;
+        $end_page=($page+2);
+        $end_page=(($end_page-$start_page)<1)?($end_page+(1-($end_page-$start_page))):$end_page;
         $end_page=($end_page>=$pages)?($pages-1):$end_page;
         ?>
         <li>
         <div>
-<button  type="button" class="btn btn-primary btn_cut_print" style="margin-right:10px;"> ส่งออก EXCEL </button>
-</div>
-
+        <button  type="button" class="btn btn_cut_print" style="margin-right:10px;"><img  src="../image/excel.png" width="17" height="20"></button>
+        </div>
         </li>
         <?php
-    if (isset($rp)) {
-?>
+    if (isset($rp)) { ?>
         <li class="page-item <?php echo ($page=="0")?"disabled":""; ?>" style="cursor:pointer;">
-        <a class="page-link first-pagination-link">|<</a>
+        <a class="page-link first-pagination-link"><img src="../image/first.png" width="10" height="20"></a>
         </li>
 
         <li class="page-item <?php echo ($page=="0")?"disabled":""; ?>" style="cursor:pointer;">
-        <a class="page-link previous-pagination-link"><</a>
+        <a class="page-link previous-pagination-link"><img src="../image/previous.png" width="10" height="20"></a>
         </li>
         <?php
         for ($p=$start_page; $p <= $end_page; $p++) { 
@@ -36,11 +34,11 @@
         }
         ?>
         <li class="page-item <?php echo ($page==($pages-1))?"disabled":""; ?>" style="cursor:pointer;">
-        <a class="page-link next-pagination-link">></a>
+        <a class="page-link next-pagination-link"><img src="../image/next.png" width="10" height="20"></a>
         </li>
 
         <li class="page-item <?php echo ($page==($pages-1))?"disabled":""; ?>" style="cursor:pointer;">
-        <a class="page-link last-pagination-link">>|</a>
+        <a class="page-link last-pagination-link"><img src="../image/last.png" width="10" height="20"></a>
         </li>
 <?php }?>
     </ul>
