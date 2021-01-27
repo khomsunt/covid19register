@@ -543,16 +543,15 @@ $("#btnConfirmDup").click(function() {
       .done(function(x) {
         var r=jQuery.parseJSON(x).data;
         if (r.status=="success") {
-          setTimeout(() => {
-            goPageSuggestion();
-          }, 1000);
+          setTimeout(() => { goPageSuggestion(); }, 1000);
+        }
+        else {
+          setTimeout(() => { goPageSuggestion(); }, 1000);
         }
       });
     }
     else {
-      setTimeout(() => {
-        goPageSuggestion();
-      }, 1000);
+      setTimeout(() => { goPageSuggestion(); }, 1000);
     }
   }
 });
