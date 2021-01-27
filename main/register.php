@@ -452,17 +452,19 @@ $("#btnSave").click(function() {
           var r=jQuery.parseJSON(x).data;
           if (r.status=="success") {
             if (r.register_data.length>1) {
-              clearDuplicatedData(r.register_data);
+              try {
+                clearDuplicatedData(r.register_data);  
+              } catch (error) {
+                setTimeout(() => { goPageSuggestion(); }, 1000);
+              }
             }
             else {
               // ไม่มีข้อมูลซ้ำ
-              setTimeout(() => {
-                goPageSuggestion();
-              }, 1000);
+              setTimeout(() => { goPageSuggestion(); }, 1000);
             }
           }
           else {
-            goPageSuggestion();
+            setTimeout(() => { goPageSuggestion(); }, 1000);
           }
         });
       }
