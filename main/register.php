@@ -461,6 +461,9 @@ $("#btnSave").click(function() {
               }, 1000);
             }
           }
+          else {
+            goPageSuggestion();
+          }
         });
       }
     });
