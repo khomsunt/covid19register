@@ -31,7 +31,7 @@ $sql.=$sql_add;
     }else{
         $sql.=" from from_real_risk f left join changwat c on f.real_risk_area_changwat=c.changwat_code where f.checkpoint_id group by f.real_date_to_sakonnakhon";
     }
-//echo "<br><br><br>sql=".$sql;
+echo "<br><br><br><br><br><br><br><br><br><br><br><br>sql=".$sql;
 
 $obj=$connect->prepare($sql);
 $obj->execute($params);

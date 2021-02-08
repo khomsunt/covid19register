@@ -42,6 +42,9 @@ $sql="select c.*,
   $where="";
   if (isset($_POST['cid'])){
     $where.=" where c.hospcode='".$_SESSION['office_code']."' and (c.cid='".$_POST['cid']."' or c.fname like '%".$_POST['cid']."%') ";
+  }else if($_SESSION['group_id']=='7'){
+    //$where.=" where c.ampur_in_code='".$_SESSION['office_code']."'";
+    $where.=" where c.ampur_in_code='".$_SESSION['ampur_code']."' ";
   }else{
     $where.=" where c.hospcode='".$_SESSION['office_code']."'";
   }
@@ -57,13 +60,15 @@ $sql="select c.*,
   $sql_count="select count(c.covid_register_id) as count_all from from_real_risk c ";
   include("./autoPaginationFunction.php");
 
+
+
   $obj=$connect->prepare($sql);
   $obj->execute();
   $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
   // echo "<br><br>POST=";
   // print_r($_POST);
-  // echo "<br><br><br>".$sql;
+  //echo "<br><br><br><br><br><br><br><br><br>".$sql;
 
   // print_r($rows);
 ?>
