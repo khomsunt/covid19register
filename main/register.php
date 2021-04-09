@@ -60,7 +60,7 @@ else {
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+var input_required=['fname','lname','cid','tel','occupation_id','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   if ('<?php echo $checkpoint_office_id; ?>'!='') {
     $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock');
@@ -146,6 +146,17 @@ for ($i=0;$i<count($rows);$i++) {
 ?>
       </select>
     </div>
+<!--     <div class="card"  style="margin-bottom: 20px;">
+          <div class="card-header">
+        เคยไปสถานบันเทิงที่มีผู้ป่วยยืนยัน
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input risk_area_input" id="confirm_case_api">
+          <label class="form-check-label" for="address_work">
+            เคยไป
+          </label>
+        </div>
+      </div>
+    </div> -->
 
   </div>
 
@@ -402,6 +413,7 @@ function getInputData () {
     ampur_in_code : $("#ampur_in_code").val(),
     note : $("#note").val(),
     checkpoint_id : '<?php echo $checkpoint_office_id; ?>',
+    // once_confirm_case_api : $("#ampur_in_code").val(),
   }
   return data;
 }
@@ -766,5 +778,14 @@ $("#address_work").click(function() {
     $("#tambon_work_code").val('');
   }
 });
+
+// $("#confirm_case_api").click(function() {
+//   if ($(this).prop('checked')==true) {
+//     $("#changwat_work_code").val(1);
+//   }
+//   else {
+
+//   }
+// });
 
 </script>
