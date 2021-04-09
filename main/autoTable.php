@@ -1,10 +1,10 @@
 <html lang="en">
     <head>
         <?php
-            header("Cache-Control: private, must-revalidate, max-age=0");
-            header("Pragma: no-cache");
-            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-        ?>
+header("Cache-Control: private, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+?>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
@@ -40,20 +40,20 @@
     </head>
     <body>
         <?php
-            include("./header.php");
-        ?>
+include "./header.php";
+?>
         <div style="padding: 10px; float:left; float:top; position:fixed; z-index:1000; background-color:#D3D3D3; width:100%; " id="auto_table_title">
             <h4><?php echo $title; ?></h4>
         </div>
         <div id="auto_table_data" >
         <?php
-            include("./autoTableTable.php");
-        ?>
+include "./autoTableTable.php";
+?>
         </div>
         <?php
-            // include("./footer.php");
-        ?>
-        
+// include("./footer.php");
+?>
+
         <script>
             var headerHeight=0;
             var autoTableTitleHeight=0;
@@ -71,31 +71,32 @@
                 file_name=file_name.replaceAll(' ','');
                 file_name=file_name.replaceAll(':','');
                 $('.btn_cut_print').on('click', function Export() {
+                    console.log('object');
                     $("#myTable").table2excel({
                         filename: '<?php echo $title; ?>_'+file_name+'.xls'
                     });
                 });
                 <?php
-                    if (isset($filter)){
-                        foreach ($filter as $fk => $fv) {
-                            $$fk=array_unique($$fk);
-                            $tt=$fk."_value";
-                            $$tt=array_unique($$tt);
-                            ?>
+if (isset($filter)) {
+    foreach ($filter as $fk => $fv) {
+        $$fk = array_unique($$fk);
+        $tt = $fk . "_value";
+        $$tt = array_unique($$tt);
+        ?>
                             $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("").html("--กรองข้อมูล--"));
                             <?php
-                            foreach ($$fk as $key => $value) {
-                                ?>
+foreach ($$fk as $key => $value) {
+            ?>
                                 $("#filter-<?php echo $fk; ?>").append($('<option></option>').val("<?php echo $value; ?>").html("<?php echo $value; ?>"));
                                 <?php
-                            }
-                            if (isset($_POST[$fk])){
-                                ?>
+}
+        if (isset($_POST[$fk])) {
+            ?>
                                 $("#filter-<?php echo $fk; ?>").val("<?php echo $_POST[$fk]; ?>");
                                 <?php
-                            }
-                        }  
-                        ?>
+}
+    }
+    ?>
                         $(".filter-autotable").on("change",function(){
                             let formData="";
                             $('.filter-autotable').each(function(){
@@ -108,14 +109,14 @@
 
                             var form = $('<form action="" method="post">'+ formData + '</form>');
                             $('body').append(form);
-                            $(form).submit();                
+                            $(form).submit();
 
 
-                            
+
                         });
-                        <?php      
-                    }
-                ?>
+                        <?php
+}
+?>
     })
 </script>
 
