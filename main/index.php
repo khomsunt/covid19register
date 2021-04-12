@@ -13,22 +13,13 @@ if ($_SESSION['group_id']<=0){
 include('../include/config.php');
 include('../include/functions.php');
 
-$sql_common="select 
-  c.real_risk as risk_level_id,
-  r.risk_level_long_name,
-  r.risk_level_name,
-  count(c.covid_register_id) as count_risk_level 
-  from 
-  from_real_risk c 
+$sql_common="select c.real_risk as risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level 
+  from from_real_risk c 
   left join risk_level r on c.real_risk=r.risk_level_id 
   left join ampur47 a on c.ampur_in_code=a.ampur_code ";
-$sql_e_common="select 
-  c.real_risk as evaluate_level,
-  r.risk_level_long_name,
-  r.risk_level_name,
-  count(*) as count_e 
-  from 
-  from_real_risk c 
+  
+$sql_e_common="select c.real_risk as evaluate_level,r.risk_level_long_name,r.risk_level_name,count(*) as count_e 
+  from from_real_risk c 
   left join risk_level r on c.real_risk=r.risk_level_id 
   left join ampur47 a on c.ampur_in_code=a.ampur_code ";
 
@@ -38,8 +29,7 @@ switch ($_SESSION['group_id']) {
   case 4:
   case 5:
     $sql=$sql_common."
-      where 
-      cut_status_id=0 
+      where  cut_status_id=0 
       group by 
       c.real_risk";
     $sql_all=$sql_common."
@@ -232,7 +222,7 @@ $obj->execute($params);
 $rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows_risk_level_all);
 
-// echo "<br>sql_e_pending=".$sql_e_pending;
+// echo "<br>sql_e_pending= ".$sql_e_pending;
 $obj=$connect->prepare($sql_e_pending);
 $obj->execute($params);
 $rows_e_pending=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -246,6 +236,230 @@ $rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
 $obj=$connect->prepare($sql_e_all);
 $obj->execute($params);
 $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+
+//// ---------------- //// ---------------- //// ---------------- //// ---------------- //// ---------------- 
+//// ---------------- songkran64
+$sk64_sql_common="select c.real_risk as risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level 
+  from from_real_risk_songkran64 c 
+  left join risk_level_songkran64 r on c.real_risk=r.risk_level_id 
+  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+  
+$sk64_sql_e_common="select c.real_risk as evaluate_level,r.risk_level_long_name,r.risk_level_name,count(*) as count_e 
+  from from_real_risk_songkran64 c 
+  left join risk_level_songkran64 r on c.real_risk=r.risk_level_id 
+  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+
+switch ($_SESSION['group_id']) {
+  case 1:
+  case 2:
+  case 4:
+  case 5:
+    $sk64_sql=$sk64_sql_common."
+      where  cut_status_id=0 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      group by 
+      c.real_risk";
+    break;
+  case 3:
+    $sk64_sql=$sk64_sql_common."
+      where 
+      cut_status_id=0 
+      and a.node_id=:user_node_id 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      where 
+      a.node_id=:user_node_id 
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      and a.node_id=:user_node_id 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      and a.node_id=:user_node_id 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      where 
+      a.node_id=:user_node_id 
+      group by 
+      c.real_risk";
+    break;
+  case 7:
+      $sk64_sql=$sk64_sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
+    break;
+  case 8:
+  case 9:
+      $sk64_sql=$sk64_sql_common."
+      where 
+      cut_status_id=1 
+      and c.hospcode=:hospcode 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      where 
+      c.hospcode=:hospcode 
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.hospcode=:hospcode 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.hospcode=:hospcode 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      where 
+      c.hospcode=:hospcode 
+      group by 
+      c.real_risk";
+    $sk64_params=[ 'hospcode' => $_SESSION['office_code'] ];
+    break;
+
+  case 10:
+      $sk64_sql=$sk64_sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+
+    $sk64_params=['ampur_code'=>$_SESSION['ampur_code']];
+    break;
+
+  case 11:
+      $sk64_sql=$sk64_sql_common."
+      where 
+      cut_status_id=1 
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_all=$sk64_sql_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by
+      c.real_risk";
+    $sk64_sql_e_pending=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=0
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_cutted=$sk64_sql_e_common."
+      where 
+      c.cut_status_id=1
+      and c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_sql_e_all=$sk64_sql_e_common."
+      where 
+      c.ampur_in_code=:ampur_code 
+      group by 
+      c.real_risk";
+    $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
+    break;
+
+    default:
+    # code...
+    break;
+}
+$obj=$connect->prepare($sk64_sql);
+$obj->execute($sk64_params);
+$sk64_rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+$obj=$connect->prepare($sk64_sql_all);
+$obj->execute($sk64_params);
+$sk64_rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+// echo "<br>sk64_sql_e_pending- ".$sk64_sql_e_pending;
+$obj=$connect->prepare($sk64_sql_e_pending);
+$obj->execute($sk64_params);
+$sk64_rows_e_pending=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+$obj=$connect->prepare($sk64_sql_e_cutted);
+$obj->execute($sk64_params);
+$sk64_rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+$obj=$connect->prepare($sk64_sql_e_all);
+$obj->execute($sk64_params);
+$sk64_rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -308,16 +522,17 @@ include("./header.php");
   </div>
   <div style="height: 20px;"></div>
   <div style="width: 100%; text-align: center;">
-    <img src="../image/skn_covid_color_202104.jpg" style="width: 50%;">
+    <img src="../image/skn_covid_color_202104.jpg" style="width: 400px;">
   </div>
 </div>
-
 <br><br><br><br>
 
 
 
-<!-- 
-ด่านตรวจ -->
+
+
+
+<!-- ด่านตรวจ -->
 <?php
   if ($_SESSION['group_id']==11){
   ?>
@@ -390,23 +605,252 @@ include("./header.php");
       
     </div>
   </div>
-  <?php 
-  }else{ ?>
+<?php 
+  }
+  else{ 
+?>
 
+
+
+
+
+
+<div class="container marketing" style="width: 95%; border: solid 1px #000000; border-radius: 7px; padding-top: 10px; padding: 5px; margin-bottom: 60px;">
+  <div style="border: solid 1px #E2E2E2; border-radius: 5px; padding: 2px; padding-left: 10px; margin-bottom: 20px;">
+    <h5>แบ่งตามเกณฑ์พื้นที่เสี่ยงใหม่(ผู้ที่จะเดินทางเข้าสกลนครตั้งแต่วันที่ 9 เมษายน 2564 เป็นต้นมา)</h5>
+  </div>
 
   <div class="container marketing">
     <center>
       <h5>ข้อมูลการรายงานตัวเข้าสกลนคร <?php echo $_SESSION['office_name']; ?></h5>
     </center>
     <?php
-      // print_r($_SESSION);
-      if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
-      ?>
+// print_r($_SESSION);
+if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+?>
       <center>
       <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
       </center>
-      <?php
-    }?>
+<?php
+}
+?>
+    <div class="row">
+<?php
+if ($_SESSION['group_id']>0){
+?>
+
+
+
+
+      <div class="col-lg-12" style="margin-bottom: 20px;">
+        <?php
+          $count_rows_e_all=0;
+          foreach ($sk64_rows_e_all as $key=>$value){
+            $count_rows_e_all+=$value['count_e'];
+          }
+        ?>
+        <!-- <div class="sk64-btn-all" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-btn-all">
+          <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_e_all as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-12 -->
+
+
+
+
+      <div class="col-lg-4" style="display: none;">
+        <?php
+          $count_rows_e_pending=0;
+          foreach ($sk64_rows_e_pending as $key=>$value){
+            $count_rows_e_pending+=$value['count_e'];
+          }
+        ?>
+        <!-- <div class="sk64-btn-new" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-btn-new" style="height: 60px;">
+          <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_e_pending; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_e_pending as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-3 -->
+
+      <div class="col-lg-4" style="display: none;">
+        <?php
+          $count_rows_e_cutted=0;
+          foreach ($sk64_rows_e_cutted as $key=>$value){
+            $count_rows_e_cutted+=$value['count_e'];
+          }
+        ?>
+        <!-- <div class="sk64-btn-cutted" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-btn-cutted" style="height: 60px;">
+          <h5>ข้อมูลตัดแล้ว <span class="badge badge-primary"><?php echo $count_rows_e_cutted; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_e_cutted as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-cutted" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-3 -->
+
+      <div class="col-lg-4" style="display: none;">
+        <?php
+          $count_rows_e_all=0;
+          foreach ($sk64_rows_e_all as $key=>$value){
+            $count_rows_e_all+=$value['count_e'];
+          }
+        ?>
+        <!-- <div class="sk64-btn-all" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-btn-all" style="height: 60px;">
+          <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($rows);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_e_all as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['evaluate_level']){
+                    $this_value=$value['count_e'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div><!-- /.col-lg-3 -->
+
+
+      <div class="col-lg-3" style="display: none;">
+        <?php
+          $count_rows_risk_level_all=0;
+          foreach ($sk64_rows_risk_level_all as $key=>$value){
+            $count_rows_risk_level_all+=$value['count_risk_level'];
+          }
+        ?>
+        <!-- <div class="sk64-risk-evaluate" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-risk-evaluate" style="height: 60px;">
+          <h5>ข้อมูลการประเมิน (จนท.) ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level_all; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_risk_level_all as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['risk_level_id']){
+                    $this_value=$value['count_risk_level'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+                <?php
+                if ($rows_value['risk_level_id']=='39' or $rows_value['risk_level_id']=='59' or $rows_value['risk_level_id']=='99'){
+                  ?>
+                <i class="fa fa-home text-success"></i>
+                  <?php
+                }?>
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div>
+      <!-- /.col-lg-3 -->
+
+<?php 
+} 
+?>
+    </div><!-- /.row -->
+
+  </div>
+</div>
+
+
+
+<div class="container marketing" style="width: 95%; border: solid 1px #000000; border-radius: 7px; padding-top: 10px; padding: 5px;">
+  <div style="border: solid 1px #E2E2E2; border-radius: 5px; padding: 2px; padding-left: 10px; margin-bottom: 20px;">
+    <h5>แบ่งตามเกณฑ์พื้นที่เสี่ยงเดิม</h5>
+  </div>
+
+  <div class="container marketing">
+    <center>
+      <h5>ข้อมูลการรายงานตัวเข้าสกลนคร <?php echo $_SESSION['office_name']; ?></h5>
+    </center>
+<?php
+// print_r($_SESSION);
+if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+?>
+      <center>
+      <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
+      </center>
+<?php
+}
+?>
     <div class="row">
       <?php
         if ($_SESSION['group_id']>0){
@@ -626,49 +1070,84 @@ include("./header.php");
     <!-- /END THE FEATURETTES -->
 
   </div><!-- /.container -->
-  <?php
-  } ?>
+
+</div>
+<?php
+} 
+?>
 
 
-  <!-- FOOTER -->
-  <?php
-  include("./footer.php");
-  ?>
+<!-- FOOTER -->
+<?php
+include("./footer.php");
+?>
 </main>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')</script><script src="../js/bootstrap.bundle.min.js"></script>
-      <script src="../js/tableToCards.js"></script>
-      <script>
-        $(function(){
-          $(".risk-evaluate").click(function(){
-            console.log($(this).attr("risk_level_id"));
-            window.location = './pcu_register_list.php?risk_level_id='+$(this).attr("risk_level_id");
-          })
-          $(".btn-new").click(function(){
-            window.location = './MyCovid19register.php?type=new&risk_level_id=-1';
-          })
-          $(".btn-cutted").click(function(){
-            window.location = './MyCovid19register.php?type=cutted&risk_level_id=-1';
-          })
-          $(".btn-all").click(function(){
-            window.location = './MyCovid19register.php?type=all&risk_level_id=-1';
-          })
+<script>
+  window.jQuery || document.write('<script src="../js/jquery-3.2.1.min.js"><\/script>')
+</script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/tableToCards.js"></script>
+<script>
+$(function(){
+  $(".risk-evaluate").click(function(){
+    console.log($(this).attr("risk_level_id"));
+    window.location = './pcu_register_list.php?risk_level_id='+$(this).attr("risk_level_id");
+  })
+  $(".btn-new").click(function(){
+    window.location = './MyCovid19register.php?type=new&risk_level_id=-1';
+  })
+  $(".btn-cutted").click(function(){
+    window.location = './MyCovid19register.php?type=cutted&risk_level_id=-1';
+  })
+  $(".btn-all").click(function(){
+    window.location = './MyCovid19register.php?type=all&risk_level_id=-1';
+  })
+  $(".btn-risk-level").click(function(){
+      console.log($(this).attr("risk_level_id"));
+      window.location = './MyCovid19register.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+  $(".btn-risk-level-cutted").click(function(){
+      console.log($(this).attr("risk_level_id"));
+      window.location = './MyCovid19register.php?type=cutted&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+  $(".btn-risk-level-all").click(function(){
+      console.log($(this).attr("risk_level_id"));
+      window.location = './MyCovid19register.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+
+
+//--------------------------------------- สงกรานต์64
+  $(".sk64-risk-evaluate").click(function(){
+    // console.log($(this).attr("risk_level_id"));
+    // window.location = './pcu_register_list.php?risk_level_id='+$(this).attr("risk_level_id");
+  })
+  $(".sk64-btn-new").click(function(){
+    // window.location = './MyCovid19register_songkran64.php?type=new&risk_level_id=-1';
+  })
+  $(".sk64-btn-cutted").click(function(){
+    // window.location = './MyCovid19register.php?type=cutted&risk_level_id=-1';
+  })
+  $(".sk64-btn-all").click(function(){
+    // window.location = './MyCovid19register.php?type=all&risk_level_id=-1';
+  })
+  $(".sk64-btn-risk-level").click(function(){
+      // console.log($(this).attr("risk_level_id"));
+      // window.location = './MyCovid19register.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+  $(".sk64-btn-risk-level-cutted").click(function(){
+      // console.log($(this).attr("risk_level_id"));
+      // window.location = './MyCovid19register.php?type=cutted&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+  $(".sk64-btn-risk-level-all").click(function(){
+      // console.log($(this).attr("risk_level_id"));
+      // window.location = './MyCovid19register.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
+  })
 
 
 
-            $(".btn-risk-level").click(function(){
-                console.log($(this).attr("risk_level_id"));
-                window.location = './MyCovid19register.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
-            })
-            $(".btn-risk-level-cutted").click(function(){
-                console.log($(this).attr("risk_level_id"));
-                window.location = './MyCovid19register.php?type=cutted&risk_level_id=' + $(this).attr("risk_level_id");
-            })
-            $(".btn-risk-level-all").click(function(){
-                console.log($(this).attr("risk_level_id"));
-                window.location = './MyCovid19register.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
-            })
-        })
-      </script>
+})
+</script>
 
 </html>
