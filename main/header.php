@@ -36,16 +36,21 @@ include('../include/config.php');
             รายงาน
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link" href="./report_risk_list_grey.php" style="color:black;">รายชื่อกลุ่มเสี่ยงสีเทา</a>
+            <a class="nav-link" href="./report_risk_list_orange.php" style="color:black;">รายชื่อกลุ่มเสี่ยงสีส้ม</a>
             <?php
-            if ($_SESSION['group_id']=='2'){ ?>
+            if ($_SESSION['group_id']=='2'){ 
+            ?>
               <a class="nav-link" href="./checkpoint_all_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
-              <?php
+            <?php
             }
-            if ($_SESSION['group_id']=='11'){ ?>
+            if ($_SESSION['group_id']=='11'){ 
+            ?>
               <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
               <a class="nav-link" href="./checkpoint_report.php" style="color:black;">จำนวนลงทะเบียนด่าน</a>
-              <?php
-            }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ ?>
+            <?php
+            }else if ($_SESSION['group_id']=='1' or $_SESSION['group_id']=='2'){ 
+            ?>
               <a class="nav-link" href="./checkpoint_summary_report.php" style="color:black;">สรุปลงทะเบียนด่านรายวัน</a>
               <a class="nav-link" href="./changwat_risk.php" style="color:black;">รายงานพื้นที่เสี่ยง</a>
               <a class="nav-link" href="./report_risk_ampur.php" style="color:black;">รายงานกลุ่มเสี่ยงรายอำเภอ</a>

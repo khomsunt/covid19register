@@ -300,10 +300,10 @@ include("./header.php");
 <div style="width: 100%; text-align: center;">
   <div>
     <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';">
-      รายชื่อผู้ป่วยสีเทา
+      รายชื่อกลุ่มเสี่ยงสีเทา
     </div>
     <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';">
-      รายชื่อผู้ป่วยสีส้ม
+      รายชื่อกลุ่มเสี่ยงสีส้ม
     </div>
   </div>
   <div style="height: 20px;"></div>
