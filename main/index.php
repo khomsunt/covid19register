@@ -56,7 +56,18 @@ include("./header.php");
 <main role="main" style="margin-top:50px;">
 
 <div style="width: 100%; text-align: center;">
-  <img src="../image/skn_covid_color_202104.jpg" style="width: 50%;">
+  <div>
+    <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';">
+      รายชื่อผู้ป่วยสีเทา
+    </div>
+    <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';">
+      รายชื่อผู้ป่วยสีส้ม
+    </div>
+  </div>
+  <div style="height: 20px;"></div>
+  <div style="width: 100%; text-align: center;">
+    <img src="../image/skn_covid_color_202104.jpg" style="width: 50%;">
+  </div>
 </div>
 
 </body>
