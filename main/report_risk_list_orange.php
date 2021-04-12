@@ -78,7 +78,7 @@ $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
-$title="รายชื่อผู้รายงานตัวเข้าสกลนคร กลุ่มสีเทา ตามวันที่แจ้งจะเข้าสกลนคร ตั้งแต่วันที่ 9 เมษายน 2564";
+$title="รายชื่อผู้รายงานตัวเข้าสกลนคร กลุ่มสีส้ม ตามวันที่แจ้งจะเข้าสกลนคร ตั้งแต่วันที่ 9 เมษายน 2564";
 include("./autoTable.php");
 ?>
 <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
