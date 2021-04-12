@@ -1,7 +1,10 @@
 <?php
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if ($_SESSION['group_id']<=0){
+  header("Location: ./login.php");
+}
     // include('../include/config.php');
     include('../include/functions.php');
     $today=date("Y-m-d");

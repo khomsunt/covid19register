@@ -13,7 +13,8 @@ sum(t.total_risk_tambon1) as total_risk_tambon1,
 sum(t.total_risk_tambon2) as total_risk_tambon2,
 sum(t.total_risk_tambon3) as total_risk_tambon3,
 sum(t.total_risk_tambon4) as total_risk_tambon4,
-sum(t.total_risk_tambon5) as total_risk_tambon5
+sum(t.total_risk_tambon5) as total_risk_tambon5,
+sum(t.total_risk_tambon6) as total_risk_tambon6
 from ampur a
 LEFT JOIN 
 (SELECT ampur_code_full,
@@ -23,7 +24,8 @@ sum(if(risk_status_id='1',1,0)) as total_risk_tambon1,
 sum(if(risk_status_id='2',1,0)) as total_risk_tambon2,
 sum(if(risk_status_id='3',1,0)) as total_risk_tambon3,
 sum(if(risk_status_id='4',1,0)) as total_risk_tambon4,
-sum(if(risk_status_id='5',1,0)) as total_risk_tambon5
+sum(if(risk_status_id='5',1,0)) as total_risk_tambon5,
+sum(if(risk_status_id='6',1,0)) as total_risk_tambon6
 FROM tambon WHERE changwat_code = :changwat_code GROUP BY ampur_code_full) t on a.ampur_code_full = t.ampur_code_full
 LEFT JOIN risk_level r on a.risk_status_id = r.risk_level_id
 where a.changwat_code = :changwat_code
@@ -100,13 +102,14 @@ include("./header.php");
       <th style="text-align: center;">เสี่ยงสูง</th>
       <th style="text-align: center;">เสี่ยงสูงสุด</th>
       <th style="text-align: center;">เสี่ยงสูงสุดเข้มงวด</th>
+      <th style="text-align: center;">เคยเป็นพื้นที่เสี่ยงสูง</th>
       <th data-card-footer style="text-align: center;">รายละเอียด</th>
     </tr>
   </thead>
   <tbody>
       <?php
       //$sql="select * from risk_status";
-      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5')  order by order_id asc ";
+      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5','6')  order by order_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_ampur_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
@@ -124,6 +127,8 @@ include("./header.php");
             <td style="text-align: center;"><?php echo $value['total_risk_tambon4'] ? $value['total_risk_tambon4'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon3'] ? $value['total_risk_tambon3'] :'0' ;  ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_tambon5'] ? $value['total_risk_tambon5'] :'0' ;  ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_tambon6'] ? $value['total_risk_tambon6'] :'0' ;  ?></td>
+
             <td style="text-align: center;">
                 <div class="btn-group">
                     <button type="button" 

@@ -15,7 +15,8 @@ sum(a.total_risk_ampur1) as total_risk_ampur1,
 sum(a.total_risk_ampur2) as total_risk_ampur2,
 sum(a.total_risk_ampur3) as total_risk_ampur3,
 sum(a.total_risk_ampur4) as total_risk_ampur4,
-sum(a.total_risk_ampur5) as total_risk_ampur5
+sum(a.total_risk_ampur5) as total_risk_ampur5,
+sum(a.total_risk_ampur6) as total_risk_ampur6
 from changwat c
 LEFT JOIN 
 (SELECT changwat_code,
@@ -25,7 +26,8 @@ sum(if(risk_status_id='1',1,0)) as total_risk_ampur1,
 sum(if(risk_status_id='2',1,0)) as total_risk_ampur2,
 sum(if(risk_status_id='3',1,0)) as total_risk_ampur3, 
 sum(if(risk_status_id='4',1,0)) as total_risk_ampur4,
-sum(if(risk_status_id='5',1,0)) as total_risk_ampur5 
+sum(if(risk_status_id='5',1,0)) as total_risk_ampur5,
+sum(if(risk_status_id='6',1,0)) as total_risk_ampur6  
 FROM ampur  GROUP BY changwat_code) a on c.changwat_code = a.changwat_code
 GROUP BY c.changwat_code;";
 $obj=$connect->prepare($sql_current_cut);
@@ -90,6 +92,7 @@ include("./header.php");
       <th style="text-align: center;">เสี่ยงสูง</th>
       <th style="text-align: center;">เสี่ยงสูงสุด</th>
       <th style="text-align: center;">เสี่ยงสูงสุดเข้มงวด</th>
+      <th style="text-align: center;">เคยเป็นพื้นที่เสี่ยงสูง</th>
       <th style="text-align: center;">รายละเอียด</th>
     </tr>
   </thead>
@@ -108,6 +111,7 @@ include("./header.php");
             <td style="text-align: center;"><?php echo $value['total_risk_ampur4']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_ampur3']; ?></td>
             <td style="text-align: center;"><?php echo $value['total_risk_ampur5']; ?></td>
+            <td style="text-align: center;"><?php echo $value['total_risk_ampur6']; ?></td>
             <td style="text-align: center;">
               <button changwat_code = "<?php echo $value['changwat_code']; ?>" changwat_name = "<?php echo $value['changwat_name']; ?>"  type="button" class="btn btn-info tag-link">รายละเอียด</button>
             </td>

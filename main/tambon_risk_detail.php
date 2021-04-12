@@ -75,7 +75,7 @@ include("./header.php");
   <tbody>
       <?php
       //$sql="select * from risk_status";
-      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5') order by order_id asc ";
+      $sql="select * from risk_level where risk_level_id in ('0','1','2','3','4','5','6') order by order_id asc ";
       $obj=$connect->prepare($sql);
       $obj->execute();
       $rows_risk=$obj->fetchAll(PDO::FETCH_ASSOC);
