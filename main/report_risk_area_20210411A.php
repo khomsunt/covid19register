@@ -4,9 +4,6 @@ error_reporting( error_reporting() & ~E_NOTICE );
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if ($_SESSION['group_id']<=0){
-  header("Location: ./login.php");
-}
 
 include('../include/config.php');
 include('../include/functions.php');
@@ -66,9 +63,7 @@ if ($_GET['ampur_code']=='') {
         }
         array_push($a_changwat_red,$sql_risk_3);
     }
-    if (count($a_changwat_red)>0) {
-        $sql_risk_3=",".implode(",",$a_changwat_red);
-    }
+    $sql_risk_3=",".implode(",",$a_changwat_red);
     $sql_risk="
     ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon =$date_end,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่*`
     ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon between '".$date_start."' and '".$date_end."',1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";
@@ -137,9 +132,7 @@ else {
         }
         array_push($a_changwat_red,$sql_risk_3);
     }
-    if (count($a_changwat_red)>0) {
-        $sql_risk_3=",".implode(",",$a_changwat_red);
-    }
+    $sql_risk_3=",".implode(",",$a_changwat_red);
     $sql_risk="
     ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon =$date_end,1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_ใหม่*`
     ,sum(if( ((from_red_strong is not null and from_red_strong!='' and real_risk in (51,5,52,50,59)) or (from_red is not null and from_red!='' and real_risk in (31,3,32,30,99))) and real_date_to_sakonnakhon between '".$date_start."' and '".$date_end."',1,0)) `r|n|s|แบ่งตามพื้นที่_พื้นที่ควบคุมสูงสุด(แดงเข้มและแดง)_สะสม` ";

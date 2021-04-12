@@ -60,7 +60,7 @@ else {
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+var input_required=['fname','lname','cid','tel','occupation_id','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
 $(document).ready(function () {
   if ('<?php echo $checkpoint_office_id; ?>'!='') {
     $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock');
@@ -107,33 +107,51 @@ $(document).ready(function () {
   </div>
 </div> -->
 
+<form id="F1" action="register_submit.php" method="POST">
+
 <div style="width: 100%; padding: 5px; display: flex; flex-flow: row wrap;">
 
   <div class="col-lg-4 col-md-6 col-sm-12">
 
     <div class="form-group">
       <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
-      <input type="text" class="form-control" id="fname" placeholder="">
+      <input type="text" class="form-control" id="fname" name="fname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
-      <input type="text" class="form-control" id="lname" placeholder="">
+      <input type="text" class="form-control" id="lname" name="lname" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
-      <input type="text" class="form-control" id="cid" placeholder="">
+      <input type="text" class="form-control" id="cid" name="cid" placeholder="">
     </div>
   
     <div class="form-group">
+      <label for="exampleFormControlInput1">ช่วงอายุ <span class="required"></span></label>
+      <select class="form-control" id="age_range_id" name="age_range_id">
+        <option value="">--เลือก--</option>
+<?php
+$sql="select * from `age_range` ";
+$obj=$connect->prepare($sql);
+$obj->execute();
+$rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0;$i<count($rows);$i++) {
+  echo "<option value='".$rows[$i]["age_range_id"]."'>".$rows[$i]["age_range_name"]."</option>";
+}
+?>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
-      <input type="text" class="form-control" id="tel" placeholder="">
+      <input type="text" class="form-control" id="tel" name="tel" placeholder="">
     </div>
 
     <div class="form-group">
       <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
-      <select class="form-control" id="occupation_id">
+      <select class="form-control" id="occupation_id" name="occupation_id">
         <option value="">--เลือก--</option>
 <?php
 $sql="select * from `coccupation` ";
@@ -146,6 +164,17 @@ for ($i=0;$i<count($rows);$i++) {
 ?>
       </select>
     </div>
+<!--     <div class="card"  style="margin-bottom: 20px;">
+          <div class="card-header">
+        เคยไปสถานบันเทิงที่มีผู้ป่วยยืนยัน
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input risk_area_input" id="confirm_case_api">
+          <label class="form-check-label" for="address_work">
+            เคยไป
+          </label>
+        </div>
+      </div>
+    </div> -->
 
   </div>
 
@@ -156,7 +185,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_out_code">
+          <select class="form-control" id="changwat_out_code" name="changwat_out_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -172,14 +201,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_out_code">
+          <select class="form-control" id="ampur_out_code" name="ampur_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_out_code">
+          <select class="form-control" id="tambon_out_code" name="tambon_out_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -201,7 +230,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
-          <select class="form-control" id="changwat_work_code">
+          <select class="form-control" id="changwat_work_code" name="changwat_work_code">
             <option value="">--เลือก--</option>
   <?php
   $sql="select * from `changwat` order by changwat_name asc ";
@@ -217,14 +246,14 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-          <select class="form-control" id="ampur_work_code">
+          <select class="form-control" id="ampur_work_code" name="ampur_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-          <select class="form-control" id="tambon_work_code">
+          <select class="form-control" id="tambon_work_code" name="tambon_work_code">
             <option value="">--เลือก--</option>
           </select>
         </div>
@@ -240,7 +269,7 @@ for ($i=0;$i<count($rows);$i++) {
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">วันที่จะเดินทางเข้าออกจากสกลนคร <span class="required"></span></label>
+      <label for="exampleFormControlInput1">วันที่จะเดินทางออกจากสกลนคร <span class="required"></span></label>
       <input name="date_out_sakonnakhon" class="form-control datepicker_skn" id="date_out_sakonnakhon" date_value="" />
     </div>
 
@@ -251,7 +280,7 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
         <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
-        <select class="form-control" id="ampur_in_code">
+        <select class="form-control" id="ampur_in_code" name="ampur_in_code">
           <option value="">--เลือก--</option>
 <?php
 $sql="select * from `ampur` where changwat_code='47' ";
@@ -267,33 +296,40 @@ for ($i=0;$i<count($rows);$i++) {
 
         <div class="form-group">
         <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
-        <select class="form-control" id="tambon_in_code">
+        <select class="form-control" id="tambon_in_code" name="tambon_in_code">
           <option value="">--เลือก--</option>
         </select>
         </div>
 
         <div class="form-group">
         <label for="exampleFormControlSelect1">หมู่ <span class="required"></span></label>
-        <select class="form-control" id="moo_in_code">
+        <select class="form-control" id="moo_in_code" name="moo_in_code">
           <option value="">--เลือก--</option>
         </select>
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
-          <input type="text" class="form-control" id="house_in_no">
+          <input type="text" class="form-control" id="house_in_no" name="house_in_no">
         </div>
 
         <div class="form-group">
           <label for="exampleFormControlInput1">หมายเหตุ <span class="required"></span></label>
-          <textarea class="form-control" id="note"></textarea>
+          <textarea class="form-control" id="note" name="note"></textarea>
         </div>
 
       </div>
     </div>
   </div>
 
+  <input type="hidden" name="checkpoint_id" value='<?php echo $checkpoint_office_id; ?>'>
+  <input type="hidden" name="date_to_sakonnakhon_db" id="date_to_sakonnakhon_db" value=''>
+  <input type="hidden" name="date_out_sakonnakhon_db" id="date_out_sakonnakhon_db" value=''>
+
 </div>
+
+</form>
+
 
 <div style="width: 100%; padding: 20px;">
   <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
@@ -373,7 +409,6 @@ for ($i=0;$i<count($rows);$i++) {
   </div>
 </div>
 
-
 </body>
 </html>
 
@@ -402,18 +437,20 @@ function getInputData () {
     ampur_in_code : $("#ampur_in_code").val(),
     note : $("#note").val(),
     checkpoint_id : '<?php echo $checkpoint_office_id; ?>',
+    // once_confirm_case_api : $("#ampur_in_code").val(),
   }
   return data;
 }
 
-// $("#xbtnSave").click(function() {
-//   var data=getInputData();
-//   console.log(data);
+// $("#btnSave").click(function() {
+//   console.log('xbtnSave');
+//   $("#date_to_sakonnakhon_db").val($("#date_to_sakonnakhon").attr('date_value')),
+//   $("#date_out_sakonnakhon_db").val($("#date_out_sakonnakhon").attr('date_value')),
+//   $("#F1").submit();
 // });
 
 $("#btnSave").click(function() {
   var data=getInputData();
-  // console.log(data);
  
   var not_complete=0;
   input_required.forEach(element => {
@@ -428,49 +465,78 @@ $("#btnSave").click(function() {
     $("#modal01").modal('show');
   }
   else {
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #1');
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
-    $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-      data: data
-    })
-    .done(function(x) {
-      // console.log(jQuery.parseJSON(x));
-      var r=jQuery.parseJSON(x).data;
-      if (r.status=="success") {
-        registerLastInsertId=r.registerLastInsertId;
-        var data_check= { 
-          cid : cleanNumber(data['cid']),
-          tel : cleanNumber(data['tel']),
-        };
-        $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-          data: data_check
-        })
-        .done(function(x) {
-          // console.log(jQuery.parseJSON(x));
-          var r=jQuery.parseJSON(x).data;
-          if (r.status=="success") {
-            if (r.register_data.length>1) {
-              try {
-                clearDuplicatedData(r.register_data);  
-              } catch (error) {
-                setTimeout(() => { goPageSuggestion(); }, 1000);
-              }
-            }
-            else {
-              // ไม่มีข้อมูลซ้ำ
-              setTimeout(() => { goPageSuggestion(); }, 1000);
-            }
-          }
-          else {
-            setTimeout(() => { goPageSuggestion(); }, 1000);
-          }
-        });
-      }
-    });
+    setTimeout(() => { 
+      $("#date_to_sakonnakhon_db").val($("#date_to_sakonnakhon").attr('date_value')),
+      $("#date_out_sakonnakhon_db").val($("#date_out_sakonnakhon").attr('date_value')),
+      $("#F1").submit();
+    }, 1000);
+
   }
 });
+
+// $("#btnSave").click(function() {
+//   var data=getInputData();
+ 
+//   var not_complete=0;
+//   input_required.forEach(element => {
+//     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
+//       not_complete=not_complete+1;
+//     }
+//   });
+
+//   if (not_complete>0) {
+//     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
+//     $("#modal01_action").css({'display':'block'});
+//     $("#modal01").modal('show');
+//   }
+//   else {
+//     $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #1');
+//     $("#modal01_action").css({'display':'none'});
+//     $("#modal01").modal('show');
+
+//     $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
+//       data: data
+//     })
+//     .done(function(x) {
+//       // console.log(jQuery.parseJSON(x));
+//       var r=jQuery.parseJSON(x).data;
+//       if (r.status=="success") {
+//         registerLastInsertId=r.registerLastInsertId;
+//         var data_check= { 
+//           cid : cleanNumber(data['cid']),
+//           tel : cleanNumber(data['tel']),
+//         };
+//         $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
+//           data: data_check
+//         })
+//         .done(function(x) {
+//           // console.log(jQuery.parseJSON(x));
+//           var r=jQuery.parseJSON(x).data;
+//           if (r.status=="success") {
+//             if (r.register_data.length>1) {
+//               try {
+//                 clearDuplicatedData(r.register_data);  
+//               } catch (error) {
+//                 setTimeout(() => { goPageSuggestion(); }, 1000);
+//               }
+//             }
+//             else {
+//               // ไม่มีข้อมูลซ้ำ
+//               setTimeout(() => { goPageSuggestion(); }, 1000);
+//             }
+//           }
+//           else {
+//             setTimeout(() => { goPageSuggestion(); }, 1000);
+//           }
+//         });
+//       }
+//     });
+//   }
+// });
 
 function clearDuplicatedData(dupData) {
   $("#modal02_dup_list").empty();
@@ -529,7 +595,7 @@ $("#btnConfirmDup").click(function() {
   }
   else {
     $("#modal02").modal('hide');
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ');
+    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #2');
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
@@ -605,7 +671,7 @@ function formatDate(d) {
   return r;
 }
 
-var goPageSuggestion = function() {
+function goPageSuggestion() {
   window.location="suggestion_skn.php";
 };
 
@@ -766,5 +832,14 @@ $("#address_work").click(function() {
     $("#tambon_work_code").val('');
   }
 });
+
+// $("#confirm_case_api").click(function() {
+//   if ($(this).prop('checked')==true) {
+//     $("#changwat_work_code").val(1);
+//   }
+//   else {
+
+//   }
+// });
 
 </script>
