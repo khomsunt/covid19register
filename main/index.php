@@ -275,6 +275,9 @@ switch ($_SESSION['group_id']) {
     $sk64_sql_e_all=$sk64_sql_e_common."
       group by 
       c.real_risk";
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     break;
   case 3:
     $sk64_sql=$sk64_sql_common."
@@ -305,6 +308,10 @@ switch ($_SESSION['group_id']) {
       a.node_id=:user_node_id 
       group by 
       c.real_risk";
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where a.node_id=:user_node_id 
+      and date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     break;
   case 7:
       $sk64_sql=$sk64_sql_common."
@@ -335,6 +342,10 @@ switch ($_SESSION['group_id']) {
       c.ampur_in_code=:ampur_code 
       group by 
       c.real_risk";
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where c.ampur_in_code=:ampur_code 
+      and date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
     break;
   case 8:
@@ -367,6 +378,10 @@ switch ($_SESSION['group_id']) {
       c.hospcode=:hospcode 
       group by 
       c.real_risk";
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where c.hospcode=:hospcode 
+      and date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     $sk64_params=[ 'hospcode' => $_SESSION['office_code'] ];
     break;
 
@@ -399,7 +414,10 @@ switch ($_SESSION['group_id']) {
       c.ampur_in_code=:ampur_code 
       group by 
       c.real_risk";
-
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where c.ampur_in_code=:ampur_code 
+      and date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     $sk64_params=['ampur_code'=>$_SESSION['ampur_code']];
     break;
 
@@ -432,6 +450,10 @@ switch ($_SESSION['group_id']) {
       c.ampur_in_code=:ampur_code 
       group by 
       c.real_risk";
+    $sk64_sql_all_not_eval=$sk64_sql_common."
+      where c.ampur_in_code=:ampur_code 
+      and date_arrived_sakonnakhon is null 
+      group by c.real_risk";
     $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
     break;
 
@@ -459,6 +481,11 @@ $sk64_rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
 $obj=$connect->prepare($sk64_sql_e_all);
 $obj->execute($sk64_params);
 $sk64_rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
+
+$obj=$connect->prepare($sk64_sql_all_not_eval);
+$obj->execute($sk64_params);
+$sk64_rows_all_not_eval=$obj->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 ?>
@@ -642,7 +669,7 @@ if ($_SESSION['group_id']>0){
 
 
 
-      <div class="col-lg-12" style="margin-bottom: 20px;">
+      <div class="col-lg-6" style="margin-bottom: 20px;">
         <?php
           $count_rows_e_all=0;
           foreach ($sk64_rows_e_all as $key=>$value){
@@ -650,7 +677,7 @@ if ($_SESSION['group_id']>0){
           }
         ?>
         <!-- <div class="sk64-btn-all" style="cursor:pointer; height: 60px;"> -->
-        <div class="sk64-btn-all">
+        <div class="sk64-btn-all" style=" cursor: pointer;">
           <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
         </div>
         <?php
@@ -668,13 +695,53 @@ if ($_SESSION['group_id']>0){
                 }
             }
             ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-all" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
                 <?php echo $rows_value['risk_level_long_name']; ?> 
                 <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
             </button>
             <?php
         } ?>
-      </div><!-- /.col-lg-12 -->
+      </div><!-- /.col-lg-6 -->
+
+
+      <div class="col-lg-6">
+        <?php
+          $count_rows_risk_level_all=0;
+          foreach ($sk64_rows_all_not_eval as $key=>$value){
+            $count_rows_risk_level_all+=$value['count_risk_level'];
+          }
+        ?>
+        <!-- <div class="sk64-risk-evaluate" style="cursor:pointer; height: 60px;"> -->
+        <div class="sk64-risk-not-eval"  style=" cursor: pointer;">
+          <h5>จนท.ยังไม่ประเมิน<span class="badge badge-primary"><?php echo $count_rows_risk_level_all; ?></span></h5>
+        </div>
+        <?php
+        $sql="select * from risk_level_songkran64 order by order_id desc";
+        $obj=$connect->prepare($sql);
+        $obj->execute();
+        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $rows_key => $rows_value) {
+            $this_value=0;
+            foreach ($sk64_rows_all_not_eval as $key=>$value){
+                if ($rows_value['risk_level_id']==$value['risk_level_id']){
+                    $this_value=$value['count_risk_level'];
+                    break;
+                }
+            }
+            ?>
+            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-not-eval" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>;">
+                <?php echo $rows_value['risk_level_long_name']; ?> 
+                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
+            </button>
+            <?php
+        } ?>
+      </div>
+      <!-- /.col-lg-6 -->
+
+
+
+
+
 
 
 
@@ -1119,31 +1186,43 @@ $(function(){
 
 
 //--------------------------------------- สงกรานต์64
-  $(".sk64-risk-evaluate").click(function(){
+  $(".sk64-risk-not-eval").click(function(){
+    // console.log($(this).attr("risk_level_id"));
+    window.location = './pcu_register_list_songkran64.php';
+  })
+  $(".sk64-btn-risk-level-not-eval").click(function(){
+    console.log($(this).attr("risk_level_id"));
+    window.location = './pcu_register_list_songkran64.php?risk_level_id='+$(this).attr("risk_level_id");
+  })
+  // $(".sk64-risk-evaluate").click(function(){
     // console.log($(this).attr("risk_level_id"));
     // window.location = './pcu_register_list.php?risk_level_id='+$(this).attr("risk_level_id");
-  })
-  $(".sk64-btn-new").click(function(){
+  // })
+  // $(".sk64-btn-new").click(function(){
     // window.location = './MyCovid19register_songkran64.php?type=new&risk_level_id=-1';
-  })
-  $(".sk64-btn-cutted").click(function(){
+  // })
+  // $(".sk64-btn-cutted").click(function(){
     // window.location = './MyCovid19register.php?type=cutted&risk_level_id=-1';
-  })
+  // })
   $(".sk64-btn-all").click(function(){
-    // window.location = './MyCovid19register.php?type=all&risk_level_id=-1';
-  })
-  $(".sk64-btn-risk-level").click(function(){
-      // console.log($(this).attr("risk_level_id"));
-      // window.location = './MyCovid19register.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
-  })
-  $(".sk64-btn-risk-level-cutted").click(function(){
-      // console.log($(this).attr("risk_level_id"));
-      // window.location = './MyCovid19register.php?type=cutted&risk_level_id=' + $(this).attr("risk_level_id");
+    window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=-1';
   })
   $(".sk64-btn-risk-level-all").click(function(){
+      console.log($(this).attr("risk_level_id"));
+      window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
+  })
+  // $(".sk64-btn-risk-level").click(function(){
+      // console.log($(this).attr("risk_level_id"));
+      // window.location = './MyCovid19register_songkran64.php?type=new&risk_level_id=' + $(this).attr("risk_level_id");
+  // })
+  // $(".sk64-btn-risk-level-cutted").click(function(){
+      // console.log($(this).attr("risk_level_id"));
+      // window.location = './MyCovid19register.php?type=cutted&risk_level_id=' + $(this).attr("risk_level_id");
+  // })
+  // $(".sk64-btn-risk-level-all").click(function(){
       // console.log($(this).attr("risk_level_id"));
       // window.location = './MyCovid19register.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
-  })
+  // })
 
 
 

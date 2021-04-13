@@ -9,10 +9,23 @@ include('../include/config.php');
 include('../include/functions.php');
 $now_date_time=date('Y-m-d H:i:s');
 
+// $sql="select c.*, p.prename_name, cw.changwat_name as changwat_name_out, a.ampur_name as ampur_name_out, t.tambon_name as tambon_name_out, cw2.changwat_name as changwat_work_name_out, 
+// a2.ampur_name as ampur_work_name_out, t2.tambon_name as tambon_work_name_out, a47.ampur_name as ampur_name_in, t47.tambon_name as tambon_name_in,v.villname,o.occupation_name, 
+// r.risk_level_long_name, r2.risk_level_long_name as evaluate_level_name, r.background_color, r.color,v.villno,c.hospcode
+// from covid_register c 
+// left join changwat cw on c.changwat_out_code=cw.changwat_code 
+// left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code left join changwat cw2 on c.changwat_work_code=cw2.changwat_code left join ampur a2 on c.changwat_work_code=a2.changwat_code and c.ampur_work_code=a2.ampur_code left join tambon t2 on c.changwat_work_code=t2.changwat_code and c.ampur_work_code=t2.ampur_code and c.tambon_work_code=t2.tambon_code 
+// left join ampur47 a47 on c.ampur_in_code=a47.ampur_code 
+// left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code 
+// LEFT JOIN village v ON CONCAT(c.changwat_in_code,c.ampur_in_code,c.tambon_in_code,c.moo_in_code_new)=v.villcode
+// left join coccupation o on c.occupation_id=o.occupation_id left join risk_level r on c.risk_level_id=r.risk_level_id 
+// left join risk_level r2 on c.evaluate_level=r2.risk_level_id left join prename p on c.prename_id=p.prename_id";
+
 $sql="select c.*, p.prename_name, cw.changwat_name as changwat_name_out, a.ampur_name as ampur_name_out, t.tambon_name as tambon_name_out, cw2.changwat_name as changwat_work_name_out, 
 a2.ampur_name as ampur_work_name_out, t2.tambon_name as tambon_work_name_out, a47.ampur_name as ampur_name_in, t47.tambon_name as tambon_name_in,v.villname,o.occupation_name, 
 r.risk_level_long_name, r2.risk_level_long_name as evaluate_level_name, r.background_color, r.color,v.villno,c.hospcode
 from covid_register c 
+inner join from_real_risk_songkran64 s64 on s64.covid_register_id=c.covid_register_id
 left join changwat cw on c.changwat_out_code=cw.changwat_code 
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code left join changwat cw2 on c.changwat_work_code=cw2.changwat_code left join ampur a2 on c.changwat_work_code=a2.changwat_code and c.ampur_work_code=a2.ampur_code left join tambon t2 on c.changwat_work_code=t2.changwat_code and c.ampur_work_code=t2.ampur_code and c.tambon_work_code=t2.tambon_code 
 left join ampur47 a47 on c.ampur_in_code=a47.ampur_code 
@@ -20,8 +33,9 @@ left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_co
 LEFT JOIN village v ON CONCAT(c.changwat_in_code,c.ampur_in_code,c.tambon_in_code,c.moo_in_code_new)=v.villcode
 left join coccupation o on c.occupation_id=o.occupation_id left join risk_level r on c.risk_level_id=r.risk_level_id 
 left join risk_level r2 on c.evaluate_level=r2.risk_level_id left join prename p on c.prename_id=p.prename_id";
+
 if ($_GET['risk_level_id']>=0){  
-  $sql.=" where c.hospcode='".$_SESSION['office_code']."' and c.evaluate_level=".$_GET['risk_level_id'];
+  $sql.=" where c.hospcode='".$_SESSION['office_code']."' and s64.real_risk=".$_GET['risk_level_id'];
 }else if($_SESSION['group_id']==7){
   $sql.=" where c.ampur_in_code='".$_SESSION['ampur_code']."' ";
 }else{
@@ -43,16 +57,17 @@ if ($_GET['type']=="new"){
 //echo "<br><br><br><br><br><br>".$sql;
 // print_r($_SESSION);
 
- //echo $sql;
+// echo "<br><br><br><br>";
+// echo $sql;
 $obj=$connect->prepare($sql);
-if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9 or $_SESSION['group_id']==7 ){
-  $obj->execute();
+// if ($_SESSION['group_id']==8 or $_SESSION['group_id']==9 or $_SESSION['group_id']==7 ){
+$obj->execute();
 // }else{
 //   $obj->execute([ 'risk_level_id' => $_GET['risk_level_id'] ]);
-}
+// }
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 // print_r($rows);
-
+// echo "<br>||| ".count($rows);
 ?>
 
 <!doctype html>
@@ -93,10 +108,12 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <main role="main" style="margin-top:60px;">
       <div class="container">
-        <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้แจ้งเข้าจังหวัดกลุ่ม <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?>
+        <h5><img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> รายชื่อผู้แจ้งเข้าจังหวัดสกลนคร  <?php echo decodeCode('risk_level',$_GET['risk_level_id'],'risk_level_id','risk_level_long_name'); ?>
         </h5>
       </div>
-      <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button>
+
+      <!-- <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button> -->
+
       <table class='table table-condensed  table-bordered table-hover' width="100%" id="myTable">
   <thead>
   <tr class="text-center" >
@@ -120,9 +137,9 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   <th colspan="38"></th>
   </tr>
   <tr class="text-center">
+    <th rowspan="2">ลำดับ</th>
     <th rowspan="2">วันที่ตัดข้อมูล</th>
     <th rowspan="2">วันที่บันทึก</th>
-    <th rowspan="2">ลำดับ</th>
     <th rowspan="2" data-card-title>ชื่อ</th>
     <th rowspan="2" data-card-title>นามสกุล</th>
     <th rowspan="2">เพศ</th>
@@ -178,12 +195,13 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
       $obj->execute();
       $rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
       $i = 1;
+
       foreach ($rows as $key => $value) {
         ?>
         <tr>
+            <td><?php echo $i ?></td>
             <td><?php echo $value['cut_datetime']; ?></td>
             <td><?php echo $value['register_datetime']; ?></td>
-            <td><?php echo $i ?></td>
             <td><?php echo $value['fname']; ?></td>
             <td><?php echo $value['lname']; ?></td>
             <td></td>
@@ -282,7 +300,8 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   </tbody>
 </table>
 
-<button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button>
+<!-- <button  risk_level_id="<?php echo $_GET['risk_level_id']; ?>"  type_cut="<?php echo $_GET['type']; ?>" office_code="<?php echo $_SESSION['office_code']; ?>"  type="button" class="btn btn-primary btn_cut_print">ตัดข้อมูลและส่งออกExcel</button> -->
+
     </main>
     <?php
       include("./footer.php");
