@@ -540,10 +540,12 @@ include("./header.php");
 
 <div style="width: 100%; text-align: center;">
   <div>
-    <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';">
+    <!-- <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';"> -->
+    <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=203';">
       รายชื่อกลุ่มเสี่ยงสีเทา
     </div>
-    <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';">
+    <!-- <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';"> -->
+    <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=202';">
       รายชื่อกลุ่มเสี่ยงสีส้ม
     </div>
   </div>
@@ -740,154 +742,6 @@ if ($_SESSION['group_id']>0){
 
 
 
-
-
-
-
-
-
-      <div class="col-lg-4" style="display: none;">
-        <?php
-          $count_rows_e_pending=0;
-          foreach ($sk64_rows_e_pending as $key=>$value){
-            $count_rows_e_pending+=$value['count_e'];
-          }
-        ?>
-        <!-- <div class="sk64-btn-new" style="cursor:pointer; height: 60px;"> -->
-        <div class="sk64-btn-new" style="height: 60px;">
-          <h5>ข้อมูลใหม่ <span class="badge badge-primary"><?php echo $count_rows_e_pending; ?></span></h5>
-        </div>
-        <?php
-        $sql="select * from risk_level_songkran64 order by order_id desc";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        // print_r($rows);
-        foreach ($rows as $rows_key => $rows_value) {
-            $this_value=0;
-            foreach ($sk64_rows_e_pending as $key=>$value){
-                if ($rows_value['risk_level_id']==$value['evaluate_level']){
-                    $this_value=$value['count_e'];
-                    break;
-                }
-            }
-            ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
-                <?php echo $rows_value['risk_level_long_name']; ?> 
-                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
-            </button>
-            <?php
-        } ?>
-      </div><!-- /.col-lg-3 -->
-
-      <div class="col-lg-4" style="display: none;">
-        <?php
-          $count_rows_e_cutted=0;
-          foreach ($sk64_rows_e_cutted as $key=>$value){
-            $count_rows_e_cutted+=$value['count_e'];
-          }
-        ?>
-        <!-- <div class="sk64-btn-cutted" style="cursor:pointer; height: 60px;"> -->
-        <div class="sk64-btn-cutted" style="height: 60px;">
-          <h5>ข้อมูลตัดแล้ว <span class="badge badge-primary"><?php echo $count_rows_e_cutted; ?></span></h5>
-        </div>
-        <?php
-        $sql="select * from risk_level_songkran64 order by order_id desc";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        // print_r($rows);
-        foreach ($rows as $rows_key => $rows_value) {
-            $this_value=0;
-            foreach ($sk64_rows_e_cutted as $key=>$value){
-                if ($rows_value['risk_level_id']==$value['evaluate_level']){
-                    $this_value=$value['count_e'];
-                    break;
-                }
-            }
-            ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-cutted" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
-                <?php echo $rows_value['risk_level_long_name']; ?> 
-                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
-            </button>
-            <?php
-        } ?>
-      </div><!-- /.col-lg-3 -->
-
-      <div class="col-lg-4" style="display: none;">
-        <?php
-          $count_rows_e_all=0;
-          foreach ($sk64_rows_e_all as $key=>$value){
-            $count_rows_e_all+=$value['count_e'];
-          }
-        ?>
-        <!-- <div class="sk64-btn-all" style="cursor:pointer; height: 60px;"> -->
-        <div class="sk64-btn-all" style="height: 60px;">
-          <h5>ข้อมูลทั้งหมด <span class="badge badge-primary"><?php echo $count_rows_e_all; ?></span></h5>
-        </div>
-        <?php
-        $sql="select * from risk_level_songkran64 order by order_id desc";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        // print_r($rows);
-        foreach ($rows as $rows_key => $rows_value) {
-            $this_value=0;
-            foreach ($sk64_rows_e_all as $key=>$value){
-                if ($rows_value['risk_level_id']==$value['evaluate_level']){
-                    $this_value=$value['count_e'];
-                    break;
-                }
-            }
-            ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
-                <?php echo $rows_value['risk_level_long_name']; ?> 
-                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
-            </button>
-            <?php
-        } ?>
-      </div><!-- /.col-lg-3 -->
-
-
-      <div class="col-lg-3" style="display: none;">
-        <?php
-          $count_rows_risk_level_all=0;
-          foreach ($sk64_rows_risk_level_all as $key=>$value){
-            $count_rows_risk_level_all+=$value['count_risk_level'];
-          }
-        ?>
-        <!-- <div class="sk64-risk-evaluate" style="cursor:pointer; height: 60px;"> -->
-        <div class="sk64-risk-evaluate" style="height: 60px;">
-          <h5>ข้อมูลการประเมิน (จนท.) ข้อมูลสะสม <span class="badge badge-primary"><?php echo $count_rows_risk_level_all; ?></span></h5>
-        </div>
-        <?php
-        $sql="select * from risk_level_songkran64 order by order_id desc";
-        $obj=$connect->prepare($sql);
-        $obj->execute();
-        $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($rows as $rows_key => $rows_value) {
-            $this_value=0;
-            foreach ($sk64_rows_risk_level_all as $key=>$value){
-                if ($rows_value['risk_level_id']==$value['risk_level_id']){
-                    $this_value=$value['count_risk_level'];
-                    break;
-                }
-            }
-            ?>
-            <button risk_level_id="<?php echo $rows_value['risk_level_id']; ?>" type="button" class="btn btn-primary btn-lg btn-block text-left sk64-btn-risk-level-all-bak risk-evaluate" style="background-color:<?php echo $rows_value['background_color']; ?>;color:<?php echo $rows_value['color']; ?>; cursor: default;">
-                <?php
-                if ($rows_value['risk_level_id']=='39' or $rows_value['risk_level_id']=='59' or $rows_value['risk_level_id']=='99'){
-                  ?>
-                <i class="fa fa-home text-success"></i>
-                  <?php
-                }?>
-                <?php echo $rows_value['risk_level_long_name']; ?> 
-                <span class="badge badge-light float-right"><?php echo $this_value; ?></span>
-            </button>
-            <?php
-        } ?>
-      </div>
-      <!-- /.col-lg-3 -->
 
 <?php 
 } 
@@ -1188,11 +1042,11 @@ $(function(){
 //--------------------------------------- สงกรานต์64
   $(".sk64-risk-not-eval").click(function(){
     // console.log($(this).attr("risk_level_id"));
-    window.location = './pcu_register_list_songkran64.php';
+    window.location = './pcu_register_list_songkran64.php?type=not_eval';
   })
   $(".sk64-btn-risk-level-not-eval").click(function(){
     console.log($(this).attr("risk_level_id"));
-    window.location = './pcu_register_list_songkran64.php?risk_level_id='+$(this).attr("risk_level_id");
+    window.location = './pcu_register_list_songkran64.php?type=not_eval&risk_level_id='+$(this).attr("risk_level_id");
   })
   // $(".sk64-risk-evaluate").click(function(){
     // console.log($(this).attr("risk_level_id"));
@@ -1205,11 +1059,13 @@ $(function(){
     // window.location = './MyCovid19register.php?type=cutted&risk_level_id=-1';
   // })
   $(".sk64-btn-all").click(function(){
-    window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=-1';
+    // window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=-1';
+    window.location = './pcu_register_list_songkran64.php?type=all';
   })
   $(".sk64-btn-risk-level-all").click(function(){
       console.log($(this).attr("risk_level_id"));
-      window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
+      // window.location = './MyCovid19register_songkran64.php?type=all&risk_level_id=' + $(this).attr("risk_level_id");
+      window.location = './pcu_register_list_songkran64.php?type=all&risk_level_id='+$(this).attr("risk_level_id");
   })
   // $(".sk64-btn-risk-level").click(function(){
       // console.log($(this).attr("risk_level_id"));

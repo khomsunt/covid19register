@@ -36,8 +36,8 @@ include('../include/config.php');
             รายงาน
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="nav-link" href="./report_risk_list_grey.php" style="color:black;">รายชื่อกลุ่มเสี่ยงสีเทา</a>
-            <a class="nav-link" href="./report_risk_list_orange.php" style="color:black;">รายชื่อกลุ่มเสี่ยงสีส้ม</a>
+            <a class="nav-link" href="./pcu_register_list_songkran64.php?type=all&risk_level_id=203" style="color:black;">รายชื่อกลุ่มเสี่ยงสีเทา</a>
+            <a class="nav-link" href="./pcu_register_list_songkran64.php?type=all&risk_level_id=202" style="color:black;">รายชื่อกลุ่มเสี่ยงสีส้ม</a>
             <?php
             if ($_SESSION['group_id']=='2'){ 
             ?>

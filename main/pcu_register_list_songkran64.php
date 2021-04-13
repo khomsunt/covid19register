@@ -25,8 +25,7 @@ $sql="select c.*,
   r.cut_status_name,
   c.tel,
   r2.risk_level_long_name as evaluate_level_name
-  from from_real_risk c 
-  inner join from_real_risk_songkran64 s64 on s64.covid_register_id=c.covid_register_id
+  from from_real_risk_songkran64 c
   left join changwat cw on c.changwat_out_code=cw.changwat_code 
   left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
   left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
@@ -50,8 +49,20 @@ $sql="select c.*,
     $where.=" where c.hospcode='".$_SESSION['office_code']."'";
   }
   if ($_GET['risk_level_id']!='undefined' & $_GET['risk_level_id']!=''){
-    $where.=" and s64.real_risk=".$_GET['risk_level_id'];
+    $where.=" and c.real_risk=".$_GET['risk_level_id'];
   }
+
+  if ($where=="") {
+    if ($_GET['type']=='not_eval') {
+      $where=" where c.date_arrived_sakonnakhon is null ";
+    }
+  }
+  else {
+    if ($_GET['type']=='not_eval') {
+      $where.=" and c.date_arrived_sakonnakhon is null ";
+    }
+  }
+
   $sql.=$where;
   
   // echo "<br><br><br>";
