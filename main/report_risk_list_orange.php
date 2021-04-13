@@ -73,6 +73,40 @@ or concat(changwat_work_code,ampur_work_code) in ('7401','7402','1303','1306','1
 and date_to_sakonnakhon between '2021-04-09' and now()
 order by af.ampur_code,r.hospcode,r.date_to_sakonnakhon
 ";
+$sql=" select 
+af.ampur_name `l|c||อำเภอ`
+,hospcode `l|c||รหัส`
+,replace(office_name,'โรงพยาบาลส่งเสริมสุขภาพตำบล','รพ.สต.') `l|c||หน่วยบริการ`
+,fname `l|c||ชื่อ`
+,lname `l|c||สกุล`
+,cid `l|c||เลขบัตรประชาชน`
+,tel `l|c||โทรศัพท์`
+,o.occupation_name `l|c||อาชีพ`
+,ca.changwat_name `l|c||ที่อยู่ก่อนเข้าสกลนคร_จังหวัด`
+,aa.ampur_name `l|c||ที่อยู่ก่อนเข้าสกลนคร_อำเภอ`
+,cb.changwat_name `l|c||ที่ทำงานก่อนเข้าสกลนคร_จังหวัด`
+,ab.ampur_name `l|c||ที่ทำงานก่อนเข้าสกลนคร_อำเภอ`
+,r.date_to_sakonnakhon `l|c||วันที่จะเข้าสกลนคร`
+,house_in_no `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_เลขที่`
+,moo_in_code+0 `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_หมู่`
+,t1.tambon_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_ตำบล`
+,a1.ampur_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_อำเภอ`
+from from_real_risk_songkran64 r
+left join office f on f.office_code=r.hospcode
+left join ampur47 af on af.ampur_code=f.ampur_code
+left join coccupation o on o.occupation_id=r.occupation_id
+left join changwat ca on ca.changwat_code=r.changwat_out_code
+left join ampur aa on aa.ampur_code_full=concat(r.changwat_out_code,r.ampur_out_code)
+left join changwat cb on cb.changwat_code=r.changwat_work_code
+left join ampur ab on ab.ampur_code_full=concat(r.changwat_work_code,r.ampur_work_code)
+left join ampur47 a1 on a1.ampur_code_full=concat(changwat_in_code,ampur_in_code)
+left join tambon47 t1 on t1.tambon_code_full=concat(changwat_in_code,ampur_in_code,tambon_in_code)
+where ".$query_office_code." 
+real_risk = 202
+and date_to_sakonnakhon between '2021-04-09' and now()
+order by af.ampur_code,r.hospcode,r.date_to_sakonnakhon
+";
+
 // echo "<br><br><br>".$sql;
 $obj=$connect->prepare($sql);
 $obj->execute();

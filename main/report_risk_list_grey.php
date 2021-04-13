@@ -56,7 +56,7 @@ af.ampur_name `l|c||อำเภอ`
 ,moo_in_code+0 `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_หมู่`
 ,t1.tambon_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_ตำบล`
 ,a1.ampur_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_อำเภอ`
-from covid_register r
+from from_real_risk_songkran64 r
 left join office f on f.office_code=r.hospcode
 left join ampur47 af on af.ampur_code=f.ampur_code
 left join coccupation o on o.occupation_id=r.occupation_id
@@ -66,9 +66,8 @@ left join changwat cb on cb.changwat_code=r.changwat_work_code
 left join ampur ab on ab.ampur_code_full=concat(r.changwat_work_code,r.ampur_work_code)
 left join ampur47 a1 on a1.ampur_code_full=concat(changwat_in_code,ampur_in_code)
 left join tambon47 t1 on t1.tambon_code_full=concat(changwat_in_code,ampur_in_code,tambon_in_code)
-where ".$query_office_code.
-" (concat(changwat_out_code,ampur_out_code) in ('7401','7402','1303','1306','1040','1022','1039','1033','1021','1101','1203','5001','2004','7707','2701')
-or concat(changwat_work_code,ampur_work_code) in ('7401','7402','1303','1306','1040','1022','1039','1033','1021','1101','1203','5001','2004','7707','2701'))
+where ".$query_office_code." 
+real_risk = 203
 and date_to_sakonnakhon between '2021-04-09' and now()
 order by af.ampur_code,r.hospcode,r.date_to_sakonnakhon
 ";
