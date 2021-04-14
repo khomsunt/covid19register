@@ -56,6 +56,7 @@ include('../include/config.php');
               <a class="nav-link" href="./report_risk_ampur.php" style="color:black;">รายงานกลุ่มเสี่ยงรายอำเภอ</a>
             <?php } ?>
               <a class="nav-link" href="./report_in_date.php" style="color:black;">รายงานแยกรายวัน</a>
+              <a class="nav-link" href="./report_risk_area_songkran64.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล(ตั้งแต่9เมษา64)</a>
               <a class="nav-link" href="./report_risk_area.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล</a>
               <a class="nav-link" href="./ampur_rate.php" style="color:black;">รายงานการบันทึกข้อมูลของหน่วยบริการ</a>
               <a class="nav-link" href="./report_register.php" style="color:black;">รายงานการลงทะเบียน</a>
