@@ -157,7 +157,7 @@ include "./header.php";
         </h5>
         <div>
           <div class="input-group">
-            <input id="cid" type="text" class="form-control" placeholder="เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2" value="<?php echo $_POST['cid']; ?>">
+            <input id="cid" type="text" class="form-control" placeholder="ชื่อ หรือ เลขประจำตัวประชาชน" aria-label="เลขประจำตัวประชาชน" aria-describedby="basic-addon2" value="<?php echo $_POST['cid']; ?>">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary btn-info btn-cid-search" type="button" style="color:#000000">ค้นหา</button>
             </div>
