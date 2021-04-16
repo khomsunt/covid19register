@@ -1,17 +1,17 @@
-<?php 
+<?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if ($_SESSION['group_id']<=0){
-  header("Location: ./login.php");
+if ($_SESSION['group_id'] <= 0) {
+    header("Location: ./login.php");
 }
 echo "<br>";
 // print_r($_POST);
 // print_r($_SESSION);
-include('../include/config.php');
-include('../include/functions.php');
+include '../include/config.php';
+include '../include/functions.php';
 
-$sql="select c.*,
+$sql = "select c.*,
   p.prename_name,
   cw.changwat_name as changwat_name_out,
   a.ampur_name as ampur_name_out,
@@ -26,10 +26,10 @@ $sql="select c.*,
   c.tel,
   r2.risk_level_long_name as evaluate_level_name
   from from_real_risk_songkran64 c
-  left join changwat cw on c.changwat_out_code=cw.changwat_code 
+  left join changwat cw on c.changwat_out_code=cw.changwat_code
   left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
   left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
-  left join changwat cw2 on c.changwat_work_code=cw2.changwat_code 
+  left join changwat cw2 on c.changwat_work_code=cw2.changwat_code
   left join ampur a2 on c.changwat_work_code=a2.changwat_code and c.ampur_work_code=a2.ampur_code
   left join tambon t2 on c.changwat_work_code=t2.changwat_code and c.ampur_work_code=t2.ampur_code and c.tambon_work_code=t2.tambon_code
   left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
@@ -39,50 +39,47 @@ $sql="select c.*,
   left join risk_level r2 on c.real_risk=r2.risk_level_id
   left join prename p on c.prename_id=p.prename_id";
 // if ($_SESSION['group_id']==3){
-  $where="";
-  if (isset($_POST['cid'])){
-    $where.=" where c.hospcode='".$_SESSION['office_code']."' and (c.cid='".$_POST['cid']."' or c.fname like '%".$_POST['cid']."%') ";
-  }else if($_SESSION['group_id']=='7'){
+$where = "";
+if (isset($_POST['cid'])) {
+    $where .= " where c.hospcode='" . $_SESSION['office_code'] . "' and (c.cid='" . $_POST['cid'] . "' or c.fname like '%" . $_POST['cid'] . "%') ";
+} else if ($_SESSION['group_id'] == '7') {
     //$where.=" where c.ampur_in_code='".$_SESSION['office_code']."'";
-    $where.=" where c.ampur_in_code='".$_SESSION['ampur_code']."' ";
-  }else{
-    $where.=" where c.hospcode='".$_SESSION['office_code']."'";
-  }
-  if ($_GET['risk_level_id']!='undefined' & $_GET['risk_level_id']!=''){
-    $where.=" and c.real_risk=".$_GET['risk_level_id'];
-  }
+    $where .= " where c.ampur_in_code='" . $_SESSION['ampur_code'] . "' ";
+} else {
+    $where .= " where c.hospcode='" . $_SESSION['office_code'] . "'";
+}
+if ($_GET['risk_level_id'] != 'undefined' & $_GET['risk_level_id'] != '') {
+    $where .= " and c.real_risk=" . $_GET['risk_level_id'];
+}
 
-  if ($where=="") {
-    if ($_GET['type']=='not_eval') {
-      $where=" where c.date_arrived_sakonnakhon is null ";
+if ($where == "") {
+    if ($_GET['type'] == 'not_eval') {
+        $where = " where c.date_arrived_sakonnakhon is null ";
     }
-  }
-  else {
-    if ($_GET['type']=='not_eval') {
-      $where.=" and c.date_arrived_sakonnakhon is null ";
+} else {
+    if ($_GET['type'] == 'not_eval') {
+        $where .= " and c.date_arrived_sakonnakhon is null ";
     }
-  }
+}
 
-  $sql.=$where;
-  
-  // echo "<br><br><br>";
-  // print_r($rows_count);
+$sql .= $where;
 
-  $rp=10000000; //rows per page
-  $sql_count="select count(c.covid_register_id) as count_all from from_real_risk c ";
-  include("./autoPaginationFunction.php");
+// echo "<br><br><br>";
+// print_r($rows_count);
 
+$rp = 10000000; //rows per page
+$sql_count = "select count(c.covid_register_id) as count_all from from_real_risk c ";
+include "./autoPaginationFunction.php";
 
+$obj = $connect->prepare($sql);
+$obj->execute();
+$rows = $obj->fetchAll(PDO::FETCH_ASSOC);
 
-  $obj=$connect->prepare($sql);
-  $obj->execute();
-  $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
+// echo "<br><br>POST=";
+// print_r($_POST);
+// echo "<br><br><br><br><br><br><br><br><br>".$sql;
 
-  // echo "<br><br>POST=";
-  // print_r($_POST);
-  // echo "<br><br><br><br><br><br><br><br><br>".$sql;
-
-  // print_r($rows);
+// print_r($rows);
 ?>
 
 <!doctype html>
@@ -124,18 +121,18 @@ $sql="select c.*,
         left:       0;
         height:     100%;
         width:      100%;
-        background: rgba( 255, 255, 255, .8 ) 
-                    url('http://i.stack.imgur.com/FhHRx.gif') 
-                    50% 50% 
+        background: rgba( 255, 255, 255, .8 )
+                    url('http://i.stack.imgur.com/FhHRx.gif')
+                    50% 50%
                     no-repeat;
       }
       body.loading .modal {
-          overflow: hidden;   
+          overflow: hidden;
       }
       body.loading .modal {
           display: block;
       }
-      
+
 
 
     </style>
@@ -148,14 +145,14 @@ $sql="select c.*,
 <body>
 <div class="modal"></div>
   <?php
-    include("./header.php");
-  ?>
+include "./header.php";
+?>
 
       <div id="auto_table_title" style="padding: 10px; float:left; float:top; position:fixed; z-index:1000; background-color:#D3D3D3; width:100%;">
         <h5>
-          <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;"> 
-          รายชื่อผู้เดินทางเข้า 
-          <?php echo decodeCode('office',$_SESSION['office_code'],'office_code','office_name'); ?>
+          <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;">
+          รายชื่อผู้เดินทางเข้า
+          <?php echo decodeCode('office', $_SESSION['office_code'], 'office_code', 'office_name'); ?>
         </h5>
         <div>
           <div class="input-group">
@@ -163,7 +160,7 @@ $sql="select c.*,
             <div class="input-group-append">
               <button class="btn btn-outline-secondary btn-info btn-cid-search" type="button" style="color:#000000">ค้นหา</button>
             </div>
-          </div>        
+          </div>
         </div>
       </div>
       <div id="register_div" class="container" style="display:none;">
@@ -173,8 +170,8 @@ $sql="select c.*,
         <iframe id="register" frameborder="0" src="./register.php" title="" style="width:100%;height:100%"></iframe>
       </div>
       <?php
-      include("./autoPagination.php");
-      ?>
+include "./autoPagination.php";
+?>
 
     <main role="main">
 
@@ -188,28 +185,31 @@ $sql="select c.*,
             <th>อาชีพ</th>
             <th>ที่อยู่ก่อนเข้าสกลนคร</th>
             <th>ที่ทำงาน</th>
-            <th>มาที่</th>
+            <th>มาที่เลขที</th>
+            <th>มาที่หมู่</th>
+            <th>มาที่ตำบล</th>
+            <th>มาที่อำเภอ</th>
             <th>สถานะ</th>
-            <th>วันที่แจ้งมาถึงสกลนคร</th>  
-            <th>วันที่แจ้งออกจากสกลนคร</th>  
-            <th>วันที่มาถึงสกลนครจริง</th>  
-            <th>วันที่ออกจากสกลนครจริง</th>  
+            <th>วันที่แจ้งมาถึงสกลนคร</th>
+            <th>วันที่แจ้งออกจากสกลนคร</th>
+            <th>วันที่มาถึงสกลนครจริง</th>
+            <th>วันที่ออกจากสกลนครจริง</th>
             <th>สถานะข้อมูล</th>
             <th data-card-footer>โทรศัพท์</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $sql="select * from cut_status order by cut_status_id";
-          $obj=$connect->prepare($sql);
-          $obj->execute();
-          $rows_cut_status=$obj->fetchAll(PDO::FETCH_ASSOC);
-          foreach ($rows as $key => $value) {
-            ?>
+$sql = "select * from cut_status order by cut_status_id";
+$obj = $connect->prepare($sql);
+$obj->execute();
+$rows_cut_status = $obj->fetchAll(PDO::FETCH_ASSOC);
+foreach ($rows as $key => $value) {
+    ?>
             <tr id="<?php echo $value['covid_register_id'] ?>">
               <td>
-                <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $start+$key+1; ?>.</span>
-                <?php echo $value['prename_name'].$value['fname']." ".$value['lname']; ?>
+                <span class="badge badge-info" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;"><?php echo $start + $key + 1; ?>.</span>
+                <?php echo $value['prename_name'] . $value['fname'] . " " . $value['lname']; ?>
               </td>
               <td><div class="data"><?php echo $value['cid']; ?></div></div></td>
               <td><div class="data"><?php echo $value['register_datetime']; ?></div></td>
@@ -225,11 +225,18 @@ $sql="select c.*,
                 จ. <?php echo $value['changwat_work_name_out']; ?>
               </div></td>
               <td><div class="data">
-                ที่อยู่ <?php echo $value['house_in_no']; ?>
-                ม. <?php echo $value['moo_in_code']; ?>
-                ต. <?php echo $value['tambon_name_in']; ?>
-                อ. <?php echo $value['ampur_name_in']; ?>
+                <?php echo $value['house_in_no']; ?>
               </div></td>
+              <td><div class="data">
+              <?php echo $value['moo_in_code']; ?>
+              </div></td>
+              <td><div class="data">
+              <?php echo $value['tambon_name_in']; ?>
+              </div></td>
+              <td><div class="data">
+                <?php echo $value['ampur_name_in']; ?>
+              </div></td>
+
               <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
               <td>
                 <div class="data">
@@ -246,7 +253,7 @@ $sql="select c.*,
                   <?php echo $value['date_arrived_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
-                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_arrived_sakonnakhon'])?$value['date_arrived_sakonnakhon']:$value['date_to_sakonnakhon']); ?>"/>
+                  <input name="date_arrived_sakonnakhon" class="form-control datepicker" id="date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_arrived_sakonnakhon']) ? $value['date_arrived_sakonnakhon'] : $value['date_to_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -254,7 +261,7 @@ $sql="select c.*,
                   <?php echo $value['date_leaved_sakonnakhon']; ?>
                 </div>
                 <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
-                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon'])?$value['date_leaved_sakonnakhon']:$value['date_out_sakonnakhon']); ?>"/>
+                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon']) ? $value['date_leaved_sakonnakhon'] : $value['date_out_sakonnakhon']); ?>"/>
                 </div>
               </td>
               <td>
@@ -265,16 +272,16 @@ $sql="select c.*,
                   </button>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
                     <?php
-                      foreach ($rows_cut_status as $key => $value_cut_status) {
-                        if ($value_cut_status['cut_status_id']<>$value['cut_status_id']){
-                          ?>
+foreach ($rows_cut_status as $key => $value_cut_status) {
+        if ($value_cut_status['cut_status_id'] != $value['cut_status_id']) {
+            ?>
                           <button covid_register_id="<?php echo $value['covid_register_id']; ?>" cut_status_id="<?php echo $value_cut_status['cut_status_id']; ?>" class="dropdown-item btn-change-cut-status" type="button">
                             <?php echo $value_cut_status['cut_status_name']; ?>
                           </button>
                           <?php
-                        }
-                      }
-                    ?>
+}
+    }
+    ?>
                   </div>
                 </div>
               </td>
@@ -292,15 +299,15 @@ $sql="select c.*,
               </td>
             </tr>
           <?php
-          } ?>
+}?>
         </tbody>
       </table>
       </div>
     </main>
     <?php
-      include("./footer.php");
-    ?>
-    
+include "./footer.php";
+?>
+
     <script>
       $body = $("body");
       var cut_status_id_default=0;
@@ -343,7 +350,7 @@ $sql="select c.*,
           //alert(headerHeight+autoTableTitleHeight+autoPaginationHeight+20);
           $("#register_div").hide();
         $(".auto-pagination").show();
-        
+
 
 
 
@@ -442,7 +449,7 @@ $sql="select c.*,
               if (json_data.dataSource=='covid'){
                 var form = $('<form action="./pcu_register_list.php?<?php echo $strqry; ?>0" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
                 $('body').append(form);
-                $(form).submit();                
+                $(form).submit();
               }else{
                 let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
                 if (r==true){
@@ -506,13 +513,14 @@ $sql="select c.*,
   </body>
 </html>
 
-<?php 
-function deFormatDate($d){
-  $_return="";
-  if ($d<>""){
-    $a_d=explode("-",$d);
-    $_return=$a_d[2]."/".$a_d[1]."/".$a_d[0];
-  }
-  return $_return;
+<?php
+function deFormatDate($d)
+{
+    $_return = "";
+    if ($d != "") {
+        $a_d = explode("-", $d);
+        $_return = $a_d[2] . "/" . $a_d[1] . "/" . $a_d[0];
+    }
+    return $_return;
 }
 ?>
