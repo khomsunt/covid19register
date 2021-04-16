@@ -64,7 +64,8 @@ if ($where == "") {
 
 $sql .= $where;
 
-// echo "<br><br><br>";
+// echo "<br><br><br><br><br><br><br><br><br>";
+// echo $sql;
 // print_r($rows_count);
 
 $rp = 10000000; //rows per page
@@ -442,12 +443,12 @@ include "./footer.php";
             data: { cid: $("#cid").val() }
           })
           .done(function( msg ) {
-            console.log(msg);
-            $body.removeClass("loading");
+            // console.log(msg);
+             $body.removeClass("loading");
             let json_data=JSON.parse(msg);
             if (json_data.data.length>0){
               if (json_data.dataSource=='covid'){
-                var form = $('<form action="./pcu_register_list.php?<?php echo $strqry; ?>0" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
+                var form = $('<form action="./pcu_register_list_songkran64.php?<?php echo $strqry; ?>" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
                 $('body').append(form);
                 $(form).submit();
               }else{
