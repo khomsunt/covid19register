@@ -149,6 +149,7 @@ $rows = $obj->fetchAll(PDO::FETCH_ASSOC);
 include "./header.php";
 ?>
 
+
       <div id="auto_table_title" style="padding: 10px; float:left; float:top; position:fixed; z-index:1000; background-color:#D3D3D3; width:100%;">
         <h5>
           <img alt="เรียกข้อมูลใหม่" class="img-refresh" src="../image/refresh.svg" style="width:25px;height:25px;cursor:pointer;">
