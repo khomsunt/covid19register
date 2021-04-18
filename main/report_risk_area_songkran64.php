@@ -22,11 +22,15 @@ include('../include/functions.php');
 
 $sql= " select 
 concat(a.ampur_code,' ',a.ampur_name) `l|c||อำเภอ`
-,count(*) `r|n|s|ทั้งหมด`
-,sum(if(real_risk=203,1,0)) `r|n|s|สีเทา_ทั้งหมด`
-,sum(if(real_risk=203 and left(date_to_sakonnakhon,10)=left(now(),10),1,0)) `r|n|s|สีเทา_วันนี้`
-,sum(if(real_risk=202,1,0))  `r|n|s|สีส้ม_ทั้งหมด`
-,sum(if(real_risk=202 and left(date_to_sakonnakhon,10)=left(now(),10),1,0))  `r|n|s|สีส้ม_วันนี้`
+,count(*) `r|n|s|สะสม`
+,sum(if(real_risk=203,1,0)) `r|n|s|สีเทา_สะสม`
+,sum(if(real_risk=203 and left(date_to_sakonnakhon,10)=left(now(),10),1,0)) `r|n|s|สีเทา_จะเข้าสกลนครวันนี้`
+,sum(if(real_risk=202,1,0))  `r|n|s|สีส้ม_สะสม`
+,sum(if(real_risk=202 and left(date_to_sakonnakhon,10)=left(now(),10),1,0))  `r|n|s|สีส้ม_จะเข้าสกลนครวันนี้`
+,sum(if(real_risk=201,1,0)) `r|n|s|สีเหลือง_สะสม`
+,sum(if(real_risk=201 and left(date_to_sakonnakhon,10)=left(now(),10),1,0)) `r|n|s|สีเหลือง_จะเข้าสกลนครวันนี้`
+,sum(if(real_risk=200,1,0))  `r|n|s|สีเขียว_สะสม`
+,sum(if(real_risk=200 and left(date_to_sakonnakhon,10)=left(now(),10),1,0))  `r|n|s|สีเขียว_จะเข้าสกลนครวันนี้`
 from from_real_risk_songkran64 r
 inner join office o on office_code=r.hospcode
 inner join ampur47 a on a.ampur_code=o.ampur_code
@@ -87,7 +91,7 @@ $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div> -->
 <?php
-$title="จำนวนผู้ที่จะเดินทางเข้าสกลนคร ตั้งแต่ 9 เมษายน 2564 เป็นต้นมา ";
+$title="จำนวนผู้รายงานตัวจะเดินทางเข้าสกลนคร ตั้งแต่ 9 เมษายน 2564 เป็นต้นมา ";
 include("./autoTable.php");
 ?>
 <style>
