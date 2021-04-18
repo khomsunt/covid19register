@@ -11,55 +11,51 @@ echo "<br>";
 include '../include/config.php';
 include '../include/functions.php';
 
-$sql = "select c.*,
-  p.prename_name,
-  cw.changwat_name as changwat_name_out,
-  a.ampur_name as ampur_name_out,
-  t.tambon_name as tambon_name_out,
-  cw2.changwat_name as changwat_work_name_out,
-  a2.ampur_name as ampur_work_name_out,
-  t2.tambon_name as tambon_work_name_out,
-  a47.ampur_name as ampur_name_in,
-  t47.tambon_name as tambon_name_in,
-  o.occupation_name,
-  r.cut_status_name,
-  c.tel,
-  r2.risk_level_long_name as evaluate_level_name
-  from from_real_risk_songkran64 c
-  left join changwat cw on c.changwat_out_code=cw.changwat_code
-  left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
-  left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
-  left join changwat cw2 on c.changwat_work_code=cw2.changwat_code
-  left join ampur a2 on c.changwat_work_code=a2.changwat_code and c.ampur_work_code=a2.ampur_code
-  left join tambon t2 on c.changwat_work_code=t2.changwat_code and c.ampur_work_code=t2.ampur_code and c.tambon_work_code=t2.tambon_code
-  left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
-  left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
-  left join coccupation o on c.occupation_id=o.occupation_id
-  left join cut_status r on c.cut_status_id=r.cut_status_id
-  left join risk_level r2 on c.real_risk=r2.risk_level_id
-  left join prename p on c.prename_id=p.prename_id";
+$sql = "
+select c.*,
+p.prename_name,
+cw.changwat_name as changwat_name_out,
+a.ampur_name as ampur_name_out,
+t.tambon_name as tambon_name_out,
+cw2.changwat_name as changwat_work_name_out,
+a2.ampur_name as ampur_work_name_out,
+t2.tambon_name as tambon_work_name_out,
+a47.ampur_name as ampur_name_in,
+t47.tambon_name as tambon_name_in,
+o.occupation_name,
+r.cut_status_name,
+c.tel,
+r2.risk_level_long_name as evaluate_level_name
+from from_real_risk_songkran64 c
+left join changwat cw on c.changwat_out_code=cw.changwat_code
+left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
+left join tambon t on c.changwat_out_code=t.changwat_code and c.ampur_out_code=t.ampur_code and c.tambon_out_code=t.tambon_code
+left join changwat cw2 on c.changwat_work_code=cw2.changwat_code
+left join ampur a2 on c.changwat_work_code=a2.changwat_code and c.ampur_work_code=a2.ampur_code
+left join tambon t2 on c.changwat_work_code=t2.changwat_code and c.ampur_work_code=t2.ampur_code and c.tambon_work_code=t2.tambon_code
+left join ampur47 a47 on c.ampur_in_code=a47.ampur_code
+left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_code=t47.ampur_code and c.tambon_in_code=t47.tambon_code
+left join coccupation o on c.occupation_id=o.occupation_id
+left join cut_status r on c.cut_status_id=r.cut_status_id
+left join risk_level_songkran64 r2 on c.real_risk=r2.risk_level_id
+left join prename p on c.prename_id=p.prename_id 
+where c.cut_status_id not in (2,3)
+";
 // if ($_SESSION['group_id']==3){
 $where = "";
 if (isset($_POST['cid'])) {
-    $where .= " where c.hospcode='" . $_SESSION['office_code'] . "' and (c.cid='" . $_POST['cid'] . "' or c.fname like '%" . $_POST['cid'] . "%') ";
+  $where .= " and c.hospcode='" . $_SESSION['office_code'] . "' and (c.cid='" . $_POST['cid'] . "' or c.fname like '%" . $_POST['cid'] . "%') ";
 } else if ($_SESSION['group_id'] == '7') {
-    //$where.=" where c.ampur_in_code='".$_SESSION['office_code']."'";
-    $where .= " where c.ampur_in_code='" . $_SESSION['ampur_code'] . "' ";
+  //$where.=" and c.ampur_in_code='".$_SESSION['office_code']."'";
+  $where .= " and c.ampur_in_code='" . $_SESSION['ampur_code'] . "' ";
 } else {
-    $where .= " where c.hospcode='" . $_SESSION['office_code'] . "'";
+  $where .= " and c.hospcode='" . $_SESSION['office_code'] . "'";
 }
 if ($_GET['risk_level_id'] != 'undefined' & $_GET['risk_level_id'] != '') {
-    $where .= " and c.real_risk=" . $_GET['risk_level_id'];
+  $where .= " and c.real_risk=" . $_GET['risk_level_id'];
 }
-
-if ($where == "") {
-    if ($_GET['type'] == 'not_eval') {
-        $where = " where c.date_arrived_sakonnakhon is null ";
-    }
-} else {
-    if ($_GET['type'] == 'not_eval') {
-        $where .= " and c.date_arrived_sakonnakhon is null ";
-    }
+if ($_GET['type'] == 'not_eval') {
+  $where .= " and c.date_arrived_sakonnakhon is null ";
 }
 
 $sql .= $where;
@@ -194,10 +190,12 @@ include "./autoPagination.php";
             <th>สถานะ</th>
             <th>วันที่แจ้งมาถึงสกลนคร</th>
             <th>วันที่แจ้งออกจากสกลนคร</th>
-            <th>วันที่มาถึงสกลนครจริง</th>
-            <th>วันที่ออกจากสกลนครจริง</th>
-            <th>สถานะข้อมูล</th>
-            <th data-card-footer>โทรศัพท์</th>
+            <th>โทรศัพท์</th>
+            <!-- <th>วันที่มาถึงสกลนครจริง</th>
+            <th>วันที่ออกจากสกลนครจริง</th> -->
+            <!-- <th>สถานะข้อมูล</th> -->
+            <!-- <th data-card-footer>โทรศัพท์</th> -->
+            <th><br></th>
           </tr>
         </thead>
         <tbody>
@@ -238,8 +236,9 @@ foreach ($rows as $key => $value) {
               <td><div class="data">
                 <?php echo $value['ampur_name_in']; ?>
               </div></td>
-
-              <td><div class="data"><?php echo $value['evaluate_level_name']; ?></div></td>
+              <td><div class="data">
+                <?php echo $value['evaluate_level_name']; ?>
+              </div></td>
               <td>
                 <div class="data">
                   <?php echo $value['date_to_sakonnakhon']; ?>
@@ -251,6 +250,24 @@ foreach ($rows as $key => $value) {
                 </div>
               </td>
               <td>
+                <div class="data">
+                  <?php echo $value['tel']; ?>
+                </div>
+              </td>
+              <td style="width: 200px;">
+                <!-- <div class="data"> -->
+                  <span class="float-right">
+                    <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-cancel-travel btn_cancel_travel_<?php echo $value['covid_register_id']; ?>'>
+                      ยกเลิกการเดินทาง
+                    </button>
+                    <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-danger btn-delete-travel btn_delete_travel_<?php echo $value['covid_register_id']; ?>'>
+                      ลบข้อมูล
+                    </button>
+                  </span>
+                <!-- </div> -->
+              </td>
+
+              <!-- <td>
                 <div class="data date_arrived_sakonnakhon_<?php echo $value['covid_register_id']; ?>">
                   <?php echo $value['date_arrived_sakonnakhon']; ?>
                 </div>
@@ -265,8 +282,9 @@ foreach ($rows as $key => $value) {
                 <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" style="display:none">
                   <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon']) ? $value['date_leaved_sakonnakhon'] : $value['date_out_sakonnakhon']); ?>"/>
                 </div>
-              </td>
-              <td>
+              </td> -->
+              
+              <!-- <td>
                 <div class="data cut_status_id_<?php echo $value['covid_register_id']; ?>" ><?php echo $value['cut_status_name']; ?></div>
                 <div class="btn-group select_cut_status_id_<?php echo $value['covid_register_id']; ?>" style="display:none">
                   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="background-color:<?php echo $value['background_color']; ?>;color:<?php echo $value['color']; ?>;">
@@ -298,7 +316,7 @@ foreach ($rows_cut_status as $key => $value_cut_status) {
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-save btn_save_<?php echo $value['covid_register_id']; ?>' style="display:none;">บันทึก</button>
                   <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-danger btn-cancel btn_cancel_<?php echo $value['covid_register_id']; ?>' style="display:none;">ยกเลิก</button>
                 </span>
-              </td>
+              </td> -->
             </tr>
           <?php
 }?>
@@ -310,209 +328,240 @@ foreach ($rows_cut_status as $key => $value_cut_status) {
 include "./footer.php";
 ?>
 
-    <script>
-      $body = $("body");
-      var cut_status_id_default=0;
-      function close_iframe(){
-        $("#register_div").hide();
-        $(".auto-pagination").show();
-        $("#register").attr("src","./register.php");
-      }
-      function formatDate(d) {
-        var r="";
-        if (typeof d !='undefined') {
-          if (d.length>0) {
-            var x=d.split("/");
-            r=x[2]+"-"+x[1]+"-"+x[0];
-          }
-        }
-        return r;
-      }
-      function deFormatDate(d) {
-        var r="";
-        if (typeof d !='undefined') {
-          if (d.length>0) {
-            var x=d.split("-");
-            r=x[0]+"/"+x[1]+"/"+x[2];
-          }
-        }
-        return r;
-      }
+<script>
+$body = $("body");
+var cut_status_id_default=0;
+function close_iframe(){
+  $("#register_div").hide();
+  $(".auto-pagination").show();
+  $("#register").attr("src","./register.php");
+}
+function formatDate(d) {
+  var r="";
+  if (typeof d !='undefined') {
+    if (d.length>0) {
+      var x=d.split("/");
+      r=x[2]+"-"+x[1]+"-"+x[0];
+    }
+  }
+  return r;
+}
+function deFormatDate(d) {
+  var r="";
+  if (typeof d !='undefined') {
+    if (d.length>0) {
+      var x=d.split("-");
+      r=x[0]+"/"+x[1]+"/"+x[2];
+    }
+  }
+  return r;
+}
 
-      var headerHeight=0;
-      var autoTableTitleHeight=0;
-      var autoPaginationHeight=0;
-      $(function () {
-          headerHeight=$("#topbar_menu").outerHeight();
-          $("#auto_table_title").offset({top: headerHeight});
-          autoTableTitleHeight=$("#auto_table_title").outerHeight();
-          autoPaginationHeight=$("#auto_pagination").outerHeight(true);
-          $("#auto_pagination").css("margin-top",headerHeight+autoTableTitleHeight);
-          $("#divMyTable").css("margin-top",(headerHeight+autoTableTitleHeight+autoPaginationHeight)+"px");
-          //alert(headerHeight+autoTableTitleHeight+autoPaginationHeight+20);
-          $("#register_div").hide();
-        $(".auto-pagination").show();
+var headerHeight=0;
+var autoTableTitleHeight=0;
+var autoPaginationHeight=0;
+$(function () {
+  headerHeight=$("#topbar_menu").outerHeight();
+  $("#auto_table_title").offset({top: headerHeight});
+  autoTableTitleHeight=$("#auto_table_title").outerHeight();
+  autoPaginationHeight=$("#auto_pagination").outerHeight(true);
+  $("#auto_pagination").css("margin-top",headerHeight+autoTableTitleHeight);
+  $("#divMyTable").css("margin-top",(headerHeight+autoTableTitleHeight+autoPaginationHeight)+"px");
+  //alert(headerHeight+autoTableTitleHeight+autoPaginationHeight+20);
+  $("#register_div").hide();
+  $(".auto-pagination").show();
 
-
-
-
-        $('.datepicker').datepicker({
-          // startDate: '+0d',
-          format: 'dd/mm/yyyy',
-          todayBtn: false,
-          language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
-          // thaiyear: true, //Set เป็นปี พ.ศ.
-          autoclose: true
-        });
-
-        $(".btn-edit").click(function(){
-          cut_status_id_default=$(this).attr("cut_status_id");
-          let thisId=$(this).attr("covid_register_id");
-          $(this).parent().find(".btn-edit").hide();
-          $(this).parent().find(".btn-save").show();
-          $(this).parent().find(".btn-cancel").show();
-
-          $(".cut_status_id_"+thisId).hide();
-          $(".select_cut_status_id_"+thisId).show();
-          $(".date_arrived_sakonnakhon_"+thisId).hide();
-          $(".select_date_arrived_sakonnakhon_"+thisId).show();
-          $(".date_leaved_sakonnakhon_"+thisId).hide();
-          $(".select_date_leaved_sakonnakhon_"+thisId).show();
-        })
-        $(".btn-save").click(function(){
-          let thisId=$(this).attr("covid_register_id");
-          $(this).parent().find(".btn-edit").show();
-          $(this).parent().find(".btn-save").hide();
-          $(this).parent().find(".btn-cancel").hide();
-          if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
-          }else{
-            $("#date_arrived_sakonnakhon_"+thisId).remove();
-            $("#date_leaved_sakonnakhon_"+thisId).remove();
-          }
-          console.log($("#date_arrived_sakonnakhon_"+thisId).val());
-          console.log($("#date_leaved_sakonnakhon_"+thisId).val());
-          console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
-
-          $.ajax({
-            method: "POST",
-            url: "./pcu_changeRiskLevel.php",
-            data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
-          })
-          .done(function( msg ) {
-            console.log(msg);
-            // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
-            //   thisObj.parent().parent().parent().parent().parent().hide();
-            // }else{
-            //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
-            // }
-            // console.log(msg);
-            location.reload();
-          })
-
-
-
-          $(".cut_status_id_"+thisId).show();
-          $(".select_cut_status_id_"+thisId).hide();
-          $(".date_arrived_sakonnakhon_"+thisId).show();
-          $(".select_date_arrived_sakonnakhon_"+thisId).hide();
-          $(".date_leaved_sakonnakhon_"+thisId).show();
-          $(".select_date_leaved_sakonnakhon_"+thisId).hide();
-
-        })
-        $(".btn-cancel").click(function(){
-          let thisId=$(this).attr("covid_register_id");
-          $(this).parent().find(".btn-edit").show();
-          $(this).parent().find(".btn-save").hide();
-          $(this).parent().find(".btn-cancel").hide();
-
-          $(".cut_status_id_"+thisId).show();
-          $(".select_cut_status_id_"+thisId).hide();
-          $(".date_arrived_sakonnakhon_"+thisId).show();
-          $(".select_date_arrived_sakonnakhon_"+thisId).hide();
-          $(".date_leaved_sakonnakhon_"+thisId).show();
-          $(".select_date_leaved_sakonnakhon_"+thisId).hide();
-        })
-        $("#btn-close-register").click(function(){
-          close_iframe();
-        })
-        $(".btn-cid-search").click(function(){
-          $body.addClass("loading");
-          var thisObj=$(this);
-          $.ajax({
-            method: "POST",
-            url: "./pcu_cid_search.php",
-            data: { cid: $("#cid").val() }
-          })
-          .done(function( msg ) {
-            // console.log(msg);
-             $body.removeClass("loading");
-            let json_data=JSON.parse(msg);
-            if (json_data.data.length>0){
-              if (json_data.dataSource=='covid'){
-                var form = $('<form action="./pcu_register_list_songkran64.php?<?php echo $strqry; ?>" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
-                $('body').append(form);
-                $(form).submit();
-              }else{
-                let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
-                if (r==true){
-                  $("#register").contents().find("input").val("");
-                  $("#register").contents().find("select").val("");
-                  let thisData=json_data.data[0];
-                  $("#divMyTable").hide();
-                  $("#register_div").show();
-                  $(".auto-pagination").hide();
-                  $("#register").contents().find('#cid').val(thisData['CID']);
-                  $("#register").contents().find('#fname').val(thisData['NAME']);
-                  $("#register").contents().find('#lname').val(thisData['LNAME']);
-                  $("#register").contents().find('#tel').val(thisData['MOBILE']);
-                  $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
-                  document.getElementById("register").contentWindow.ampurInCodeChange('47'+thisData['AMPUR'],thisData['TAMBON']);
-                  document.getElementById("register").contentWindow.tambonInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON'],thisData['VILLAGE']);
-                  $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
-                }
-              }
-            }else{
-              let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
-              if (r==true){
-                $("#register").contents().find("input").val("");
-                $("#register").contents().find("select").val("");
-                $("#divMyTable").hide();
-                $("#register_div").show();
-                $(".auto-pagination").hide();
-                $("#register").contents().find('#cid').val($("#cid").val());
-
-              }
-            }
-          });
-        });
-        $(".btn-change-cut-status").click(function(){
-          var thisObj=$(this);
-          cut_status_id_default=thisObj.attr("cut_status_id");
-          console.log(thisObj.parent().parent().children().first());
-          thisObj.parent().parent().children().first().html(thisObj.html());
-          // $.ajax({
-          //   method: "POST",
-          //   url: "./changeRiskLevel.php",
-          //   data: { covid_register_id: thisObj.attr("covid_register_id"), cut_status_id: thisObj.attr("cut_status_id") }
-          // })
-          // .done(function( msg ) {
-          //   // if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
-          //   //   thisObj.parent().parent().parent().parent().parent().hide();
-          //   // }else{
-          //   //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
-          //   // }
-          //   console.log(msg)
-          // })
-        })
-        $(".img-refresh").click(function(){
-          location.reload();
-        })
+  $(".btn-cancel-travel").click(function(){
+    if (confirm('ยืนยันยกเลิกการเดินทาง')==true) {
+      let thisId=$(this).attr('covid_register_id');
+      let data= { covid_register_id: thisId, cut_status_id: 3 };
+      // console.log('cancel',data);
+      $.ajax({
+        method: "POST",
+        url: "./pcu_changeCutStatus.php",
+        data: data
       })
-    </script>
-    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+      .done(function( msg ) {
+        // console.log(msg);
+        location.reload();
+      })
+    }
+  });
 
-  </body>
+  $(".btn-delete-travel").click(function(){
+    if (confirm('ยืนยันลบข้อมูล')==true) {
+      let thisId=$(this).attr('covid_register_id');
+      let data= { covid_register_id: thisId, cut_status_id: 2 };
+      // console.log('delete',data);
+      $.ajax({
+        method: "POST",
+        url: "./pcu_changeCutStatus.php",
+        data: data
+      })
+      .done(function( msg ) {
+        // console.log(msg);
+        location.reload();
+      })
+    }
+  });
+
+  $('.datepicker').datepicker({
+    // startDate: '+0d',
+    format: 'dd/mm/yyyy',
+    todayBtn: false,
+    language: 'th',//เปลี่ยน label ต่างของ ปฏิทิน ให้เป็น ภาษาไทย   (ต้องใช้ไฟล์ bootstrap-datepicker.th.min.js นี้ด้วย)
+    // thaiyear: true, //Set เป็นปี พ.ศ.
+    autoclose: true
+  });
+
+  $(".btn-edit").click(function(){
+    cut_status_id_default=$(this).attr("cut_status_id");
+    let thisId=$(this).attr("covid_register_id");
+    $(this).parent().find(".btn-edit").hide();
+    $(this).parent().find(".btn-save").show();
+    $(this).parent().find(".btn-cancel").show();
+
+    $(".cut_status_id_"+thisId).hide();
+    $(".select_cut_status_id_"+thisId).show();
+    $(".date_arrived_sakonnakhon_"+thisId).hide();
+    $(".select_date_arrived_sakonnakhon_"+thisId).show();
+    $(".date_leaved_sakonnakhon_"+thisId).hide();
+    $(".select_date_leaved_sakonnakhon_"+thisId).show();
+  })
+  $(".btn-save").click(function(){
+    let thisId=$(this).attr("covid_register_id");
+    $(this).parent().find(".btn-edit").show();
+    $(this).parent().find(".btn-save").hide();
+    $(this).parent().find(".btn-cancel").hide();
+    if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
+    }else{
+      $("#date_arrived_sakonnakhon_"+thisId).remove();
+      $("#date_leaved_sakonnakhon_"+thisId).remove();
+    }
+    console.log($("#date_arrived_sakonnakhon_"+thisId).val());
+    console.log($("#date_leaved_sakonnakhon_"+thisId).val());
+    console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
+
+    $.ajax({
+      method: "POST",
+      url: "./pcu_changeRiskLevel.php",
+      data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
+    })
+    .done(function( msg ) {
+      console.log(msg);
+      // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+      //   thisObj.parent().parent().parent().parent().parent().hide();
+      // }else{
+      //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
+      // }
+      // console.log(msg);
+      location.reload();
+    })
+
+
+
+    $(".cut_status_id_"+thisId).show();
+    $(".select_cut_status_id_"+thisId).hide();
+    $(".date_arrived_sakonnakhon_"+thisId).show();
+    $(".select_date_arrived_sakonnakhon_"+thisId).hide();
+    $(".date_leaved_sakonnakhon_"+thisId).show();
+    $(".select_date_leaved_sakonnakhon_"+thisId).hide();
+
+  })
+  $(".btn-cancel").click(function(){
+    let thisId=$(this).attr("covid_register_id");
+    $(this).parent().find(".btn-edit").show();
+    $(this).parent().find(".btn-save").hide();
+    $(this).parent().find(".btn-cancel").hide();
+
+    $(".cut_status_id_"+thisId).show();
+    $(".select_cut_status_id_"+thisId).hide();
+    $(".date_arrived_sakonnakhon_"+thisId).show();
+    $(".select_date_arrived_sakonnakhon_"+thisId).hide();
+    $(".date_leaved_sakonnakhon_"+thisId).show();
+    $(".select_date_leaved_sakonnakhon_"+thisId).hide();
+  })
+  $("#btn-close-register").click(function(){
+    close_iframe();
+  })
+  $(".btn-cid-search").click(function(){
+    $body.addClass("loading");
+    var thisObj=$(this);
+    $.ajax({
+      method: "POST",
+      url: "./pcu_cid_search.php",
+      data: { cid: $("#cid").val() }
+    })
+    .done(function( msg ) {
+      // console.log(msg);
+        $body.removeClass("loading");
+      let json_data=JSON.parse(msg);
+      if (json_data.data.length>0){
+        if (json_data.dataSource=='covid'){
+          var form = $('<form action="./pcu_register_list_songkran64.php?<?php echo $strqry; ?>" method="post"><input type="hidden" name="cid" value="' + $("#cid").val() + '"></input>' + '</form>');
+          $('body').append(form);
+          $(form).submit();
+        }else{
+          let r=confirm("ไม่พบข้อมูลในฐานโควิด แต่พบข้อมูลในฐาน HDC ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่");
+          if (r==true){
+            $("#register").contents().find("input").val("");
+            $("#register").contents().find("select").val("");
+            let thisData=json_data.data[0];
+            $("#divMyTable").hide();
+            $("#register_div").show();
+            $(".auto-pagination").hide();
+            $("#register").contents().find('#cid').val(thisData['CID']);
+            $("#register").contents().find('#fname').val(thisData['NAME']);
+            $("#register").contents().find('#lname').val(thisData['LNAME']);
+            $("#register").contents().find('#tel').val(thisData['MOBILE']);
+            $("#register").contents().find('#ampur_in_code').val(thisData['AMPUR']);
+            document.getElementById("register").contentWindow.ampurInCodeChange('47'+thisData['AMPUR'],thisData['TAMBON']);
+            document.getElementById("register").contentWindow.tambonInCodeChange('47'+thisData['AMPUR']+thisData['TAMBON'],thisData['VILLAGE']);
+            $("#register").contents().find('#house_in_no').val(thisData['HOUSE']);
+          }
+        }
+      }else{
+        let r=confirm('ไม่พบข้อมูลที่ต้องการค้นหา ต้องการลงทะเบียนรายงานเข้าสกลนครหรือไม่');
+        if (r==true){
+          $("#register").contents().find("input").val("");
+          $("#register").contents().find("select").val("");
+          $("#divMyTable").hide();
+          $("#register_div").show();
+          $(".auto-pagination").hide();
+          $("#register").contents().find('#cid').val($("#cid").val());
+
+        }
+      }
+    });
+  });
+  $(".btn-change-cut-status").click(function(){
+    var thisObj=$(this);
+    cut_status_id_default=thisObj.attr("cut_status_id");
+    console.log(thisObj.parent().parent().children().first());
+    thisObj.parent().parent().children().first().html(thisObj.html());
+    // $.ajax({
+    //   method: "POST",
+    //   url: "./changeRiskLevel.php",
+    //   data: { covid_register_id: thisObj.attr("covid_register_id"), cut_status_id: thisObj.attr("cut_status_id") }
+    // })
+    // .done(function( msg ) {
+    //   // if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+    //   //   thisObj.parent().parent().parent().parent().parent().hide();
+    //   // }else{
+    //   //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
+    //   // }
+    //   console.log(msg)
+    // })
+  })
+  $(".img-refresh").click(function(){
+    location.reload();
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/bootstrap-datepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.th.js"></script>
+
+</body>
 </html>
 
 <?php

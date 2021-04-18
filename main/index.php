@@ -240,218 +240,77 @@ $rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 //// ---------------- //// ---------------- //// ---------------- //// ---------------- //// ---------------- 
 //// ---------------- songkran64
-$sk64_sql_common="select c.real_risk as risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level 
+$sk64_sql_A="select c.real_risk as risk_level_id,r.risk_level_long_name,r.risk_level_name,count(c.covid_register_id) as count_risk_level 
   from from_real_risk_songkran64 c 
   left join risk_level_songkran64 r on c.real_risk=r.risk_level_id 
-  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+  left join ampur47 a on c.ampur_in_code=a.ampur_code 
+  where c.cut_status_id not in (2,3) ";
   
-$sk64_sql_e_common="select c.real_risk as evaluate_level,r.risk_level_long_name,r.risk_level_name,count(*) as count_e 
+$sk64_sql_B="select c.real_risk as evaluate_level,r.risk_level_long_name,r.risk_level_name,count(*) as count_e 
   from from_real_risk_songkran64 c 
   left join risk_level_songkran64 r on c.real_risk=r.risk_level_id 
-  left join ampur47 a on c.ampur_in_code=a.ampur_code ";
+  left join ampur47 a on c.ampur_in_code=a.ampur_code 
+  where c.cut_status_id not in (2,3) ";
 
 switch ($_SESSION['group_id']) {
   case 1:
   case 2:
   case 4:
   case 5:
-    $sk64_sql=$sk64_sql_common."
-      where  cut_status_id=0 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where date_arrived_sakonnakhon is null 
+    $sk64_sql_all=$sk64_sql_B."
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
+      and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     break;
   case 3:
-    $sk64_sql=$sk64_sql_common."
-      where 
-      cut_status_id=0 
+    $sk64_sql_all=$sk64_sql_B."
       and a.node_id=:user_node_id 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      where 
-      a.node_id=:user_node_id 
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
       and a.node_id=:user_node_id 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      and a.node_id=:user_node_id 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      where 
-      a.node_id=:user_node_id 
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where a.node_id=:user_node_id 
       and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     break;
   case 7:
-      $sk64_sql=$sk64_sql_common."
-      where 
-      cut_status_id=1 
+    $sk64_sql_all=$sk64_sql_B."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where c.ampur_in_code=:ampur_code 
       and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
     break;
   case 8:
   case 9:
-      $sk64_sql=$sk64_sql_common."
-      where 
-      cut_status_id=1 
+    $sk64_sql_all=$sk64_sql_B."
       and c.hospcode=:hospcode 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      where 
-      c.hospcode=:hospcode 
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
       and c.hospcode=:hospcode 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      and c.hospcode=:hospcode 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      where 
-      c.hospcode=:hospcode 
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where c.hospcode=:hospcode 
       and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     $sk64_params=[ 'hospcode' => $_SESSION['office_code'] ];
     break;
 
   case 10:
-      $sk64_sql=$sk64_sql_common."
-      where 
-      cut_status_id=1 
+    $sk64_sql_all=$sk64_sql_B."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where c.ampur_in_code=:ampur_code 
       and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     $sk64_params=['ampur_code'=>$_SESSION['ampur_code']];
     break;
 
   case 11:
-      $sk64_sql=$sk64_sql_common."
-      where 
-      cut_status_id=1 
+    $sk64_sql_all=$sk64_sql_B."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all=$sk64_sql_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by
-      c.real_risk";
-    $sk64_sql_e_pending=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=0
+      group by c.real_risk";
+    $sk64_sql_not_eval=$sk64_sql_A."
       and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_cutted=$sk64_sql_e_common."
-      where 
-      c.cut_status_id=1
-      and c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_e_all=$sk64_sql_e_common."
-      where 
-      c.ampur_in_code=:ampur_code 
-      group by 
-      c.real_risk";
-    $sk64_sql_all_not_eval=$sk64_sql_common."
-      where c.ampur_in_code=:ampur_code 
       and date_arrived_sakonnakhon is null 
       group by c.real_risk";
     $sk64_params=[ 'ampur_code' => $_SESSION['ampur_code'] ];
@@ -461,32 +320,14 @@ switch ($_SESSION['group_id']) {
     # code...
     break;
 }
-$obj=$connect->prepare($sk64_sql);
-$obj->execute($sk64_params);
-$sk64_rows_risk_level=$obj->fetchAll(PDO::FETCH_ASSOC);
 
 $obj=$connect->prepare($sk64_sql_all);
 $obj->execute($sk64_params);
-$sk64_rows_risk_level_all=$obj->fetchAll(PDO::FETCH_ASSOC);
-
-// echo "<br>sk64_sql_e_pending- ".$sk64_sql_e_pending;
-$obj=$connect->prepare($sk64_sql_e_pending);
-$obj->execute($sk64_params);
-$sk64_rows_e_pending=$obj->fetchAll(PDO::FETCH_ASSOC);
-
-$obj=$connect->prepare($sk64_sql_e_cutted);
-$obj->execute($sk64_params);
-$sk64_rows_e_cutted=$obj->fetchAll(PDO::FETCH_ASSOC);
-
-$obj=$connect->prepare($sk64_sql_e_all);
-$obj->execute($sk64_params);
 $sk64_rows_e_all=$obj->fetchAll(PDO::FETCH_ASSOC);
 
-$obj=$connect->prepare($sk64_sql_all_not_eval);
+$obj=$connect->prepare($sk64_sql_not_eval);
 $obj->execute($sk64_params);
 $sk64_rows_all_not_eval=$obj->fetchAll(PDO::FETCH_ASSOC);
-
-
 
 ?>
 
@@ -534,31 +375,6 @@ $sk64_rows_all_not_eval=$obj->fetchAll(PDO::FETCH_ASSOC);
 include("./header.php");
 ?>
 <main role="main" style="margin-top:50px;">
-
-
-
-
-<div style="width: 100%; text-align: center;">
-  <div>
-    <!-- <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';"> -->
-    <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=203';">
-      รายชื่อกลุ่มเสี่ยงสีเทา
-    </div>
-    <!-- <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';"> -->
-    <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=202';">
-      รายชื่อกลุ่มเสี่ยงสีส้ม
-    </div>
-  </div>
-  <div style="height: 20px;"></div>
-  <div style="width: 100%; text-align: center;">
-    <img src="../image/skn_covid_color_202104.jpg" style="width: 400px;">
-  </div>
-</div>
-<br><br><br><br>
-
-
-
-
 
 
 <!-- ด่านตรวจ -->
@@ -650,28 +466,26 @@ include("./header.php");
   </div>
 
   <div class="container marketing">
-    <center>
-      <h5>ข้อมูลการรายงานตัวเข้าสกลนคร <?php echo $_SESSION['office_name']; ?></h5>
-    </center>
-    <?php
-// print_r($_SESSION);
-if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
-?>
-      <center>
-      <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
-      </center>
-<?php
-}
-?>
     <div class="row">
 <?php
 if ($_SESSION['group_id']>0){
 ?>
 
 
-
-
       <div class="col-lg-6" style="margin-bottom: 20px;">
+        <center>
+          <h5>ข้อมูลการรายงานตัวเข้าสกลนคร <?php echo $_SESSION['office_name']; ?></h5>
+        </center>
+    <?php
+// print_r($_SESSION);
+if (($_SESSION['node_id']>0) and ($_SESSION['group_id']==3)){
+?>
+        <center>
+          <h5>Node <?php echo decodeCode('node',$_SESSION['node_id'],'node_id','node_name'); ?></h5>
+        </center>
+<?php
+}
+?>
         <?php
           $count_rows_e_all=0;
           foreach ($sk64_rows_e_all as $key=>$value){
@@ -706,7 +520,27 @@ if ($_SESSION['group_id']>0){
       </div><!-- /.col-lg-6 -->
 
 
-      <div class="col-lg-6">
+      <div class="col-lg-6" style="margin-bottom: 20px;">
+        <div style="width: 100%; text-align: center;">
+          <div>
+            <!-- <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='report_risk_list_grey.php';"> -->
+            <div style="display: inline; background-color: #7f7f7f; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; margin-right: 10px; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=203';">
+              รายชื่อกลุ่มเสี่ยงสีเทา
+            </div>
+            <!-- <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='report_risk_list_orange.php';"> -->
+            <div style="display: inline; background-color: #ff6600; border: solid 1px #000000; padding: 10px; border-radius: 5px; color: #FFFFFF; cursor: pointer;" onclick="window.location='pcu_register_list_songkran64.php?type=all&risk_level_id=202';">
+              รายชื่อกลุ่มเสี่ยงสีส้ม
+            </div>
+          </div>
+          <div style="height: 20px;"></div>
+          <div style="width: 100%; text-align: center;">
+            <img src="../image/skn_covid_color_202104.jpg" style="width: 400px;">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-6" style="display: none;">
         <?php
           $count_rows_risk_level_all=0;
           foreach ($sk64_rows_all_not_eval as $key=>$value){
