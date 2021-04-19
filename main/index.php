@@ -452,7 +452,7 @@ $sql = "select * from risk_level_songkran64_v2 order by order_id desc";
 
 <div class="container marketing" style="width: 95%; border: solid 1px #000000; border-radius: 7px; padding-top: 10px; padding: 5px; margin-bottom: 10px;">
   <div style="border: solid 1px #E2E2E2; border-radius: 5px; padding: 2px; padding-left: 10px; margin-bottom: 20px;">
-    <h5>แบ่งตามเกณฑ์พื้นที่เสี่ยงใหม่(ผู้ที่จะเดินทางเข้าสกลนครตั้งแต่วันที่ 9 - 17 เมษายน 2564 เป็นต้นมา)</h5>
+    <h5>แบ่งตามเกณฑ์พื้นที่เสี่ยงใหม่(ผู้ที่จะเดินทางเข้าสกลนครตั้งแต่วันที่ 9 - 17 เมษายน 2564)</h5>
   </div>
 
   <div class="container marketing">
