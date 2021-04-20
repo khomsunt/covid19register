@@ -60,6 +60,14 @@ include('../include/config.php');
               <a class="nav-link" href="./report_risk_area.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล</a>
               <a class="nav-link" href="./ampur_rate.php" style="color:black;">รายงานการบันทึกข้อมูลของหน่วยบริการ</a>
               <a class="nav-link" href="./report_register.php" style="color:black;">รายงานการลงทะเบียน</a>
+            <?php
+            if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='12'){ 
+            ?>
+              <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบินจุดที่ 1</a>
+              <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบินจุดที่ 2</a>
+            <?php
+            }
+            ?>
            </div>
         </li>
 
