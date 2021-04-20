@@ -31,11 +31,11 @@ include('../include/config.php');
         } ?>
 
 
-        <li class="nav-item active dropdown" style="width:400px;">
+        <li class="nav-item active dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             รายงาน
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="white-space: nowrap;">
             <a class="nav-link" href="./pcu_register_list_songkran64.php?type=all&risk_level_id=203" style="color:black;">รายชื่อกลุ่มเสี่ยงสีเทา</a>
             <a class="nav-link" href="./pcu_register_list_songkran64.php?type=all&risk_level_id=202" style="color:black;">รายชื่อกลุ่มเสี่ยงสีส้ม</a>
             <?php
@@ -60,19 +60,25 @@ include('../include/config.php');
               <a class="nav-link" href="./report_risk_area.php" style="color:black;">รายงานจำนวนผู้เดินทางเข้าสกล</a>
               <a class="nav-link" href="./ampur_rate.php" style="color:black;">รายงานการบันทึกข้อมูลของหน่วยบริการ</a>
               <a class="nav-link" href="./report_register.php" style="color:black;">รายงานการลงทะเบียน</a>
-            <?php
-            if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='12'){ 
-            ?>
-              <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 1</a>
-              <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 2</a>
-              <a class="nav-link" href="./airport_edit.php" style="color:black;">คัดกรองสนามบิน แก้ไข Flight</a>
-            <?php
-            }
-            ?>
            </div>
         </li>
 
-        
+        <?php
+        if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='12'){ 
+        ?>
+        <li class="nav-item active dropdown" style="white-space: nowrap;">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_airport" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            คัดกรองสนามบิน
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 1</a>
+            <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 2</a>
+            <a class="nav-link" href="./airport_edit.php" style="color:black;">คัดกรองสนามบิน แก้ไข Flight</a>
+           </div>
+        </li>
+        <?php
+        }
+        ?>
         
       </ul>
 

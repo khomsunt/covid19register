@@ -164,6 +164,8 @@ for ($i=0;$i<count($rows);$i++) {
   <td style="border: solid 1px #000000;  padding: 5px;" class="addr_home"><?php echo $rows[$i]['addr_home'];?></td>
   <td style="border: solid 1px #000000;  padding: 5px;" class="addr_work"><?php echo $rows[$i]['addr_work'];?></td>
   <td style="border: solid 1px #000000;  padding: 5px; white-space: nowrap;">
+    <input type="text" class="seat_on_flight" name="seat_on_flight" style="width: 50px; text-align: center;" placeholder="Seat" value="<?php echo $rows[$i]['seat_on_flight'];?>"> 
+
     <input type="radio" class="radio_1" name="radio_<?php echo $rows[$i]['covid_register_id'];?>" value="1" id="neg72_<?php echo $rows[$i]['covid_register_id'];?>" <?php if ($rows[$i]['airport_screen_result_id']==1) { echo "checked"; } ?> > 
     <label class="radio_1" for="neg72_<?php echo $rows[$i]['covid_register_id'];?>">Neg72ชม.</label>
 
@@ -188,6 +190,8 @@ for ($i=0;$i<count($rows);$i++) {
     <td style="border: solid 1px #000000;  padding: 5px;" class="addr_home"></td>
     <td style="border: solid 1px #000000;  padding: 5px;" class="addr_work"></td>
     <td style="border: solid 1px #000000;  padding: 5px; white-space: nowrap;">
+      <input type="text" class="seat_on_flight" style="width: 50px; text-align: center;" placeholder="Seat" name="seat_on_flight"> 
+
       <input type="radio" class="radio_1" name="radio_0" value="1" id="neg72_0"> 
       <label class="radio_1" for="neg72_0">Neg72ชม.</label>
   
@@ -318,19 +322,26 @@ function passB1(this_button) {
   // let this_tr=$(this).parent().parent();
   let covid_register_id=this_button.attr('covid_register_id');
   let airport_screen_result_id =$('input[name="radio_'+covid_register_id+'"]:checked').val();
+  let seat_on_flight = this_button.parent().find('.seat_on_flight').val();
   if (typeof airport_screen_result_id=='undefined') {
     $("#modal02").modal('show');
   }
   else {
     $("#modal01").modal('show');
     let action = 'pass';
-    let data={ covid_register_id : covid_register_id, airport_screen_result_id : airport_screen_result_id ,action : action };
+    let data={ 
+      covid_register_id : covid_register_id, 
+      airport_screen_result_id : airport_screen_result_id,
+      seat_on_flight : seat_on_flight,
+      action : action 
+    };
     // console.log(data);
     $.ajax({method: "POST", url: "airport_ajax_passenger_passB1.php",
       data: data
     })
     .done(function(msg) {
-      this_button.parent().find('.unpassB1_button').css('visibility','visible');
+      // console.log(msg);
+      // this_button.parent().find('.unpassB1_button').css('visibility','visible');
     //   // บางจังหวะ SAVE กับ ดึงข้อมูลชนกัน แล้ว modal ไม่ hide สั่ง reload เลยดีกว่า
       location.reload();
     });

@@ -9,10 +9,14 @@ include_once('../include/config.php');
 
 $sql_set="";
 if ($_POST['action']=='pass') {
-  $sql_set.=" airport_screen_B1_datetime=now(), airport_screen_result_id='".$_POST['airport_screen_result_id']."'  ";
+  $sql_set.=" 
+  airport_screen_B1_datetime=now(), 
+  airport_screen_result_id='".$_POST['airport_screen_result_id']."', 
+  seat_on_flight='".$_POST['seat_on_flight']."' 
+   ";
 }
 else {
-  $sql_set.=" airport_screen_B1_datetime=null, airport_screen_result_id=null ";
+  $sql_set.=" airport_screen_B1_datetime=null, airport_screen_result_id=null, seat_on_flight=null ";
 }
 
 $sql=" update covid_register 
@@ -21,5 +25,6 @@ where covid_register_id=".$_POST['covid_register_id']."
 ";
 $obj=$connect->prepare($sql);
 $obj->execute();
-echo json_encode($obj);
+echo $sql;
+// echo json_encode($obj);
 ?>
