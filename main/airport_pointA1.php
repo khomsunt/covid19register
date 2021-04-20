@@ -82,7 +82,7 @@ left join coccupation o on c.occupation_id=o.occupation_id
 left join cut_status r on c.cut_status_id=r.cut_status_id
 left join office of on c.checkpoint_id = of.office_id 
 where c.cut_status_id not in (2,3)  
-and date_to_sakonnakhon = left(now(),10) 
+and date_to_sakonnakhon = left(now(),10) and airport_screen_B1_datetime is null
 ".$where."
 order by date_to_sakonnakhon,of.office_code,CONVERT(fname USING tis620),CONVERT(lname USING tis620)
 ";
@@ -101,6 +101,46 @@ $rows_now=$obj_now->fetchAll(PDO::FETCH_ASSOC);
 <br>
 
 <div style="padding: 10px;">
+
+<table cellpadding=10>
+  <tr>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=2fd2b5549c93d39cef71a5d2791409bb">
+        <div style="text-align: center; width: 100px; border: solid 1px #000000; border-radius: 10px;">
+          รายงานตัว<br>NOKAIR<br><b><span style="font-size: 20px;">DD360</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=26794822f55fbfe6baafd0ab057b808f">
+        <div style="text-align: center; width: 100px; border: solid 1px #000000; border-radius: 10px;">
+          รายงานตัว<br>NOKAIR<br><b><span style="font-size: 20px;">DD364</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=d92eae20bc2adef91231c73ad0937012">
+        <div style="text-align: center; width: 100px; border: solid 1px #000000; border-radius: 10px;">
+          รายงานตัว<br>NOKAIR<br><b><span style="font-size: 20px;">DD368</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=6b3a294bd2edb9289a888d4dbff50557">
+        <div style="text-align: center; width: 100px; border: solid 1px #000000; border-radius: 10px;">
+          รายงานตัว<br>AIRASIA<br><b><span style="font-size: 20px;">FD3510</span></b>
+        </div>
+      </a>
+    </td>
+
+  </tr>
+
+
+</table>
 
 <table style="width: 100%;">
   <tr>
@@ -123,7 +163,7 @@ if ($_GET['include_passed']=='true') {
 }
 ?>
       <select id="flight" style="font-size: 24px; margin-right: 10px;">
-        <option value="">--เลือก--</options>
+        <option value="">--ทั้งหมด--</options>
         <option value="407" <?php echo $f407;?> >NOKAIR DD360</options>
         <option value="408" <?php echo $f408;?> >NOKAIR DD364</options>
         <option value="409" <?php echo $f409;?> >NOKAIR DD368</options>

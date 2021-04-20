@@ -32,7 +32,7 @@ left join coccupation o on c.occupation_id=o.occupation_id
 left join cut_status r on c.cut_status_id=r.cut_status_id
 left join office of on c.checkpoint_id = of.office_id 
 where c.cut_status_id not in (2,3)  
-and date_to_sakonnakhon = left(now(),10) and airport_screen_A1_datetime is null
+and date_to_sakonnakhon = left(now(),10) and airport_screen_A1_datetime is null and airport_screen_B1_datetime is null
 ".$where."
 order by date_to_sakonnakhon,of.office_code,CONVERT(fname USING tis620),CONVERT(lname USING tis620)
 ";

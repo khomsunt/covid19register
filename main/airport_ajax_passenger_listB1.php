@@ -8,7 +8,7 @@ if ($_SESSION['group_id']<=0){
 include_once('../include/config.php');
 include_once('../include/functions.php');
 
-$where=" and register_datetime>'".$_POST['datetime_query']."' ";
+$where=" and airport_screen_A1_datetime>'".$_POST['datetime_query']."' ";
 if ($_POST['office_id']!='') {
   $where.=" and c.checkpoint_id =".$_POST['office_id']." ";
 }

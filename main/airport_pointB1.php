@@ -123,7 +123,7 @@ if ($_GET['include_passed']=='true') {
 }
 ?>
       <select id="flight" style="font-size: 24px; margin-right: 10px;">
-        <option value="">--เลือก--</options>
+        <option value="">--ทั้งหมด--</options>
         <option value="407" <?php echo $f407;?> >NOKAIR DD360</options>
         <option value="408" <?php echo $f408;?> >NOKAIR DD364</options>
         <option value="409" <?php echo $f409;?> >NOKAIR DD368</options>
@@ -264,8 +264,9 @@ function findNewPassenger() {
       data: data
     })
     .done(function(msg) {
+      // console.log(msg);
       let x = JSON.parse(msg);
-      // console.log(datetime_query, x);
+      console.log(datetime_query, x);
       if (x.length>0) {
         for (let i=0;i<x.length;++i) {
           all_rows=all_rows+1;

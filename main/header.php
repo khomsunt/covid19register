@@ -63,8 +63,9 @@ include('../include/config.php');
             <?php
             if ($_SESSION['group_id']=='1' | $_SESSION['group_id']=='12'){ 
             ?>
-              <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบินจุดที่ 1</a>
-              <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบินจุดที่ 2</a>
+              <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 1</a>
+              <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 2</a>
+              <a class="nav-link" href="./airport_edit.php" style="color:black;">คัดกรองสนามบิน แก้ไข Flight</a>
             <?php
             }
             ?>
