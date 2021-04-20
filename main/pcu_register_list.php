@@ -56,7 +56,7 @@ $sql="select c.*,
   // echo "<br><br><br>";
   // print_r($rows_count);
 
-  $rp=10; //rows per page
+  $rp=10000000; //rows per page
   $sql_count="select count(c.covid_register_id) as count_all from from_real_risk c ";
   include("./autoPaginationFunction.php");
 
