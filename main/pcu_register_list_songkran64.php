@@ -38,24 +38,24 @@ left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_co
 left join coccupation o on c.occupation_id=o.occupation_id
 left join cut_status r on c.cut_status_id=r.cut_status_id
 left join risk_level_songkran64 r2 on c.real_risk=r2.risk_level_id
-left join prename p on c.prename_id=p.prename_id 
+left join prename p on c.prename_id=p.prename_id
 where c.cut_status_id not in (2,3)
 ";
 // if ($_SESSION['group_id']==3){
 $where = "";
 if (isset($_POST['cid'])) {
-  $where .= " and c.hospcode='" . $_SESSION['office_code'] . "' and (c.cid='" . $_POST['cid'] . "' or c.fname like '%" . $_POST['cid'] . "%') ";
+    $where .= " and c.hospcode='" . $_SESSION['office_code'] . "' and (c.cid='" . $_POST['cid'] . "' or c.fname like '%" . $_POST['cid'] . "%') ";
 } else if ($_SESSION['group_id'] == '7') {
-  //$where.=" and c.ampur_in_code='".$_SESSION['office_code']."'";
-  $where .= " and c.ampur_in_code='" . $_SESSION['ampur_code'] . "' ";
+    //$where.=" and c.ampur_in_code='".$_SESSION['office_code']."'";
+    $where .= " and c.ampur_in_code='" . $_SESSION['ampur_code'] . "' ";
 } else {
-  $where .= " and c.hospcode='" . $_SESSION['office_code'] . "'";
+    $where .= " and c.hospcode='" . $_SESSION['office_code'] . "'";
 }
 if ($_GET['risk_level_id'] != 'undefined' & $_GET['risk_level_id'] != '') {
-  $where .= " and c.real_risk=" . $_GET['risk_level_id'];
+    $where .= " and c.real_risk=" . $_GET['risk_level_id'];
 }
 if ($_GET['type'] == 'not_eval') {
-  $where .= " and c.date_arrived_sakonnakhon is null ";
+    $where .= " and c.date_arrived_sakonnakhon is null ";
 }
 
 $sql .= $where;
@@ -190,6 +190,7 @@ include "./autoPagination.php";
             <th>สถานะ</th>
             <th>วันที่แจ้งมาถึงสกลนคร</th>
             <th>วันที่แจ้งออกจากสกลนคร</th>
+            <th>วันที่ออกจากสกลนครจริง</th>
             <th>โทรศัพท์</th>
             <!-- <th>วันที่มาถึงสกลนครจริง</th>
             <th>วันที่ออกจากสกลนครจริง</th> -->
@@ -250,6 +251,11 @@ foreach ($rows as $key => $value) {
                 </div>
               </td>
               <td>
+                <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" >
+                  <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon']) ? $value['date_leaved_sakonnakhon'] : $value['date_out_sakonnakhon']); ?>"/>
+                </div>
+              </td>
+              <td>
                 <div class="data">
                   <?php echo $value['tel']; ?>
                 </div>
@@ -257,6 +263,7 @@ foreach ($rows as $key => $value) {
               <td style="width: 200px;">
                 <!-- <div class="data"> -->
                   <span class="float-right">
+                  <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-success btn-save btn_save_<?php echo $value['covid_register_id']; ?>' >บันทึก</button>
                     <button covid_register_id="<?php echo $value['covid_register_id']; ?>" type="button" class='btn btn-primary btn-cancel-travel btn_cancel_travel_<?php echo $value['covid_register_id']; ?>'>
                       ยกเลิกการเดินทาง
                     </button>
@@ -283,7 +290,7 @@ foreach ($rows as $key => $value) {
                   <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon']) ? $value['date_leaved_sakonnakhon'] : $value['date_out_sakonnakhon']); ?>"/>
                 </div>
               </td> -->
-              
+
               <!-- <td>
                 <div class="data cut_status_id_<?php echo $value['covid_register_id']; ?>" ><?php echo $value['cut_status_name']; ?></div>
                 <div class="btn-group select_cut_status_id_<?php echo $value['covid_register_id']; ?>" style="display:none">
@@ -428,35 +435,69 @@ $(function () {
     $(".date_leaved_sakonnakhon_"+thisId).hide();
     $(".select_date_leaved_sakonnakhon_"+thisId).show();
   })
+
   $(".btn-save").click(function(){
     let thisId=$(this).attr("covid_register_id");
-    $(this).parent().find(".btn-edit").show();
-    $(this).parent().find(".btn-save").hide();
-    $(this).parent().find(".btn-cancel").hide();
-    if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
-    }else{
-      $("#date_arrived_sakonnakhon_"+thisId).remove();
-      $("#date_leaved_sakonnakhon_"+thisId).remove();
-    }
-    console.log($("#date_arrived_sakonnakhon_"+thisId).val());
-    console.log($("#date_leaved_sakonnakhon_"+thisId).val());
-    console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
+    // $(this).parent().find(".btn-edit").show();
+    // $(this).parent().find(".btn-save").hide();
+    // $(this).parent().find(".btn-cancel").hide();
+    // if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
+    // }else{
+    //   $("#date_arrived_sakonnakhon_"+thisId).remove();
+    //   $("#date_leaved_sakonnakhon_"+thisId).remove();
+    // }
+
+   // console.log($("#date_arrived_sakonnakhon_"+thisId).val());
+   // console.log($("#date_leaved_sakonnakhon_"+thisId).val());
+   // console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
 
     $.ajax({
       method: "POST",
-      url: "./pcu_changeRiskLevel.php",
+      url: "./pcu_change_date_leaved_sakonnakhon.php",
       data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
     })
     .done(function( msg ) {
-      console.log(msg);
+      // console.log(msg);
       // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
       //   thisObj.parent().parent().parent().parent().parent().hide();
       // }else{
       //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
       // }
       // console.log(msg);
-      location.reload();
+       location.reload();
     })
+
+  // $(".btn-save").click(function(){
+  //   let thisId=$(this).attr("covid_register_id");
+  //   $(this).parent().find(".btn-edit").show();
+  //   $(this).parent().find(".btn-save").hide();
+  //   $(this).parent().find(".btn-cancel").hide();
+  //   if ($(".btn-change-cut-status").parent().parent().parent().parent().parent().parent().parent().parent().length==1){
+  //   }else{
+  //     $("#date_arrived_sakonnakhon_"+thisId).remove();
+  //     $("#date_leaved_sakonnakhon_"+thisId).remove();
+  //   }
+  //   console.log($("#date_arrived_sakonnakhon_"+thisId).val());
+  //   console.log($("#date_leaved_sakonnakhon_"+thisId).val());
+  //   console.log({ covid_register_id: thisId, cut_status_id: cut_status_id_default });
+
+  //   $.ajax({
+  //     method: "POST",
+  //     url: "./pcu_changeRiskLevel.php",
+  //     data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
+  //   })
+  //   .done(function( msg ) {
+  //     console.log(msg);
+  //     // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
+  //     //   thisObj.parent().parent().parent().parent().parent().hide();
+  //     // }else{
+  //     //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
+  //     // }
+  //     // console.log(msg);
+  //     location.reload();
+  //   })
+
+
 
 
 
