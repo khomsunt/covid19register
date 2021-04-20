@@ -6,7 +6,10 @@ include('../include/config.php');
 include('../include/functions.php');
 $toDay=date("Y-m-d");
 
-$sql="select * from office o where o.office_type=19";
+//$sql="select * from office o where o.office_type=19";
+//$sql="select * from office o where o.office_type=19 and office_id > 406";
+$sql="select * from office o where o.office_type=19 and office_id not in (407,408,409,410)";
+
 $obj=$connect->prepare($sql);
 $obj->execute($params);
 $rows_office_19=$obj->fetchAll(PDO::FETCH_ASSOC);
