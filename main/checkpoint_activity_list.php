@@ -18,6 +18,7 @@ include '../include/config.php';
 
 </head>
 
+
 <body >
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="card" style="margin-bottom: 20px;">

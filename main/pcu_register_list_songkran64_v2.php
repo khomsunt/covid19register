@@ -328,6 +328,7 @@ foreach ($rows_cut_status as $key => $value_cut_status) {
 include "./footer.php";
 ?>
 
+
 <script>
 $body = $("body");
 var cut_status_id_default=0;
