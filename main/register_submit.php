@@ -114,7 +114,7 @@ $sql=" insert into covid_register ( ".
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
 // " ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level,date_to_sakonnakhon_text,note,hospcode,moo_in_code_new,register_user_id,date_out_sakonnakhon ".
-" ,checkpoint_id,age_range_id ".
+" ,checkpoint_id,age_range_id,road_soi_in ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -144,6 +144,7 @@ $sql=" insert into covid_register ( ".
 $date_out_sakonnakhon.
 $checkpoint_id.
 ",'".$_POST['age_range_id']."' ".
+",'".$_POST['road_soi_in']."' ".
 " ) ";
 
 // echo $sql;

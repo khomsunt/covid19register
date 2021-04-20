@@ -309,6 +309,11 @@ for ($i=0;$i<count($rows);$i++) {
         </div>
 
         <div class="form-group">
+          <label for="exampleFormControlInput1">ถนน/ซอย <span class="required"></span></label>
+          <input type="text" class="form-control" id="road_soi_in" name="road_soi_in">
+        </div>
+
+        <div class="form-group">
           <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
           <input type="text" class="form-control" id="house_in_no" name="house_in_no">
         </div>
@@ -431,6 +436,7 @@ function getInputData () {
     date_to_sakonnakhon : $("#date_to_sakonnakhon").attr('date_value'),
     date_to_sakonnakhon_text : $("#date_to_sakonnakhon").val(),
     date_out_sakonnakhon : $("#date_out_sakonnakhon").attr('date_value'),
+    road_soi_in : $("#road_soi_in").val(),
     house_in_no : $("#house_in_no").val(),
     moo_in_code : $("#moo_in_code").val(),
     tambon_in_code : $("#tambon_in_code").val(),
@@ -574,7 +580,7 @@ function cleanNumber(x) {
 }
 
 $('#modal03').on('hidden.bs.modal', function () {
-  console.log('ssssssssssssssssss');
+  // console.log('ssssssssssssssssss');
   $("#modal02").modal('show');
 });
 
@@ -801,6 +807,7 @@ function tambonInCodeChange(tambon_code_full,default_village) {
     for (var i=0;i<data.length;i=i+1) {
       $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
     }
+    $("#moo_in_code").append("<option value='XX'>ไม่ทราบ(กรุณากรอกข้อมูลถนน/ซอย)</option>");
     if (typeof default_village != 'undefined' & default_village != null) {
       $("#moo_in_code").val(default_village);
     }
