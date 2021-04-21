@@ -73,6 +73,7 @@ include('../include/config.php');
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="nav-link" href="./airport_pointA1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 1</a>
             <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 2</a>
+            <a class="nav-link" href="./airport_onestop.php" style="color:black;">คัดกรองสนามบิน One Stop Service</a>
             <a class="nav-link" href="./airport_edit.php" style="color:black;">คัดกรองสนามบิน แก้ไข Flight</a>
            </div>
         </li>

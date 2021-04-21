@@ -73,7 +73,7 @@ $register_count=count($rows);
         </div>
         <div id="announce_text" style="width: 80%; position: absolute; z-index: 1; border: solid 10px #4db1ff; border-radius: 30px; padding: 20px; text-align: center; background-color: white; padding-top: 80px; padding-bottom: 80px;">
           <h5>
-            ขอบคุณมากค่ะ<br>
+            <!-- ขอบคุณมากค่ะ<br>
             ท่านได้รายงานตัว<br>
             เข้าสู่จังหวัดสกลนคร<br>
             เรียบร้อยแล้ว<br>
@@ -84,7 +84,22 @@ $register_count=count($rows);
             หากท่านเป็นกลุ่มเสี่ยง<br>
             จะมีเจ้าหน้าที่สาธารณสุข<br>
             โทรศัพท์ติดต่อท่าน<br>
-            ภายหลังค่ะ<br>
+            ภายหลังค่ะ<br> -->
+
+            ขอขอบคุณที่รายงานตัว<br>
+            ขอให้ท่านกักตัวที่บ้าน<br>
+            เป็นเวลา 14 วัน<br>
+            <br>
+            ยกเว้นท่านมีผลตรวจ<br>
+            หาเชื้อโควิด-19<br>
+            โดยวิธีป้ายคอและจมูก(swab)<br>
+            หรือมีผลการตรวจด้วย<br>
+            ชุดทดสอบเบื้องต้น<br>
+            (Rapid test antigen)<br>
+            ผลตรวจไม่พบเชื้อโควิด-19<br>
+            ไม่ต้องกักตัว<br>
+            แต่ผลตรวจจะสามารถรับรองผล<br>
+            72 ชม.หรือ 3 วัน เท่านั้น<br>
           </h5>
         </div>
       </div>

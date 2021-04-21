@@ -138,8 +138,6 @@ $rows_now=$obj_now->fetchAll(PDO::FETCH_ASSOC);
     </td>
 
   </tr>
-
-
 </table>
 
 <table style="width: 100%;">

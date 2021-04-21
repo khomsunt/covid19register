@@ -22,6 +22,12 @@ include_once('../include/functions.php');
   <!-- Bootstrap core CSS -->
   <link href="../css/bootstrap.min.css" rel="stylesheet">
   <style>
+    .div_a:hover {
+      border: solid 2px #FFFFFF !important;
+    }
+    a:hover {
+      text-decoration: none;
+    }
     .row_data:hover {
       background-color: #E2E2E2 !important;
     }
@@ -63,7 +69,7 @@ if ($_GET['include_passed']=='true') {
   // --
 }
 else {
-  $where.=" and airport_screen_B1_datetime is null ";
+  $where.=" and (airport_screen_A1_datetime is null or airport_screen_B1_datetime is null) ";
 }
 
 $sql="select now() datetime_query,c.*,of.office_code flight
@@ -81,8 +87,8 @@ left join tambon47 t47 on c.changwat_in_code=t47.changwat_code and c.ampur_in_co
 left join coccupation o on c.occupation_id=o.occupation_id
 left join cut_status r on c.cut_status_id=r.cut_status_id
 left join office of on c.checkpoint_id = of.office_id 
-where c.cut_status_id not in (2,3)  
-and date_to_sakonnakhon = left(now(),10) and airport_screen_A1_datetime is not null
+where c.cut_status_id not in (2,3) 
+and date_to_sakonnakhon = left(now(),10) 
 ".$where."
 order by date_to_sakonnakhon,of.office_code,CONVERT(fname USING tis620),CONVERT(lname USING tis620)
 ";
@@ -98,14 +104,69 @@ $rows_now=$obj_now->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<br>
-
 <div style="padding: 10px;">
 
-<table style="width: 100%;">
+<table cellpadding=5 width="100%">
   <tr>
-    <td><h3>คัดกรองสนามบิน จุดที่ 2</h3></td>
-    <td style="text-align: right;font-size: 24px;">วันที่ <?php echo thailongdate($rows_now[0]['dn']); ?> | FLIGHT : 
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=2fd2b5549c93d39cef71a5d2791409bb">
+        <div class="div_a" style="text-align: left; width: 150px; border: solid 2px #000000; border-radius: 5px; padding: 3px; background-color: #ffc000;color: #000000;">
+          รายงานตัว<br>NOKAIR<b> <span style="font-size: 20px;">DD360</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=26794822f55fbfe6baafd0ab057b808f">
+        <div class="div_a" style="text-align: left; width: 150px; border: solid 2px #000000; border-radius: 5px; padding: 3px; background-color: #ffc000;color: #000000;">
+          รายงานตัว<br>NOKAIR<b> <span style="font-size: 20px;">DD364</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=d92eae20bc2adef91231c73ad0937012">
+        <div class="div_a" style="text-align: left; width: 150px; border: solid 2px #000000; border-radius: 5px; padding: 3px; background-color: #ffc000;color: #000000;">
+          รายงานตัว<br>NOKAIR<b> <span style="font-size: 20px;">DD368</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td>
+      <a target="_blank" href="http://www.skko.moph.go.th/liff_covid/main/register.php?checkpoint_id=6b3a294bd2edb9289a888d4dbff50557">
+        <div class="div_a" style="text-align: left; width: 150px; border: solid 2px #000000; border-radius: 5px; padding: 3px; background-color: #ec1c1c;color: #FFFFFF;">
+          รายงานตัว<br>AIRASIA<b> <span style="font-size: 20px;">FD3510</span></b>
+        </div>
+      </a>
+    </td>
+
+    <td width="100%" style="text-align: right;" valign="top">
+      <!-- <input type="text" style="width: 350px; font-size: 20px;"> -->
+      <!-- <input type="button" value="ค้นหา" style="font-size: 20px;"> -->
+      <input type="button" value="โหลดใหม่" onClick="location.reload();">
+      <!-- <div>
+        หากประชาชนบันทึกรายงานตัวในมือถือแล้วแต่ให้เห็นรายชื่อให้กดปุ่ม "โหลดใหม่"<br>
+        หากโหลดใหม่แล้วยังไม่เห็นชื่อให้เจ้าหน้าที่บันทึกรายงานตัวตาม Flight ใหม่เลยค่ะ
+      </div> -->
+    </td>
+
+  </tr>
+</table>
+
+<hr>
+
+<table style="width: 100%; margin-bottom: 5px;">
+  <tr>
+    <td style="text-align: left;font-size: 20px;" width='100%'>คัดกรองสนามบิน</td>
+    <td style="text-align: right;font-size: 20px; white-space: nowrap;">
+      <div style="border: solid 0px #000000; padding: 5px; border-radius: 5px; margin-right: 5px; background-color: #E2E2E2;">
+        วันที่ <?php echo thailongdate($rows_now[0]['dn']); ?>
+      </div>
+    </td>
+    <td style="text-align: right;font-size: 20px; white-space: nowrap;">
+      <div style="border: solid 0px #000000; padding: 5px; border-radius: 5px; margin-right: 5px; background-color: #E2E2E2">
+        FLIGHT : 
     <?php
 $f407="";
 $f408="";
@@ -122,15 +183,20 @@ if ($_GET['include_passed']=='true') {
   $include_passed_checked=" checked ";
 }
 ?>
-      <select id="flight" style="font-size: 24px; margin-right: 10px;">
-        <option value="">--ทั้งหมด--</options>
-        <option value="407" <?php echo $f407;?> >NOKAIR DD360</options>
-        <option value="408" <?php echo $f408;?> >NOKAIR DD364</options>
-        <option value="409" <?php echo $f409;?> >NOKAIR DD368</options>
-        <option value="410" <?php echo $f410;?> >AIRASIA FD3510</options>
-      </select>
-      <input type="checkbox" id="include_passed" <?php echo $include_passed_checked; ?>> 
-      <label for="include_passed">แสดงทั้งหมด</label>
+        <select id="flight" style="font-size: 20px;">
+          <option value="">--ทั้งหมด--</options>
+          <option value="407" <?php echo $f407;?> >NOKAIR DD360</options>
+          <option value="408" <?php echo $f408;?> >NOKAIR DD364</options>
+          <option value="409" <?php echo $f409;?> >NOKAIR DD368</options>
+          <option value="410" <?php echo $f410;?> >AIRASIA FD3510</options>
+        </select>
+      </div>
+    </td>
+    <td style="text-align: right;font-size: 20px; white-space: nowrap;">
+      <div style="border: solid 0px #000000; padding: 5px; border-radius: 5px; margin-right: 5px; background-color: #E2E2E2; height: 42px;">
+        <input type="checkbox" id="include_passed" <?php echo $include_passed_checked; ?>> 
+        <label for="include_passed">แสดงทั้งหมด</label>
+      </div>
     </td>
   <tr>
 </table>
@@ -151,9 +217,9 @@ for ($i=0;$i<count($rows);$i++) {
   if ($i+1==count($rows)) {
     $last_id="last_id";
   }
-  $display_unpassB1_button="hidden";
+  $display_unpassOS_button="hidden";
   if ($rows[$i]['airport_screen_result_id']!='') {
-    $display_unpassB1_button="visible";
+    $display_unpassOS_button="visible";
   }
 ?>
 <tr class="row_data">
@@ -175,8 +241,8 @@ for ($i=0;$i<count($rows);$i++) {
     <input type="radio" class="radio_3" name="radio_<?php echo $rows[$i]['covid_register_id'];?>" value="3" id="notexam_<?php echo $rows[$i]['covid_register_id'];?>" <?php if ($rows[$i]['airport_screen_result_id']==3) { echo "checked"; } ?> > 
     <label class="radio_3" for="notexam_<?php echo $rows[$i]['covid_register_id'];?>">ไม่ตรวจ</label>
 
-    <input type="button" value="บันทึก" class="passB1_button" covid_register_id="<?php echo $rows[$i]['covid_register_id'];?>" >
-    <input type="button" value="ยกเลิก" class="unpassB1_button" covid_register_id="<?php echo $rows[$i]['covid_register_id'];?>" style="visibility: <?php echo $display_unpassB1_button;?>;">
+    <input type="button" value="บันทึก" class="passOS_button" covid_register_id="<?php echo $rows[$i]['covid_register_id'];?>" >
+    <input type="button" value="ยกเลิก" class="unpassOS_button" covid_register_id="<?php echo $rows[$i]['covid_register_id'];?>" style="visibility: <?php echo $display_unpassOS_button;?>;">
   </td>
 </tr>
 <?php
@@ -201,12 +267,11 @@ for ($i=0;$i<count($rows);$i++) {
       <input type="radio" class="radio_3" name="radio_0" value="3" id="notexam_0"> 
       <label class="radio_3" for="notexam_0">ไม่ตรวจ</label>
   
-      <input type="button" value="บันทึก" class="passB1_button" covid_register_id="0" >
-      <input type="button" value="ยกเลิก" class="unpassB1_button" covid_register_id="0" style="visibility: hidden;">
+      <input type="button" value="บันทึก" class="passOS_button" covid_register_id="0" >
+      <input type="button" value="ยกเลิก" class="unpassOS_button" covid_register_id="0" style="visibility: hidden;">
     </td>
   </tr>
 </table>
-
 
 <?php
 include("./footer.php");
@@ -264,7 +329,7 @@ function findNewPassenger() {
       office_id : $("#flight").val(),
       datetime_query : datetime_query,
     };
-    $.ajax({method: "POST", url: "airport_ajax_passenger_listB1.php",
+    $.ajax({method: "POST", url: "airport_ajax_passenger_listOS.php",
       data: data
     })
     .done(function(msg) {
@@ -296,15 +361,15 @@ function findNewPassenger() {
           lastRow.find("input.radio_3").attr('id','notexam_'+x[i]['covid_register_id']);
           lastRow.find("label.radio_3").attr('for','notexam_'+x[i]['covid_register_id']);
 
-          lastRow.find(".passB1_button").attr('covid_register_id',x[i]['covid_register_id']);
-          lastRow.find(".passB1_button").bind( "click", function() {
-            passB1($(this));
+          lastRow.find(".passOS_button").attr('covid_register_id',x[i]['covid_register_id']);
+          lastRow.find(".passOS_button").bind( "click", function() {
+            passOS($(this));
           });
 
-          lastRow.find(".unpassB1_button").attr('covid_register_id',x[i]['covid_register_id']);
-          lastRow.find(".unpassB1_button").css('visibility','hidden');
-          lastRow.find(".unpassB1_button").bind( "click", function() {
-            unpassB1($(this));
+          lastRow.find(".unpassOS_button").attr('covid_register_id',x[i]['covid_register_id']);
+          lastRow.find(".unpassOS_button").css('visibility','hidden');
+          lastRow.find(".unpassOS_button").bind( "click", function() {
+            unpassOS($(this));
           });
 
           lastRow.appendTo($("#tdata"));
@@ -318,7 +383,7 @@ function findNewPassenger() {
   }
 }
 
-function passB1(this_button) {
+function passOS(this_button) {
   // let this_tr=$(this).parent().parent();
   let covid_register_id=this_button.attr('covid_register_id');
   let airport_screen_result_id =$('input[name="radio_'+covid_register_id+'"]:checked').val();
@@ -336,19 +401,17 @@ function passB1(this_button) {
       action : action 
     };
     // console.log(data);
-    $.ajax({method: "POST", url: "airport_ajax_passenger_passB1.php",
+    $.ajax({method: "POST", url: "airport_ajax_passenger_passOS.php",
       data: data
     })
     .done(function(msg) {
       // console.log(msg);
-      // this_button.parent().find('.unpassB1_button').css('visibility','visible');
-    //   // บางจังหวะ SAVE กับ ดึงข้อมูลชนกัน แล้ว modal ไม่ hide สั่ง reload เลยดีกว่า
       location.reload();
     });
   }
 }
 
-function unpassB1(this_button) {
+function unpassOS(this_button) {
   // let this_tr=$(this).parent().parent();
   $("#modal01").modal('show');
   let action = 'unpass';
@@ -356,36 +419,34 @@ function unpassB1(this_button) {
   $('input[name="radio_'+covid_register_id+'"]:checked').prop('checked',false);
   let data={ covid_register_id : covid_register_id ,action : action };
   // console.log(data);
-  $.ajax({method: "POST", url: "airport_ajax_passenger_passB1.php",
+  $.ajax({method: "POST", url: "airport_ajax_passenger_passOS.php",
     data: data
   })
   .done(function(msg) {
-    // this_button.parent().find('.unpassB1_button').css('visibility','hidden');
-  //   // บางจังหวะ SAVE กับ ดึงข้อมูลชนกัน แล้ว modal ไม่ hide สั่ง reload เลยดีกว่า
     location.reload();
   });
 }
 
-$(".passB1_button").click(function() {
-  passB1($(this));
+$(".passOS_button").click(function() {
+  passOS($(this));
 });
 
-$(".unpassB1_button").click(function() {
-  unpassB1($(this));
+$(".unpassOS_button").click(function() {
+  unpassOS($(this));
 });
 
 $("#flight").change(function() {
   $("#modal01").modal('show');
   let include_passed = $("#include_passed").prop('checked');
   let office_id = $("#flight").val();
-  window.location="airport_pointB1.php?office_id="+office_id+"&include_passed="+include_passed.toString();
+  window.location="airport_onestop.php?office_id="+office_id+"&include_passed="+include_passed.toString();
 });
 
 $("#include_passed").change(function() {
   $("#modal01").modal('show');
   let include_passed = $("#include_passed").prop('checked');
   let office_id = $("#flight").val();
-  window.location="airport_pointB1.php?office_id="+office_id+"&include_passed="+include_passed.toString();
+  window.location="airport_onestop.php?office_id="+office_id+"&include_passed="+include_passed.toString();
 });
 
 });
