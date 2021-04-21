@@ -24,8 +24,8 @@ a47.ampur_name as ampur_name_in,
 t47.tambon_name as tambon_name_in,
 o.occupation_name,
 r.cut_status_name,
-c.tel,
-r2.risk_level_long_name as evaluate_level_name
+r2.risk_level_long_name as evaluate_level_name,
+cp.office_code air_flight
 from from_real_risk_songkran64_v2 c
 left join changwat cw on c.changwat_out_code=cw.changwat_code
 left join ampur a on c.changwat_out_code=a.changwat_code and c.ampur_out_code=a.ampur_code
@@ -39,6 +39,7 @@ left join coccupation o on c.occupation_id=o.occupation_id
 left join cut_status r on c.cut_status_id=r.cut_status_id
 left join risk_level_songkran64_v2 r2 on c.real_risk=r2.risk_level_id
 left join prename p on c.prename_id=p.prename_id
+left join office cp ON c.checkpoint_id = cp.office_id
 where c.cut_status_id not in (2,3)
 ";
 // if ($_SESSION['group_id']==3){
@@ -184,6 +185,7 @@ include "./autoPagination.php";
             <th>ที่อยู่ก่อนเข้าสกลนคร</th>
             <th>ที่ทำงาน</th>
             <th>มาที่เลขที</th>
+            <th>มาที่ถนนซอย</th>
             <th>มาที่หมู่</th>
             <th>มาที่ตำบล</th>
             <th>มาที่อำเภอ</th>
@@ -191,6 +193,8 @@ include "./autoPagination.php";
             <th>วันที่แจ้งมาถึงสกลนคร</th>
             <th>วันที่แจ้งออกจากสกลนคร</th>
             <th>วันที่ออกจากสกลนครจริง</th>
+            <th>Flightเครื่องบิน</th>
+            <th>เลขที่นั่งเครื่องบิน</th>
             <th>โทรศัพท์</th>
             <!-- <th>วันที่มาถึงสกลนครจริง</th>
             <th>วันที่ออกจากสกลนครจริง</th> -->
@@ -229,6 +233,9 @@ foreach ($rows as $key => $value) {
                 <?php echo $value['house_in_no']; ?>
               </div></td>
               <td><div class="data">
+              <?php echo $value['road_soi_in']; ?>
+              </div></td>
+              <td><div class="data">
               <?php echo $value['moo_in_code']; ?>
               </div></td>
               <td><div class="data">
@@ -253,6 +260,16 @@ foreach ($rows as $key => $value) {
               <td>
                 <div class="data select_date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" >
                   <input name="date_leaved_sakonnakhon" class="form-control datepicker" id="date_leaved_sakonnakhon_<?php echo $value['covid_register_id']; ?>" value="<?php echo deFormatDate(($value['date_leaved_sakonnakhon']) ? $value['date_leaved_sakonnakhon'] : $value['date_out_sakonnakhon']); ?>"/>
+                </div>
+              </td>
+              <td>
+                <div class="data">
+                  <?php echo $value['air_flight']; ?>
+                </div>
+              </td>
+              <td>
+                <div class="data">
+                  <?php echo $value['seat_on_flight']; ?>
                 </div>
               </td>
               <td>
