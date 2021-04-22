@@ -75,6 +75,7 @@ include('../include/config.php');
             <a class="nav-link" href="./airport_pointB1.php" style="color:black;">คัดกรองสนามบิน จุดที่ 2</a>
             <a class="nav-link" href="./airport_onestop.php" style="color:black;">คัดกรองสนามบิน One Stop Service</a>
             <a class="nav-link" href="./airport_edit.php" style="color:black;">คัดกรองสนามบิน แก้ไข Flight</a>
+            <a class="nav-link" href="./airport_report.php" style="color:black;">รายชื่อผู้รายงานตัวเข้าสกลนครเดินทางด้วยเครื่องบิน</a>
            </div>
         </li>
         <?php
