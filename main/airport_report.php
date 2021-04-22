@@ -72,7 +72,7 @@ $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 
-$title="รายงานการคัดกรองสนามบิน (ตั้งแต่วันที่ 20 เมษายน 2564 เป็นต้นมา)";
+$title="รายชื่อผู้รายงานตัวเข้าสกลนครเดินทางด้วยเครื่องบิน";
 include("./autoTable.php");
 ?>
 <link href="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/css/datepicker3.css" rel="stylesheet"/>
