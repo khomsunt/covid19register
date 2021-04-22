@@ -39,8 +39,12 @@ else {
 }
 
 $sql=" select 
-r.date_to_sakonnakhon `l|d||วันที่จะเข้าสกลนคร`
-,replace(office_name,'โรงพยาบาลส่งเสริมสุขภาพตำบล','รพ.สต.') `l|c||FLIGHT`
+r.date_to_sakonnakhon `l|d||วันเข้าสกลนคร`
+,af.ampur_name `l|c||อำเภอ`
+,concat(r.hospcode,' ',replace(f.office_name,'โรงพยาบาลส่งเสริมสุขภาพตำบล','รพ.สต.')) `l|c||หน่วยบริการ`
+,ff.office_name `l|c||FLIGHT`
+,r.seat_on_flight `l|c||SEAT`
+,asr.airport_screen_result_name `l|c||ผลคัดกรองที่สนามบิน`
 ,fname `l|c||ชื่อ`
 ,lname `l|c||สกุล`
 ,cid `l|c||เลขบัตรประชาชน`
@@ -55,8 +59,9 @@ r.date_to_sakonnakhon `l|d||วันที่จะเข้าสกลนค�
 ,t1.tambon_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_ตำบล`
 ,a1.ampur_name `l|c||ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก_อำเภอ`
 from covid_register r
-inner join office f on f.office_id=r.checkpoint_id 
-left join ampur47 af on af.ampur_code=f.ampur_code
+inner join office ff on ff.office_id=r.checkpoint_id 
+left join office f on f.office_code=r.hospcode 
+left join ampur47 af on af.ampur_code_full=concat('47',r.ampur_in_code)
 left join coccupation o on o.occupation_id=r.occupation_id
 left join changwat ca on ca.changwat_code=r.changwat_out_code
 left join ampur aa on aa.ampur_code_full=concat(r.changwat_out_code,r.ampur_out_code)
@@ -64,8 +69,9 @@ left join changwat cb on cb.changwat_code=r.changwat_work_code
 left join ampur ab on ab.ampur_code_full=concat(r.changwat_work_code,r.ampur_work_code)
 left join ampur47 a1 on a1.ampur_code_full=concat(changwat_in_code,ampur_in_code)
 left join tambon47 t1 on t1.tambon_code_full=concat(changwat_in_code,ampur_in_code,tambon_in_code)
+left join airport_screen_result asr on asr.airport_screen_result_id=r.airport_screen_result_id
 where r.checkpoint_id in (407,408,409,410)
-order by r.date_to_sakonnakhon,f.office_name,r.fname,r.lname
+order by r.date_to_sakonnakhon,af.ampur_code,concat(r.hospcode,r.moo_in_code),f.office_name,r.fname,r.lname
 ";
 // echo "<br><br><br><br><br><br>".$sql;
 $obj=$connect->prepare($sql);
