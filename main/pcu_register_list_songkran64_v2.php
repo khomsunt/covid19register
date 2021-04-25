@@ -184,7 +184,7 @@ include "./autoPagination.php";
             <th>อาชีพ</th>
             <th>ที่อยู่ก่อนเข้าสกลนคร</th>
             <th>ที่ทำงาน</th>
-            <th>มาที่เลขที</th>
+            <th style="width:5%;">มาที่เลขที</th>
             <th>มาที่ถนนซอย</th>
             <th>มาที่หมู่</th>
             <th>มาที่ตำบล</th>
@@ -192,7 +192,7 @@ include "./autoPagination.php";
             <th>สถานะ</th>
             <th>วันที่แจ้งมาถึงสกลนคร</th>
             <th>วันที่แจ้งออกจากสกลนคร</th>
-            <th>วันที่ออกจากสกลนครจริง</th>
+            <th style="width:7%;">วันที่ออกจากสกลนครจริง</th>
             <th>Flightเครื่องบิน</th>
             <th>เลขที่นั่งเครื่องบิน</th>
             <th>โทรศัพท์</th>
@@ -229,9 +229,14 @@ foreach ($rows as $key => $value) {
                 อ. <?php echo $value['ampur_work_name_out']; ?>
                 จ. <?php echo $value['changwat_work_name_out']; ?>
               </div></td>
-              <td><div class="data">
+              <td>
+              <!-- <div class="data">
                 <?php echo $value['house_in_no']; ?>
-              </div></td>
+              </div> -->
+              <div class="data select_house_in_no_<?php echo $value['covid_register_id']; ?>" >
+                  <input name="house_in_no" class="form-control " id="house_in_no_<?php echo $value['covid_register_id']; ?>" value="<?php echo ($value['house_in_no']); ?>"/>
+                </div>
+              </td>
               <td><div class="data">
               <?php echo $value['road_soi_in']; ?>
               </div></td>
@@ -472,17 +477,17 @@ $(function () {
     $.ajax({
       method: "POST",
       url: "./pcu_change_date_leaved_sakonnakhon.php",
-      data: { date_arrived_sakonnakhon: formatDate($("#date_arrived_sakonnakhon_"+thisId).val()),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
+      data: { house_in_no: $("#house_in_no_"+thisId).val(),date_leaved_sakonnakhon: formatDate($("#date_leaved_sakonnakhon_"+thisId).val()), covid_register_id: thisId, cut_status_id: cut_status_id_default }
     })
     .done(function( msg ) {
-      // console.log(msg);
+      //  console.log(msg);
       // if (thisObj.parent().parent().parent().parent().parent().parent().parent().attr('id')=='myTable'){
       //   thisObj.parent().parent().parent().parent().parent().hide();
       // }else{
       //   thisObj.parent().parent().parent().parent().parent().parent().parent().hide();
       // }
       // console.log(msg);
-       location.reload();
+      location.reload();
     })
 
   // $(".btn-save").click(function(){
