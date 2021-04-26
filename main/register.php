@@ -60,7 +60,19 @@ else {
 <body style="background-color: #b9ddff;  background-image: url(../image/header03.png); background-repeat: no-repeat; background-size: 500px; background-position: top right;">
 
 <script>
-var input_required=['fname','lname','cid','tel','occupation_id','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+var input_required_init=['fname','lname','cid','tel','occupation_id','changwat_out_code','ampur_out_code','ampur_in_code','tambon_in_code','moo_in_code','date_to_sakonnakhon'];
+
+var input_required_not_rest=['fname','lname','cid','tel','occupation_id','changwat_out_code','ampur_out_code','date_to_sakonnakhon','travel_place'];
+
+var input_required=input_required_init;
+
+function makeRequired() {
+  $(".required").text("");
+  input_required.forEach(element => {
+    $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
+  });
+}
+
 $(document).ready(function () {
   if ('<?php echo $checkpoint_office_id; ?>'!='') {
     $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock');
@@ -75,9 +87,7 @@ $(document).ready(function () {
     'visibility':'hidden'
   });
 
-  input_required.forEach(element => {
-    $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
-  });
+  makeRequired();
 });
 </script>
 
@@ -273,6 +283,25 @@ for ($i=0;$i<count($rows);$i++) {
       <input name="date_out_sakonnakhon" class="form-control datepicker_skn" id="date_out_sakonnakhon" date_value="" />
     </div>
 
+
+    <div class="card"  style="margin-bottom: 20px;">
+      <div class="card-header">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="travel_not_rest" name="travel_not_rest" value="Y">
+          <label class="form-check-label" for="travel_not_rest">
+          เดินทางไปเช้า-เย็นกลับ หรือสกลนครเป็นทางผ่าน
+          </label>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">สถานที่ที่จะไป <span class="required"></span></label>
+          <input type="text" class="form-control" id="travel_place" name="travel_place" placeholder="">
+        </div>
+      </div>
+    </div>
+
+
     <div class="card">
       <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
@@ -420,6 +449,23 @@ for ($i=0;$i<count($rows);$i++) {
 <script>
 var registerLastInsertId;
 
+$("#travel_not_rest").click(function() {
+  let x = $(this).prop('checked');
+  if (x===true) {
+    input_required=input_required_not_rest;
+    $("#road_soi_in").val('');
+    $("#house_in_no").val('');
+    $("#moo_in_code").val('');
+    $("#tambon_in_code").val('');
+    $("#ampur_in_code").val('');
+  }
+  else {
+    input_required=input_required_init;
+    $("#travel_place").val('');
+  }
+  makeRequired();
+});
+
 function getInputData () {
   var data= {
     fname : $("#fname").val(),
@@ -443,21 +489,17 @@ function getInputData () {
     ampur_in_code : $("#ampur_in_code").val(),
     note : $("#note").val(),
     checkpoint_id : '<?php echo $checkpoint_office_id; ?>',
+    travel_not_rest : ($("#travel_not_rest").prop('checked')==true?'Y':'N'),
+    // travel_not_rest : ($("#travel_not_rest").prop('checked')==true?'Y':'N'),
+    travel_place : $("#travel_place").val()
     // once_confirm_case_api : $("#ampur_in_code").val(),
   }
   return data;
 }
 
-// $("#btnSave").click(function() {
-//   console.log('xbtnSave');
-//   $("#date_to_sakonnakhon_db").val($("#date_to_sakonnakhon").attr('date_value')),
-//   $("#date_out_sakonnakhon_db").val($("#date_out_sakonnakhon").attr('date_value')),
-//   $("#F1").submit();
-// });
-
 $("#btnSave").click(function() {
   var data=getInputData();
- 
+//  console.log(data);
   var not_complete=0;
   input_required.forEach(element => {
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
@@ -476,73 +518,13 @@ $("#btnSave").click(function() {
     $("#modal01").modal('show');
 
     setTimeout(() => { 
-      $("#date_to_sakonnakhon_db").val($("#date_to_sakonnakhon").attr('date_value')),
-      $("#date_out_sakonnakhon_db").val($("#date_out_sakonnakhon").attr('date_value')),
+      $("#date_to_sakonnakhon_db").val($("#date_to_sakonnakhon").attr('date_value'));
+      $("#date_out_sakonnakhon_db").val($("#date_out_sakonnakhon").attr('date_value'));
       $("#F1").submit();
     }, 1000);
 
   }
 });
-
-// $("#btnSave").click(function() {
-//   var data=getInputData();
- 
-//   var not_complete=0;
-//   input_required.forEach(element => {
-//     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
-//       not_complete=not_complete+1;
-//     }
-//   });
-
-//   if (not_complete>0) {
-//     $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
-//     $("#modal01_action").css({'display':'block'});
-//     $("#modal01").modal('show');
-//   }
-//   else {
-//     $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #1');
-//     $("#modal01_action").css({'display':'none'});
-//     $("#modal01").modal('show');
-
-//     $.ajax({method: "POST", url: "ajaxSaveRegisterSkn.php",
-//       data: data
-//     })
-//     .done(function(x) {
-//       // console.log(jQuery.parseJSON(x));
-//       var r=jQuery.parseJSON(x).data;
-//       if (r.status=="success") {
-//         registerLastInsertId=r.registerLastInsertId;
-//         var data_check= { 
-//           cid : cleanNumber(data['cid']),
-//           tel : cleanNumber(data['tel']),
-//         };
-//         $.ajax({method: "POST", url: "ajaxCheckRegisterSkn.php",
-//           data: data_check
-//         })
-//         .done(function(x) {
-//           // console.log(jQuery.parseJSON(x));
-//           var r=jQuery.parseJSON(x).data;
-//           if (r.status=="success") {
-//             if (r.register_data.length>1) {
-//               try {
-//                 clearDuplicatedData(r.register_data);  
-//               } catch (error) {
-//                 setTimeout(() => { goPageSuggestion(); }, 1000);
-//               }
-//             }
-//             else {
-//               // ไม่มีข้อมูลซ้ำ
-//               setTimeout(() => { goPageSuggestion(); }, 1000);
-//             }
-//           }
-//           else {
-//             setTimeout(() => { goPageSuggestion(); }, 1000);
-//           }
-//         });
-//       }
-//     });
-//   }
-// });
 
 function clearDuplicatedData(dupData) {
   $("#modal02_dup_list").empty();

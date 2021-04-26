@@ -105,6 +105,8 @@ if ($count_village>0) {
 $register_user_id=(isset($_SESSION['user_id']))?$_SESSION['user_id']:'null';
 $date_out_sakonnakhon=($_POST['date_out_sakonnakhon_db']!="")?",'".$_POST['date_out_sakonnakhon_db']."' ":",null";
 $checkpoint_id=($_POST['checkpoint_id']!="")?",'".$_POST['checkpoint_id']."' ":",null";
+$travel_not_rest=($_POST['travel_not_rest']=="Y")?",'Y' ":",'N'";
+$travel_place=($_POST['travel_place']!="")?",'".$_POST['travel_place']."' ":",null";
 
 $sql=" insert into covid_register ( ". 
 " fname,lname,cid,tel,occupation_id ".
@@ -114,7 +116,7 @@ $sql=" insert into covid_register ( ".
 " ,house_in_no,moo_in_code,tambon_in_code,ampur_in_code ". 
 // " ,risk_level_id,auto_cut_status_id ".
 " ,evaluate_level,date_to_sakonnakhon_text,note,hospcode,moo_in_code_new,register_user_id,date_out_sakonnakhon ".
-" ,checkpoint_id,age_range_id,road_soi_in ".
+" ,checkpoint_id,age_range_id,road_soi_in,travel_not_rest,travel_place ".
 " ) ".
 " value ( ".
 " '".$_POST['fname']."' ".
@@ -145,6 +147,8 @@ $date_out_sakonnakhon.
 $checkpoint_id.
 ",'".$_POST['age_range_id']."' ".
 ",'".$_POST['road_soi_in']."' ".
+$travel_not_rest.
+$travel_place.
 " ) ";
 
 // echo $sql;
