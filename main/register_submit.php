@@ -176,7 +176,7 @@ $registerLastInsertId=$connect->lastInsertId();
 </html>
 <script>
 function goPageSuggestion() {
-  window.location="suggestion_skn.php?registerLastInsertId=<?php echo $registerLastInsertId;?>&cid=<?php echo $_POST['cid'];?>&tel=<?php echo $_POST['tel'];?>";
+  window.location="suggestion_skn.php?registerLastInsertId=<?php echo $registerLastInsertId;?>&cid=<?php echo $_POST['cid'];?>&tel=<?php echo $_POST['tel'];?>&language=<?php echo $_POST['language'];?>";
 };
 goPageSuggestion();
 </script>

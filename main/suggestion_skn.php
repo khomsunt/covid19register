@@ -85,7 +85,9 @@ $register_count=count($rows);
             จะมีเจ้าหน้าที่สาธารณสุข<br>
             โทรศัพท์ติดต่อท่าน<br>
             ภายหลังค่ะ<br> -->
-
+<?php
+if ($_GET['language']=='' | $_GET['language']=='th') {
+?>
             ขอขอบคุณที่รายงานตัว<br>
             ขอให้ท่านกักตัวที่บ้าน<br>
             เป็นเวลา 14 วัน<br>
@@ -100,6 +102,14 @@ $register_count=count($rows);
             ไม่ต้องกักตัว<br>
             แต่ผลตรวจจะสามารถรับรองผล<br>
             72 ชม.หรือ 3 วัน เท่านั้น<br>
+<?php
+}
+else {
+?>
+            Please be self-quarantine at Home for 14 days. Unless you have examination results Finding COVID-19 by swabbing neck and nose or have the results of Rapid Test Antigen, results did not detect COVID-19, no need to be self-quarantine. Test results will be able to guarantee for only 72 hours or 3 days.
+<?php
+}
+?>
           </h5>
         </div>
       </div>

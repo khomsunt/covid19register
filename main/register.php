@@ -21,6 +21,123 @@ else {
 // echo "<br>".$sql;
 // echo "<br>checkpoint_token-".$checkpoint_token;
 // echo "<br>checkpoint_office_id-".$checkpoint_office_id;
+
+$LL=array();
+
+$LL_TH=array();
+$LL_TH['web_title']='รายงานตัวเข้าสกลนคร';
+$LL_TH['required']=' *จำเป็น ';
+$LL_TH['language_desc']='LANGUAGE';
+$LL_TH['language_th']='TH';
+$LL_TH['language_en']='EN';
+$LL_TH['th_bg']='#FFFFFF';
+$LL_TH['th_cl']='#000000';
+$LL_TH['en_bg']='#999999';
+$LL_TH['en_cl']='#cbcbcb';
+$LL_TH['select_choose']='เลือก';
+$LL_TH['alert_saving']='กำลังบันทึก .. กรุณารอซักครู่นะคะ';
+$LL_TH['alert_data_required']='กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ';
+
+$LL_TH['fname']='ชื่อ';
+$LL_TH['lname']='นามสกุล';
+$LL_TH['cid']='เลขบัตรประจำตัวประชาชน';
+$LL_TH['age']='ช่วงอายุ';
+$LL_TH['age_field_name']='age_range_name';
+$LL_TH['tel']='เบอร์โทรศัพท์';
+$LL_TH['occupation']='อาชีพ';
+$LL_TH['occupation_field_name']='occupation_name';
+$LL_TH['addr_out_desc']='ที่พักอาศัยก่อนเดินทางเข้าสกลนคร';
+$LL_TH['addr_out_province']='จังหวัด';
+$LL_TH['addr_out_province_field_name']='changwat_name';
+$LL_TH['addr_out_district']='อำเภอ/เขต';
+$LL_TH['addr_out_district_field_name']='ampur_name';
+$LL_TH['addr_out_subdistrict']='ตำบล/แขวง';
+$LL_TH['addr_out_subdistrict_field_name']='tambon_name';
+$LL_TH['addr_work_desc_a']='ที่ทำงาน';
+$LL_TH['addr_work_desc_b']='เป็นที่อยู่เดียวกันกับที่พักอาศัย';
+$LL_TH['addr_work_province']='จังหวัด';
+$LL_TH['addr_work_province_field_name']='changwat_name';
+$LL_TH['addr_work_district']='อำเภอ/เขต';
+$LL_TH['addr_work_district_field_name']='ampur_name';
+$LL_TH['addr_work_subdistrict']='ตำบล/แขวง';
+$LL_TH['date_to_skn']='วันที่เดินทางเข้าถึงสกลนคร';
+$LL_TH['date_out_skn']='วันที่จะเดินทางออกจากสกลนคร';
+$LL_TH['travel_desc']='เดินทางไปเช้า-เย็นกลับ หรือสกลนครเป็นทางผ่าน';
+$LL_TH['travel_place']='สถานที่ที่จะไป';
+$LL_TH['addr_in_desc']='ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก';
+$LL_TH['addr_in_district']='อำเภอ';
+$LL_TH['addr_in_district_field_name']='ampur_name';
+$LL_TH['addr_in_subdistrict']='ตำบล';
+$LL_TH['addr_in_subdistrict_field_name']='ampur_name';
+$LL_TH['addr_in_moo']='หมู่';
+$LL_TH['addr_in_moo_field_name']='villname';
+$LL_TH['addr_in_road_soi']='ถนน/ซอย';
+$LL_TH['addr_in_house']='เลขที่/ชื่อสถานที่';
+$LL_TH['addr_in_note']='หมายเหตุ';
+$LL_TH['button_save']='บันทึก';
+
+$LL_EN=array();
+$LL_EN['web_title']='From for passenger to notify of arrival in Sakon Nakhon';
+$LL_EN['required']=' *Please fill in ';
+$LL_EN['language_desc']='ภาษา';
+$LL_EN['language_th']='ไทย';
+$LL_EN['language_en']='อังกฤษ';
+$LL_EN['th_bg']='#999999';
+$LL_EN['th_cl']='#cbcbcb';
+$LL_EN['en_bg']='#FFFFFF';
+$LL_EN['en_cl']='#000000';
+$LL_EN['select_choose']='Choose';
+$LL_EN['alert_saving']='Saving data, please wait.';
+$LL_EN['alert_data_required']='<font color="red"> Please fill in </font>data completely.';
+
+$LL_EN['fname']='Name';
+$LL_EN['lname']='Last Name';
+$LL_EN['cid']='Identification card/Passport Number ';
+$LL_EN['age']='Age';
+$LL_EN['age_field_name']='age_range_name_en';
+$LL_EN['tel']='Telephone number';
+$LL_EN['occupation']='Occupation';
+$LL_EN['occupation_field_name']='occupation_name_en';
+$LL_EN['addr_out_desc']='Address before come to Sakon Nakhon Province';
+$LL_EN['addr_out_province']='Province';
+$LL_EN['addr_out_province_field_name']='changwat_name_en';
+$LL_EN['addr_out_district']='District/Area';
+$LL_EN['addr_out_district_field_name']='ampur_name_en';
+$LL_EN['addr_out_subdistrict']='Sub-district/Sub-area';
+$LL_EN['addr_out_subdistrict_field_name']='tambon_name_en';
+$LL_EN['addr_work_desc_a']='Work Place';
+$LL_EN['addr_work_desc_b']='The workplace is same address as the residence.';
+$LL_EN['addr_work_province']='Province';
+$LL_EN['addr_work_province_field_name']='changwat_name_en';
+$LL_EN['addr_work_district']='District/Area';
+$LL_EN['addr_work_district_field_name']='ampur_name_en';
+$LL_EN['addr_work_subdistrict']='Sub-district/Sub-area';
+$LL_EN['date_to_skn']='Date of arrival in Sakon Nakhon Province';
+$LL_EN['date_out_skn']='Date of arrival in Sakon Nakhon Province';
+$LL_EN['travel_desc']='Travel pass Sakon Nakhon Province';
+$LL_EN['travel_place']='Destination';
+$LL_EN['addr_in_desc']='Residencein Sakon Nakhon Province';
+$LL_EN['addr_in_district']='District/Area';
+$LL_EN['addr_in_district_field_name']='ampur_name_en';
+$LL_EN['addr_in_subdistrict']='Sub-district/Sub-area';
+$LL_EN['addr_in_subdistrict_field_name']='ampur_name_en';
+$LL_EN['addr_in_moo']='Village Name/No.';
+$LL_EN['addr_in_moo_field_name']='villname_en';
+$LL_EN['addr_in_road_soi']='Road';
+$LL_EN['addr_in_house']='House No./Name Place';
+$LL_EN['addr_in_note']='Notation';
+$LL_EN['button_save']='Save';
+
+$current_language='th';
+if ($_GET['language']=='en' | $_GET['language']=='EN') {
+  $LL=$LL_EN;
+  $current_language='en';
+}
+else {
+  $LL=$LL_TH;
+  $current_language='th';
+}
+
 ?>
 
 <!doctype html>
@@ -31,7 +148,7 @@ else {
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Jekyll v4.1.1">
-  <title>รายงานตัวเข้าสกลนคร</title>
+  <title><?php echo $LL['web_title']; ?></title>
 
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -69,7 +186,7 @@ var input_required=input_required_init;
 function makeRequired() {
   $(".required").text("");
   input_required.forEach(element => {
-    $("#"+element).parent().find(".required").text(" *จำเป็น").css({'visibility':'visible'});
+    $("#"+element).parent().find(".required").text(" <?php echo $LL['required'];?> ").css({'visibility':'visible'});
   });
 }
 
@@ -102,8 +219,23 @@ $(document).ready(function () {
 
 <div style="width: 100%; padding: 20px;">
   <div style="padding-top: 10px; padding-bottom: 10px; border-radius: 5px; background-color:rgba(250, 255, 255, 0.5);">
-    <h4 style="text-align:center; color: black;">รายงานตัวเข้าสกลนคร</h4>
+    <h4 style="text-align:center; color: black;"><?php echo $LL['web_title']; ?></h4>
   </div>
+
+  <div style="display: flex; justify-content: center;width: 100%; padding: 5px;">
+    <div class="div_language" style="align: center; text-align: right;background-color: #fff000; width: 185px; border-radius: 5px;padding: 1px; border: solid 1px #000000; cursor: pointer;">
+      <?php echo $LL['language_desc']; ?>
+      <div style="display: inline; border: solid 1px #000000; margin-right: 1px;">
+        <div style="display: inline; background-color: <?php echo $LL['th_bg'] ?>; color: <?php echo $LL['th_cl'] ?>;">
+          <b> &nbsp; <?php echo $LL['language_th']; ?> &nbsp; </b>
+        </div>
+        <div style="display: inline; background-color: <?php echo $LL['en_bg'] ?>; color: <?php echo $LL['en_cl'] ?>;">
+          <b> &nbsp; <?php echo $LL['language_en']; ?> &nbsp; </b>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- <div style="width: 100%; padding: 20px; padding-top: 0px; display: flex; justify-content: space-between;">
@@ -124,102 +256,91 @@ $(document).ready(function () {
   <div class="col-lg-4 col-md-6 col-sm-12">
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">ชื่อ <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['fname']; ?> <span class="required"></span></label>
       <input type="text" class="form-control" id="fname" name="fname" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">นามสกุล <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['lname'] ?> <span class="required"></span></label>
       <input type="text" class="form-control" id="lname" name="lname" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">เลขบัตรประจำตัวประชาชน <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['cid'] ?> <span class="required"></span></label>
       <input type="text" class="form-control" id="cid" name="cid" placeholder="">
     </div>
   
     <div class="form-group">
-      <label for="exampleFormControlInput1">ช่วงอายุ <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['age'] ?> <span class="required"></span></label>
       <select class="form-control" id="age_range_id" name="age_range_id">
-        <option value="">--เลือก--</option>
+        <option value="">--<?php echo $LL['select_choose']; ?>--</option>
 <?php
 $sql="select * from `age_range` ";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["age_range_id"]."'>".$rows[$i]["age_range_name"]."</option>";
+  echo "<option value='".$rows[$i]["age_range_id"]."'>".$rows[$i][$LL['age_field_name']]."</option>";
 }
 ?>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">เบอร์โทรศัพท์ <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['tel']; ?> <span class="required"></span></label>
       <input type="text" class="form-control" id="tel" name="tel" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlSelect1">อาชีพ <span class="required"></span></label>
+      <label for="exampleFormControlSelect1"><?php echo $LL['occupation']; ?> <span class="required"></span></label>
       <select class="form-control" id="occupation_id" name="occupation_id">
-        <option value="">--เลือก--</option>
+        <option value="">--<?php echo $LL['select_choose']; ?>--</option>
 <?php
 $sql="select * from `coccupation` ";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["occupation_id"]."'>".$rows[$i]["occupation_name"]."</option>";
+  echo "<option value='".$rows[$i]["occupation_id"]."'>".$rows[$i][$LL['occupation_field_name']]."</option>";
 }
 ?>
       </select>
     </div>
-<!--     <div class="card"  style="margin-bottom: 20px;">
-          <div class="card-header">
-        เคยไปสถานบันเทิงที่มีผู้ป่วยยืนยัน
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input risk_area_input" id="confirm_case_api">
-          <label class="form-check-label" for="address_work">
-            เคยไป
-          </label>
-        </div>
-      </div>
-    </div> -->
 
   </div>
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="card" style="margin-bottom: 20px;">
-      <div class="card-header">ที่พักอาศัยก่อนเดินทางเข้าสกลนคร</div>
+      <div class="card-header"><?php echo $LL['addr_out_desc']; ?></div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_out_province']; ?> <span class="required"></span></label>
           <select class="form-control" id="changwat_out_code" name="changwat_out_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
   <?php
-  $sql="select * from `changwat` order by changwat_name asc ";
+  $sql="select * from `changwat` order by ".$LL['addr_out_province_field_name']." asc ";
   $obj=$connect->prepare($sql);
   $obj->execute();
   $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   for ($i=0;$i<count($rows);$i++) {
-    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
+    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i][$LL['addr_out_province_field_name']]."</option>";
   }
   ?>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_out_district']; ?> <span class="required"></span></label>
           <select class="form-control" id="ampur_out_code" name="ampur_out_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_out_subdistrict']; ?> <span class="required"></span></label>
           <select class="form-control" id="tambon_out_code" name="tambon_out_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
           </select>
         </div>
         
@@ -228,43 +349,43 @@ for ($i=0;$i<count($rows);$i++) {
 
     <div class="card"  style="margin-bottom: 20px;">
       <div class="card-header">
-        ที่ทำงาน
+        <?php echo $LL['addr_work_desc_a']; ?>
         <div class="form-check">
           <input type="checkbox" class="form-check-input risk_area_input" id="address_work">
           <label class="form-check-label" for="address_work">
-            เป็นที่อยู่เดียวกันกับที่พักอาศัย
+            <?php echo $LL['addr_work_desc_b']; ?>
           </label>
         </div>
       </div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">จังหวัด <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_work_province']; ?> <span class="required"></span></label>
           <select class="form-control" id="changwat_work_code" name="changwat_work_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
   <?php
-  $sql="select * from `changwat` order by changwat_name asc ";
+  $sql="select * from `changwat` order by ".$LL['addr_work_province_field_name']." asc ";
   $obj=$connect->prepare($sql);
   $obj->execute();
   $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
   for ($i=0;$i<count($rows);$i++) {
-    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i]["changwat_name"]."</option>";
+    echo "<option value='".$rows[$i]["changwat_code"]."'>".$rows[$i][$LL['addr_work_province_field_name']]."</option>";
   }
   ?>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_work_district']; ?> <span class="required"></span></label>
           <select class="form-control" id="ampur_work_code" name="ampur_work_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
+          <label for="exampleFormControlSelect1"><?php echo $LL['addr_work_subdistrict']; ?> <span class="required"></span></label>
           <select class="form-control" id="tambon_work_code" name="tambon_work_code">
-            <option value="">--เลือก--</option>
+            <option value="">--<?php echo $LL['select_choose']; ?>--</option>
           </select>
         </div>
         
@@ -274,28 +395,27 @@ for ($i=0;$i<count($rows);$i++) {
 
   <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="form-group">
-      <label for="exampleFormControlInput1">วันที่เดินทางเข้าถึงสกลนคร <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['date_to_skn']; ?> <span class="required"></span></label>
       <input name="date_to_sakonnakhon" class="form-control datepicker_skn" id="date_to_sakonnakhon" date_value="" />
     </div>
 
     <div class="form-group">
-      <label for="exampleFormControlInput1">วันที่จะเดินทางออกจากสกลนคร <span class="required"></span></label>
+      <label for="exampleFormControlInput1"><?php echo $LL['date_out_skn']; ?> <span class="required"></span></label>
       <input name="date_out_sakonnakhon" class="form-control datepicker_skn" id="date_out_sakonnakhon" date_value="" />
     </div>
-
 
     <div class="card"  style="margin-bottom: 20px;">
       <div class="card-header">
         <div class="form-check">
           <input type="checkbox" class="form-check-input" id="travel_not_rest" name="travel_not_rest" value="Y">
           <label class="form-check-label" for="travel_not_rest">
-          เดินทางไปเช้า-เย็นกลับ หรือสกลนครเป็นทางผ่าน
+            <?php echo $LL['travel_desc']; ?>
           </label>
         </div>
       </div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
         <div class="form-group">
-          <label for="exampleFormControlInput1">สถานที่ที่จะไป <span class="required"></span></label>
+          <label for="exampleFormControlInput1"><?php echo $LL['travel_place']; ?> <span class="required"></span></label>
           <input type="text" class="form-control" id="travel_place" name="travel_place" placeholder="">
         </div>
       </div>
@@ -303,52 +423,52 @@ for ($i=0;$i<count($rows);$i++) {
 
 
     <div class="card">
-      <div class="card-header">ที่อยู่ในจังหวัดสกลนครที่จะเข้าพำนัก</div>
+      <div class="card-header"><?php echo $LL['addr_in_desc']; ?></div>
       <div class="card-body" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
 
 
         <div class="form-group">
-        <label for="exampleFormControlSelect1">อำเภอ/เขต <span class="required"></span></label>
+        <label for="exampleFormControlSelect1"><?php echo $LL['addr_in_district']; ?> <span class="required"></span></label>
         <select class="form-control" id="ampur_in_code" name="ampur_in_code">
-          <option value="">--เลือก--</option>
+          <option value="">--<?php echo $LL['select_choose']; ?>--</option>
 <?php
-$sql="select * from `ampur` where changwat_code='47' ";
+$sql="select * from `ampur` where ampur_name not like '%*%' and ampur_name not like '%สาขา%' and ampur_name not like '%เทศบาล%' and changwat_code='47' ";
 $obj=$connect->prepare($sql);
 $obj->execute();
 $rows=$obj->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0;$i<count($rows);$i++) {
-  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i]["ampur_name"]."</option>";
+  echo "<option value='".$rows[$i]["ampur_code"]."'>".$rows[$i][$LL['addr_in_district_field_name']]."</option>";
 }
 ?>
         </select>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlSelect1">ตำบล/แขวง <span class="required"></span></label>
+        <label for="exampleFormControlSelect1"><?php echo $LL['addr_in_subdistrict']; ?> <span class="required"></span></label>
         <select class="form-control" id="tambon_in_code" name="tambon_in_code">
-          <option value="">--เลือก--</option>
+          <option value="">--<?php echo $LL['select_choose']; ?>--</option>
         </select>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlSelect1">หมู่ <span class="required"></span></label>
+        <label for="exampleFormControlSelect1"><?php echo $LL['addr_in_moo']; ?> <span class="required"></span></label>
         <select class="form-control" id="moo_in_code" name="moo_in_code">
-          <option value="">--เลือก--</option>
+          <option value="">--<?php echo $LL['select_choose']; ?>--</option>
         </select>
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">ถนน/ซอย <span class="required"></span></label>
+          <label for="exampleFormControlInput1"><?php echo $LL['addr_in_road_soi']; ?> <span class="required"></span></label>
           <input type="text" class="form-control" id="road_soi_in" name="road_soi_in">
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">เลขที่/ชื่อสถานที่ <span class="required"></span></label>
+          <label for="exampleFormControlInput1"><?php echo $LL['addr_in_house']; ?> <span class="required"></span></label>
           <input type="text" class="form-control" id="house_in_no" name="house_in_no">
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">หมายเหตุ <span class="required"></span></label>
+          <label for="exampleFormControlInput1"><?php echo $LL['addr_in_note']; ?> <span class="required"></span></label>
           <textarea class="form-control" id="note" name="note"></textarea>
         </div>
 
@@ -359,6 +479,7 @@ for ($i=0;$i<count($rows);$i++) {
   <input type="hidden" name="checkpoint_id" value='<?php echo $checkpoint_office_id; ?>'>
   <input type="hidden" name="date_to_sakonnakhon_db" id="date_to_sakonnakhon_db" value=''>
   <input type="hidden" name="date_out_sakonnakhon_db" id="date_out_sakonnakhon_db" value=''>
+  <input type="hidden" name="language" id="language" value='<?php echo $current_language; ?>'>
 
 </div>
 
@@ -367,7 +488,7 @@ for ($i=0;$i<count($rows);$i++) {
 
 <div style="width: 100%; padding: 20px;">
   <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
-    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave">บันทึก</button>
+    <button type="button" class="btn btn-primary" style="width: 100%" id="btnSave"><?php echo $LL['button_save']; ?></button>
   </div>
 </div>
 
@@ -499,7 +620,6 @@ function getInputData () {
 
 $("#btnSave").click(function() {
   var data=getInputData();
-//  console.log(data);
   var not_complete=0;
   input_required.forEach(element => {
     if (data[element].trim()=="" | data[element]==null | typeof data[element] =="undefined") {
@@ -508,12 +628,12 @@ $("#btnSave").click(function() {
   });
 
   if (not_complete>0) {
-    $("#modal01_body").html('กรุณากรอกข้อมูลที่<font color="red"> *จำเป็น </font>ให้ครบด้วยค่ะ');
+    $("#modal01_body").html('<?php echo $LL['alert_data_required']; ?>');
     $("#modal01_action").css({'display':'block'});
     $("#modal01").modal('show');
   }
   else {
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #1');
+    $("#modal01_body").html('<?php echo $LL['alert_saving']; ?>');
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
@@ -562,7 +682,6 @@ function cleanNumber(x) {
 }
 
 $('#modal03').on('hidden.bs.modal', function () {
-  // console.log('ssssssssssssssssss');
   $("#modal02").modal('show');
 });
 
@@ -583,7 +702,7 @@ $("#btnConfirmDup").click(function() {
   }
   else {
     $("#modal02").modal('hide');
-    $("#modal01_body").html('กำลังบันทึก .. กรุณารอซักครู่นะคะ #2');
+    $("#modal01_body").html('<?php echo $LL['alert_saving']; ?>');
     $("#modal01_action").css({'display':'none'});
     $("#modal01").modal('show');
 
@@ -665,80 +784,80 @@ function goPageSuggestion() {
 
 $("#changwat_out_code").change(function() {
   $("#ampur_out_code").find("option").remove();
-  $("#ampur_out_code").append("<option value=''>--เลือก--</option>");
+  $("#ampur_out_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
   $("#tambon_out_code").find("option").remove();
-  $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_out_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "ampur", 
-      query_where: "changwat_code='"+$("#changwat_out_code").val()+"'" , 
-      query_order: "if(left(ampur_name,5)='เมือง',1,2) asc , ampur_name asc"
+      query_where: " ampur_name not like '%*%' and ampur_name not like '%สาขา%' and ampur_name not like '%เทศบาล%' and changwat_code='"+$("#changwat_out_code").val()+"'" , 
+      query_order: "if(left(<?php echo $LL['addr_out_district_field_name']; ?>,5)='เมือง',1,2) asc , <?php echo $LL['addr_out_district_field_name']; ?> asc"
     }
   })
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#ampur_out_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["ampur_name"]+"</option>");
+      $("#ampur_out_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["<?php echo $LL['addr_out_district_field_name']; ?>"]+"</option>");
     }
   });
 });
 
 $("#ampur_out_code").change(function() {
   $("#tambon_out_code").find("option").remove();
-  $("#tambon_out_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_out_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
-      query_where: "ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
-      query_order: "tambon_name asc"
+      query_where: " tambon_name not like '%*%' and ampur_code_full='"+$("#changwat_out_code").val()+$("#ampur_out_code").val()+"'" , 
+      query_order: " <?php echo $LL['addr_out_subdistrict_field_name']; ?> asc"
     }
   })
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#tambon_out_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+      $("#tambon_out_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["<?php echo $LL['addr_out_subdistrict_field_name']; ?>"]+"</option>");
     }
   });
 });
 
 $("#changwat_work_code").change(function() {
   $("#ampur_work_code").find("option").remove();
-  $("#ampur_work_code").append("<option value=''>--เลือก--</option>");
+  $("#ampur_work_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
   $("#tambon_work_code").find("option").remove();
-  $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_work_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "ampur", 
-      query_where: "changwat_code='"+$("#changwat_work_code").val()+"'" , 
-      query_order: "if(left(ampur_name,5)='เมือง',1,2) asc , ampur_name asc"
+      query_where: " ampur_name not like '%*%' and ampur_name not like '%สาขา%' and ampur_name not like '%เทศบาล%' and changwat_code='"+$("#changwat_work_code").val()+"'" , 
+      query_order: "if(left(<?php echo $LL['addr_out_district_field_name']; ?>,5)='เมือง',1,2) asc , <?php echo $LL['addr_out_district_field_name']; ?> asc"
     }
   })
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#ampur_work_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["ampur_name"]+"</option>");
+      $("#ampur_work_code").append("<option value='"+data[i]["ampur_code"]+"'>"+data[i]["<?php echo $LL['addr_out_district_field_name']; ?>"]+"</option>");
     }
   });
 });
 
 $("#ampur_work_code").change(function() {
   $("#tambon_work_code").find("option").remove();
-  $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_work_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
-      query_where: "ampur_code_full='"+$("#changwat_work_code").val()+$("#ampur_work_code").val()+"'" , 
-      query_order: "tambon_name asc"
+      query_where: " tambon_name not like '%*%' and ampur_code_full='"+$("#changwat_work_code").val()+$("#ampur_work_code").val()+"'" , 
+      query_order: "<?php echo $LL['addr_out_subdistrict_field_name']; ?> asc"
     }
   })
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#tambon_work_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+      $("#tambon_work_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["<?php echo $LL['addr_out_subdistrict_field_name']; ?>"]+"</option>");
     }
   });
 });
@@ -746,21 +865,21 @@ $("#ampur_work_code").change(function() {
 function ampurInCodeChange(ampur_code_full,default_tambon) {
   // default_tambon รหัสตำบล สองหลัก
   $("#tambon_in_code").find("option").remove();
-  $("#tambon_in_code").append("<option value=''>--เลือก--</option>");
+  $("#tambon_in_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
   $("#moo_in_code").find("option").remove();
-  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
+  $("#moo_in_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: { 
       query_table: "tambon", 
-      query_where: "ampur_code_full='"+ampur_code_full+"'" , 
-      query_order: "tambon_name asc"
+      query_where: " tambon_name not like '%*%' and ampur_code_full='"+ampur_code_full+"'" , 
+      query_order: "<?php echo $LL['addr_out_subdistrict_field_name']; ?> asc"
     }
   })
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["tambon_name"]+"</option>");
+      $("#tambon_in_code").append("<option value='"+data[i]["tambon_code"]+"'>"+data[i]["<?php echo $LL['addr_out_subdistrict_field_name']; ?>"]+"</option>");
     }
     if (typeof default_tambon != 'undefined' & default_tambon != null) {
       $("#tambon_in_code").val(default_tambon);
@@ -775,7 +894,7 @@ $("#ampur_in_code").change(function() {
 function tambonInCodeChange(tambon_code_full,default_village) {
   // default_village รหัสหมู่ สองหลัก
   $("#moo_in_code").find("option").remove();
-  $("#moo_in_code").append("<option value=''>--เลือก--</option>");
+  $("#moo_in_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
 
   $.ajax({method: "POST", url: "ajaxQuery.php",
     data: {
@@ -787,7 +906,7 @@ function tambonInCodeChange(tambon_code_full,default_village) {
   .done(function(x) {
     var data=jQuery.parseJSON(x).data;
     for (var i=0;i<data.length;i=i+1) {
-      $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["villname"]+"</option>");
+      $("#moo_in_code").append("<option value='"+data[i]["villno"]+"'>"+data[i]["<?php echo $LL['addr_in_moo_field_name'];?>"]+"</option>");
     }
     $("#moo_in_code").append("<option value='XX'>ไม่ทราบ(กรุณากรอกข้อมูลถนน/ซอย)</option>");
     if (typeof default_village != 'undefined' & default_village != null) {
@@ -813,13 +932,24 @@ $("#address_work").click(function() {
   }
   else {
     $("#ampur_work_code").find("option").remove();
-    $("#ampur_work_code").append("<option value=''>--เลือก--</option>");
+    $("#ampur_work_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
     $("#tambon_work_code").find("option").remove();
-    $("#tambon_work_code").append("<option value=''>--เลือก--</option>");
+    $("#tambon_work_code").append("<option value=''>--<?php echo $LL['select_choose']; ?>--</option>");
     $("#changwat_work_code").val('');
     $("#ampur_work_code").val('');
     $("#tambon_work_code").val('');
   }
+});
+
+$(".div_language").click(function() {
+  let l='';
+  if ('<?php echo $_GET['language']; ?>'=='en') {
+    l='th';
+  }
+  else {
+    l='en';
+  }
+  window.location='register.php?language='+l;
 });
 
 // $("#confirm_case_api").click(function() {
