@@ -192,12 +192,12 @@ function makeRequired() {
 
 $(document).ready(function () {
   if ('<?php echo $checkpoint_office_id; ?>'!='') {
-    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock');
+    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>','<?php echo date('Y-m-d'); ?>','lock','<?php echo $current_language; ?>');
   }
   else {
-    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+    $("#date_to_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>',null,null,'<?php echo $current_language; ?>');
   }
-  $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>');
+  $("#date_out_sakonnakhon").datepickerSkn('<?php echo date('Y-m-d'); ?>',null,null,'<?php echo $current_language; ?>');
 
   $(".required").css({
     'color':'red',

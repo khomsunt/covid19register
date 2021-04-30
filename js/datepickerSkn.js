@@ -1,11 +1,31 @@
-﻿$.fn.datepickerSkn = function(today,defaultDate,lock){
+﻿$.fn.datepickerSkn = function(today,defaultDate,lock,para_language){
+    // alert('para_language-'+para_language+'-');
+    var language=null;
+    if (typeof para_language !='undefined') {
+        if (para_language!='' | para_language!=null) {
+            language=para_language;
+        }
+    }
     var date_input=this;
     var calendar_date=new Date(parseInt(today.substr(0,4)), parseInt(today.substr(5,2))-1, 15);
     var datepicker_skn_token=Math.floor(Math.random() * (99999 - 10000) ) + 10000;
-    var default_date=typeof defaultDate!= 'undefined'?defaultDate:null;
+    var default_date=null;
+    if (typeof defaultDate!= 'undefined') {
+        if (defaultDate!='' & defaultDate!=null) {
+            default_date=defaultDate;
+        }
+    }
     var selectedDate='';
 
-    var dayList=['อา','จ','อ','พ','พฤ','ศ','ส'];
+    var dayListTh=['อา','จ','อ','พ','พฤ','ศ','ส'];
+    var dayListEn=['Su','M','Tu','W','Th','F','Sa'];
+    var dayList=[];
+    if (language=='en') {
+        dayList=dayListEn;
+    }
+    else {
+        dayList=dayListTh;
+    }
     // var offset = date_input.offset();
     // var height = date_input.outerHeight(false);
     var masterWidth = date_input.outerWidth(false);
@@ -14,22 +34,6 @@
     var left = date_input.left;
     var top = date_input.top;
     var divMother=$('<div>');
-    // divMother.addClass('datepicker_skn_master_div').css({
-    //     'display':'none',
-    //     'padding':'3px',
-    //     'background-color':'white', 
-    //     'border-radius':'5px', 
-    //     'border':'solid 1px #999999', 
-    //     'box-shadow': '0px 4px 10px #cccccc', 
-    //     'position':'absolute', 
-    //     'z-index':'50',
-    //     'top': top+'px',
-    //     'left': left+'px',
-    //     'width': masterWidth+'px',
-    //     'max-width':'400px',
-    //     'min-width':'330px',
-    // });
-    // date_input.parent().append(divMother);
     divMother.addClass('datepicker_skn_master_div').css({
         'display':'none',
         'padding':'3px',
@@ -135,7 +139,13 @@
     }
 
     function setWeekRows(dates) {
-        tdTitle.text(dates.monthName+" "+dates.thaiYear);
+        if (language=='en') {
+            tdTitle.text(dates.monthName+" "+(parseInt(dates.thaiYear)-543).toString());
+        }
+        else {
+            tdTitle.text(dates.monthName+" "+dates.thaiYear);
+        }
+        
         dates.data.forEach(w => {
             var tr=$('<tr>');
             tr.addClass('weekRow'+datepicker_skn_token);
@@ -145,9 +155,6 @@
                 if (i.other_month==true) {
                     td.css({'color':'#c9c9c9'});
                 }
-                // if (i.date_db==default_date) {
-                //     td.css({'background-color':'#e8f4ff'});
-                // }
                 tr.append(td);
             });
             tableA.append(tr);
@@ -162,9 +169,11 @@
         })
 
         setActionButton();
-        console.log('lock-'+lock);
-        if (lock=='lock') {
-            date_input.prop('disabled',true);
+        // console.log('lock-'+lock);
+        if (typeof lock != 'undefined') {
+            if (lock=='lock') {
+                date_input.prop('disabled',true);
+            }
         }
     }
 
@@ -186,8 +195,16 @@
         tr.addClass('weekRow'+datepicker_skn_token);
         td.attr('colspan',7);
         div.css({'display':'flex','justify-content':'space-between'});
-        btnClear.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'}).text('ล้าง');
-        btnClose.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'}).text('ปิด');
+        btnClear.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'});
+        btnClose.attr("tyoe","button").addClass("btn btn-default").css({'width':'100%'});
+        if (language=='en') {
+            btnClear.text('Clear');
+            btnClose.text('Close');
+        }
+        else {
+            btnClear.text('ล้าง');
+            btnClose.text('ปิด');
+        }
         tableA.append(tr);
 
         btnClear.on('click',function() {
@@ -206,7 +223,14 @@
         var todaySplit=today.split('-');
         var thisDay=todaySplit[2];
         var thisMonth=todaySplit[1];
-        var thisMonthName=thMonth(todaySplit[1]);
+        var thisMonthName='';
+        if (language=='en') {
+            var thisMonthName=enMonth(todaySplit[1]);
+        }
+        else {
+            var thisMonthName=thMonth(todaySplit[1]);
+        }
+
         var thisYear=todaySplit[0];
         var dateToday=new Date(today);
         var daysInThisMonth=new Date(thisYear, parseInt(thisMonth), 0).getDate();
@@ -295,7 +319,17 @@
     function fullThaidate(x) {
         var r="";
         var a=x.split('-');
-        r=parseInt(a[2]).toString()+" "+thMonth(a[1])+" "+(parseInt(a[0])+543).toString();
+        var mmm='';
+        var yyy='';
+        if (language=='en') {
+            mmm=enMonth(a[1]);
+            yyy=(parseInt(a[0])+0).toString();
+        }
+        else {
+            mmm=thMonth(a[1]);
+            yyy=(parseInt(a[0])+543).toString();
+        }
+        r=parseInt(a[2]).toString()+" "+mmm+" "+yyy;
         return r;
     }
 
@@ -327,6 +361,26 @@
             case 10: r="ตุลาคม"; break;
             case 11: r="พฤศจิกายน"; break;
             case 12: r="ธันวาคม"; break;
+            default: break;
+        }
+        return r;
+    }
+
+    function enMonth(x) {
+        var r="";
+        switch (parseInt(x)) {
+            case 1: r="January"; break;
+            case 2: r="February	"; break;
+            case 3: r="March"; break;
+            case 4: r="April"; break;
+            case 5: r="May"; break;
+            case 6: r="June"; break;
+            case 7: r="July"; break;
+            case 8: r="August"; break;
+            case 9: r="September"; break;
+            case 10: r="October"; break;
+            case 11: r="November"; break;
+            case 12: r="December"; break;
             default: break;
         }
         return r;
