@@ -153,7 +153,7 @@ else {
   <script src="../js/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-  <script type="text/javascript" src="../js/datepickerSkn.js"></script>
+  <script type="text/javascript" src="../js/datepickerSkn.js?version=2"></script>
 
   <style>
   .modal {
